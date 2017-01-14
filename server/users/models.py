@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Group
 
+
 class UserManager(BaseUserManager):
 
     def create_user(self, username, nickname, password=None):
@@ -24,6 +25,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+
 
 class User(AbstractBaseUser):
     username = models.CharField(
@@ -64,5 +66,3 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
-
-

@@ -1,11 +1,25 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: { App }
+define('__tether', ['tether'], (Tether) => {
+    window.Tether = Tether
 })
+
+requirejs.config({
+    baseUrl: '/static',
+    paths: {
+        jquery: 'jquery/jquery.slim.min',
+        tether: 'tether/js/tether.min',
+        bootstrap: 'bootstrap/js/bootstrap.min'
+    },
+    shim: {
+        'jquery': {
+            exports: 'jQuery'
+        },
+        'bootstrap': {
+            deps: ['jquery', '__tether']
+        },
+        'tether': {
+            exports: 'Tether'
+        }
+    }
+})
+
+require(['bootstrap'])
