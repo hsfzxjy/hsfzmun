@@ -19,6 +19,6 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^users/', include('users.urls')),
-    url(r'^$', TemplateView.as_view(template_name='base.html'))
+    url(r'^users/', include('users.urls', namespace="users")),
+    url(r'^test/$', TemplateView.as_view(template_name='bases/base-with-header.html'))
 ]

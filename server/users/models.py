@@ -38,6 +38,7 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
