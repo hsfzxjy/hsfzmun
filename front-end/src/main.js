@@ -1,23 +1,30 @@
-define('__tether', ['tether'], (Tether) => {
+define('__tether', ['tether'], function (Tether) {
     window.Tether = Tether
 })
 
 requirejs.config({
     baseUrl: '/static',
     paths: {
-        jquery: 'jquery/jquery.slim.min',
+        jquery: 'jquery/jquery.min',
         tether: 'tether/js/tether.min',
-        bootstrap: 'bootstrap/js/bootstrap.min'
+        bootstrap: 'bootstrap/js/bootstrap.min',
+        trumbowyg: 'trumbowyg/trumbowyg.min'
     },
     shim: {
-        'jquery': {
+        jquery: {
             exports: 'jQuery'
         },
-        'bootstrap': {
+        bootstrap: {
             deps: ['jquery', '__tether']
         },
-        'tether': {
+        tether: {
             exports: 'Tether'
+        },
+        summernote: {
+            deps: ['bootstrap']
+        },
+        trumbowyg: {
+            deps: ['jquery']
         }
     }
 })
