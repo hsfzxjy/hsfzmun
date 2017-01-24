@@ -1,16 +1,17 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from .models import User
 
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -32,6 +33,7 @@ class UserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
 class UserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
     the user, but replaces the password field with admin's
@@ -41,7 +43,8 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'nickname', 'password', 'is_active', 'is_admin')
+        fields = ('username', 'nickname', 'password',
+                  'is_active', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -49,21 +52,22 @@ class UserChangeForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('username', 'nickname', 'is_admin')
-    list_filter = ('is_admin',)
+    list_display = ('username', 'nickname', 'is_superuser')
+    list_filter = ('is_superuser',)
     fieldsets = (
         (None, {'fields': ('username', 'nickname', 'password')}),
-        ('Permissions', {'fields': ('is_admin', 'groups', )}),
+        ('Permissions', {'fields': ('is_superuser', 'groups', )}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'nickname', 'password1', 'password2')}
-        ),
+         ),
     )
     search_fields = ('nickname',)
     ordering = ('nickname',)

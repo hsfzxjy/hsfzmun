@@ -25,12 +25,18 @@ Form.prototype = {
     },
     _finalizePayload () {
         let payload = {}
-        $(this._$el.serializeArray()).each((k, v) => payload[k] = v)
+        this._$el.serializeArray()
+            .forEach(({name, value}) => payload[name] = value)
         this._eventBus.trigger('finalize-payload', payload)
         return payload
     },
     _onSubmit () {
-        this._eventBus.trigger('submitted', this._api[action](_finalizePayload))
+        console.log(this._api)
+        let response = this._api[this._action](this._finalizePayload())
+        this._eventBus.trigger('submitted', response)
+        response.paramerror(data => {
+
+        })
     }
 }
 

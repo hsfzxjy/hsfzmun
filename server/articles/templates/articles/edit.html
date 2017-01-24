@@ -2,7 +2,8 @@
 
 {% block content %}
 <div class="container">
-    <form>
+    <form id="edit-form">
+        <input type="hidden" name="author" value="{{user.id}}">
         <div class="form-group">
             <label for="title" class="form-control-label">Title</label>
             <input type="text" class="form-control" id="title" name="title">
@@ -22,8 +23,6 @@
 {% block scripts %}
 <link rel="stylesheet" href="/static/trumbowyg/ui/trumbowyg.min.css">
 <script>
-    require(['trumbowyg', 'util/rest'], function () {
-        $('#content').trumbowyg()
-    })
+    require(['articles/edit'])
 </script>
 {% endblock %}

@@ -1,5 +1,44 @@
 import 'jquery'
 
+$.ajaxSetup({
+    cache: false,
+    dataType: 'json'
+})
+
+// Setup CSRF Token
+
+function getCookie (name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';')
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = jQuery.trim(cookies[i])
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                break
+            }
+        }
+    }
+    return cookieValue
+}
+let csrftoken = getCookie('csrftoken')
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+}
+
+$.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        }
+    }
+})
+
+// `API` Definition
+
 const JSON_TYPE = 'application/json'
 const STATUSES = {
     400: 'paramerror',
@@ -9,12 +48,11 @@ const STATUSES = {
     200: 'ok',
     500: 'servererror'
 }
-export default function API (url) {
+function API (url) {
     this.url = url
     this.params = {}
     this.contentType = JSON_TYPE
 }
-
 API.prototype = {
     param (name, value) {
         if ($.isPlainObject(name))
@@ -30,6 +68,8 @@ API.prototype = {
         this.contentType = undefined
     },
     _request (method, payload) {
+        if (this.contentType === JSON_TYPE)
+            payload = JSON.stringify(payload)
         return this._processResponse($.ajax({
             url: this.url,
             type: method,
@@ -38,7 +78,8 @@ API.prototype = {
         }))
     },
     _processResponse (response) {
-        $(STATUSES).each((code, name) => {
+        $.each(STATUSES, (code, name) => {
+            console.log(code, name)
             let callbacks = $.Callbacks()
             response[name] = cb => {
                 callbacks.add(cb)
@@ -61,8 +102,10 @@ API.prototype = {
     }
 }
 
-$(['get', 'post', 'put', 'patch', 'remove']).each(name =>
+$(['get', 'post', 'put', 'patch', 'remove']).each((_, name) =>
     API.prototype[name] = function (payload) {
         return this._request(name, payload)
     }
 )
+
+export default API
