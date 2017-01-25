@@ -90,7 +90,8 @@ DATABASES = {
         'USER': DB.user,
         'PASSWORD': DB.password,
         'HOST': DB.host,
-        'PORT': DB.port
+        'PORT': DB.port,
+        'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 

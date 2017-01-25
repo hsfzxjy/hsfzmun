@@ -11,4 +11,6 @@ router.register(r'^api/articles', ArticleViewSet)
 urlpatterns = router.urls + [
     url(r'^new/$', TemplateView.as_view(
         template_name='articles/edit.html'), name='new'),
+    url(r'^list/', TemplateView.as_view(
+        template_name='articles/list.html'), name='list')
 ]

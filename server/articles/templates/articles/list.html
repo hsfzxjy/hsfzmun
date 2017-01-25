@@ -1,0 +1,66 @@
+{% extends "bases/base-with-header.html" %}
+
+{% block content %}
+
+{% verbatim %}
+<template id="tmpl-article-top-nav-single">
+    <li class="nav-item">
+        <a href="#{{id}}" data-toggle="tab" class="nav-link" data-name="{{data.1}}">
+            {{data.0}}
+        </a>
+    </li>
+</template>
+
+<template id="tmpl-article-top-nav-stacked">
+    <li class="nav-item dropdown">
+        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">{{data.0}}</a>
+        <div class="dropdown-menu">
+            {{#data.1}}
+            <a href="#{{id}}" class="dropdown-item" data-name="{{1}}" data-toggle="tab">{{0}}</a>
+            {{/data.1}}
+        </div>
+    </li>
+</template>
+
+<template id="tmpl-article-side-nav-single">
+    <li class="nav-item">
+        <a href="#{{id}}" data-toggle="tab" class="nav-link" data-name="{{data.1}}">{{data.0}}</a>
+    </li>
+</template>
+
+<template id="tmpl-article-side-nav-stacked">
+    <li class="nav-item">
+        <a href="#" data-toggle="tab" class="nav-link">{{data.0}}</a>
+        {{#data.1}}
+        <a href="#{{id}}" class="nav-link" data-name="{{1}}">=> {{0}}</a>
+        {{/data.1}}
+    </li>
+</template>
+{% endverbatim %}
+
+<div class="container">
+    <ul class="nav nav-tabs hidden-md-up" id="article-top-nav"></ul>
+    <div class="row">
+        <ul class="nav nav-tabs flex-column hidden-sm-down col-md-4" id="article-side-nav"></ul>
+        <div class="tab-content col-md-8"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    require(['articles/list', 'util/rest'], function (list, API) {
+        list.articleListManager.config([
+            ['title', 'name'],
+            ['stacked', [
+                ['down1', 'name2']
+            ]]
+        ], {
+            name: null,
+            name2: null
+        })
+    })
+</script>
+{% endblock %}
