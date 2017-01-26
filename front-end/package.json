@@ -4,8 +4,9 @@
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "clear": "rm -rf build/*"
+    "dev": "gulp dev",
+    "clear": "rm -rf build/*",
+    "build": "npm run clear && gulp build"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
     "gulp-sourcemaps": "^2.4.0",
     "gulp-wrap-amd": "^0.5.0",
     "jquery": "^3.1.1",
+    "mustache": "^2.3.0",
     "node-sass": "^4.3.0",
     "requirejs": "^2.3.2",
     "trumbowyg": "^2.4.2"

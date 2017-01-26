@@ -5,10 +5,11 @@ define('__tether', ['tether'], function (Tether) {
 requirejs.config({
     baseUrl: '/static',
     paths: {
-        jquery: 'jquery/jquery.min',
+        jquery: 'jquery/jquery',
         tether: 'tether/js/tether.min',
         bootstrap: 'bootstrap/js/bootstrap.min',
-        trumbowyg: 'trumbowyg/trumbowyg.min'
+        trumbowyg: 'trumbowyg/trumbowyg',
+        mustache: 'mustache/mustache.min'
     },
     shim: {
         jquery: {
@@ -29,4 +30,8 @@ requirejs.config({
     }
 })
 
-require(['bootstrap'])
+require(['bootstrap'], function () {
+    $(function () {
+        $('.dropdown-toggle').dropdown()
+    })
+})

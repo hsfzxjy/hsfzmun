@@ -5,6 +5,14 @@ $.ajaxSetup({
     dataType: 'json'
 })
 
+// Helper Functions
+
+function updateQueryStringParameter (uri, key, value) {
+    let re = new RegExp(`([?&])${key}=.*?(&|$|#)`, "i")
+    let separator = uri.indexOf('?') !== -1 ? "&" : "?"
+    return (uri.match(re)) ? uri.replace(re, `$1${key}=${value}$2`) : `${uri}${separator}${key}=${value}`
+}
+
 // Setup CSRF Token
 
 function getCookie (name) {
@@ -41,17 +49,23 @@ $.ajaxSetup({
 
 const JSON_TYPE = 'application/json'
 const STATUSES = {
-    400: 'paramerror',
-    401: 'unauthorized',
-    403: 'forbidden',
-    404: 'notfound',
-    200: 'ok',
-    500: 'servererror'
+    paramerror: [400],
+    unauthorized: [401],
+    forbidden: [403],
+    notfound: [404],
+    ok: [200, 201, 204],
+    servererror: [500]
 }
 function API (url) {
-    this.url = url
-    this.params = {}
-    this.contentType = JSON_TYPE
+    if (url instanceof API) {
+        this.url = url.url
+        this.params = url.params
+        this.contentType = url.contentType
+    } else {
+        this.url = url
+        this.params = {}
+        this.contentType = JSON_TYPE
+    }
 }
 API.prototype = {
     param (name, value) {
@@ -70,6 +84,11 @@ API.prototype = {
     _request (method, payload) {
         if (this.contentType === JSON_TYPE)
             payload = JSON.stringify(payload)
+
+        $.each(this.params, (key, value) =>
+            this.url = updateQueryStringParameter(this.url, key, value)
+        )
+
         return this._processResponse($.ajax({
             url: this.url,
             type: method,
@@ -78,22 +97,17 @@ API.prototype = {
         }))
     },
     _processResponse (response) {
-        $.each(STATUSES, (code, name) => {
-            console.log(code, name)
+        $.each(STATUSES, (name, codes) => {
             let callbacks = $.Callbacks()
+            // bind shortcuts to response
             response[name] = cb => {
                 callbacks.add(cb)
                 return response
             }
+            // fire callbacks according to status code
             response.always(() => {
-                if (response.status === code) {
-                    let data
-                    try {
-                        data = JSON.parse(response.responseText)
-                    } catch (e) {
-                        data = null
-                    }
-                    callbacks.fireWith(response, [data, response])
+                if (codes.indexOf(response.status) >= 0) {
+                    callbacks.fire(response.responseJSON || {}, response)
                 }
             })
         })

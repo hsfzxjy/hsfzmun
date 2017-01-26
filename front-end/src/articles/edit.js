@@ -2,12 +2,14 @@ import 'trumbowyg'
 import API from 'util/rest'
 import Form from 'util/form'
 
-$('#content').trumbowyg()
+let $content = $('#content').trumbowyg()
+
+const getContent = $el => $el.data('trumbowyg').$ed.html()
 
 let editForm = new Form('#edit-form', new API('/articles/api/articles/'), 'post')
-    .payload((e, data) =>
+    .payload(data =>
         data.tags = data.tags.split(/\s+/)
             .filter(name => name).map(name => ({name}))
-    ).payload((e, data) =>
-        data.content = $('#content').trumbowyg('html')
+    ).payload(data =>
+        data.content = getContent($content)
     )

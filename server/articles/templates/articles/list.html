@@ -36,6 +36,23 @@
         {{/data.1}}
     </li>
 </template>
+
+<template id="tmpl-tab-pane">
+    <div class="tab-pane" id="{{id}}"></div>
+</template>
+
+<template id="tmpl-article">
+    {{title}}
+    + {{content}}
+    + {{id}}
+</template>
+
+<template id="tmpl-article-list-view">
+fuck
+    {{#results}}
+        {{>article}}
+    {{/results}}
+</template>
 {% endverbatim %}
 
 <div class="container">
@@ -58,9 +75,9 @@
                 ['down1', 'name2']
             ]]
         ], {
-            name: null,
+            name: '/articles/api/articles/',
             name2: null
-        })
+        }, 'name2')
     })
 </script>
 {% endblock %}
