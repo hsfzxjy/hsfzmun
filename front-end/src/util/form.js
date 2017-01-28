@@ -15,13 +15,13 @@ function getFeedBackElement (el) {
     let $el = $(el)
     let $siblings = $el.siblings('.form-control-feedback')
     return $siblings.length
-        ? $siblings
+        ? $siblings.show()
         : $(`<div class="form-control-feedback" />`).insertAfter($el)
 }
 
 function setErrors ($form, data) {
     const keys = Object.keys(data)
-    $('.form-group input', $form)
+    $('.form-group input, .form-group textarea', $form)
         .filter((_, el) => elHasNames(el, keys))
     .each((_, el) => {
         let $el = $(el)
@@ -29,6 +29,15 @@ function setErrors ($form, data) {
         getFeedBackElement($el).html(data[name].join(' '))
         $el.parent().addClass('has-danger')
     })
+}
+
+function clearErrors ($form) {
+    $('.form-control-feedback', $form).hide()
+    $('.form-group', $form).removeClass('has-danger')
+}
+
+function clearFormValues ($form) {
+    $form.find('input[type=text], textarea').val('')
 }
 
 // `Form` Class Definition
@@ -42,6 +51,7 @@ function Form ($el, api, action) {
 }
 
 Form.prototype = {
+
     _init () {
         this._$el.submit(e => {
             e.preventDefault()
@@ -68,6 +78,7 @@ Form.prototype = {
     },
     _onSubmit () {
         this._toggleButtons(true)
+        clearErrors(this._$el)
 
         let response = this._api[this._action](this._finalizePayload())
         this._eventBus.trigger('submitted', response)
@@ -75,6 +86,7 @@ Form.prototype = {
         response
             .always(() => this._toggleButtons(false))
             .paramerror(data => setErrors(this._$el, data))
+            .ok(() => clearFormValues(this._$el))
     }
 }
 

@@ -27,9 +27,8 @@ export function renderInto ($target, ...rest) {
     $($target).html(render(...rest))
 }
 
-export function renderEach (tmplId, { data, dataPipe = (x => x) }, partials) {
+export function renderEach (tmplId, data, partials) {
     return data
-        .map(dataPipe)
         .map(item => render(tmplId, item, partials))
         .join('')
 }

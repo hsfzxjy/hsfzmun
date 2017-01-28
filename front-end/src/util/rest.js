@@ -59,7 +59,7 @@ const STATUSES = {
 function API (url) {
     if (url instanceof API) {
         this.url = url.url
-        this.params = url.params
+        this.params = $.extend({}, url.params)
         this.contentType = url.contentType
     } else {
         this.url = url
@@ -68,12 +68,16 @@ function API (url) {
     }
 }
 API.prototype = {
+
     param (name, value) {
+        let newObj = new API(this)
+
         if ($.isPlainObject(name))
-            $.extend(this.params, name)
+            $.extend(newObj.params, name)
         else
-            this.params[name] = value
-        return this
+            newObj.params[name] = value
+
+        return newObj
     },
     json () {
         this.contentType = JSON_TYPE

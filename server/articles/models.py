@@ -49,7 +49,7 @@ class Tag(models.Model):
     objects = TagQuerySet.as_manager()
 
 
-class Reply(models.Model):
+class Comment(models.Model):
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='posted_replies')

@@ -9,7 +9,8 @@ requirejs.config({
         tether: 'tether/js/tether.min',
         bootstrap: 'bootstrap/js/bootstrap.min',
         trumbowyg: 'trumbowyg/trumbowyg',
-        mustache: 'mustache/mustache.min'
+        mustache: 'mustache/mustache.min',
+        _timeago: 'timeago/jquery.timeago'
     },
     shim: {
         jquery: {
@@ -26,6 +27,9 @@ requirejs.config({
         },
         trumbowyg: {
             deps: ['jquery']
+        },
+        _timeago: {
+            deps: ['jquery']
         }
     }
 })
@@ -34,4 +38,12 @@ require(['bootstrap'], function () {
     $(function () {
         $('.dropdown-toggle').dropdown()
     })
+})
+
+define('timeago', ['exports', '_timeago'], function (exports) {
+    function bind () {
+        $('time.timeago').timeago()
+    }
+    exports.bind = bind
+    $(function () { bind() })
 })

@@ -11,7 +11,8 @@ const deps = [
     ['requirejs', 'node_modules/requirejs', 'node_modules/requirejs/require.js'],
     ['font-awesome', 'node_modules/font-awesome', ['node_modules/font-awesome/css/**/*', 'node_modules/font-awesome/fonts/**/*']],
     ['trumbowyg', 'node_modules/trumbowyg/dist'],
-    ['mustache', 'node_modules/mustache', 'node_modules/mustache/mustache.min.js']
+    ['mustache', 'node_modules/mustache', 'node_modules/mustache/mustache.min.js'],
+    ['timeago', 'node_modules/timeago', ['node_modules/timeago/jquery.timeago.js', 'node_modules/timeago/locales/**/*']]
 ]
 
 gulp.task('build-js', () => {

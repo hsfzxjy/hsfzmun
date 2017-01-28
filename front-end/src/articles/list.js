@@ -2,16 +2,17 @@ import 'bootstrap'
 import Mustache from 'mustache'
 import * as tmpl from 'util/tmpl'
 import API from 'util/rest'
+import * as timeago from 'timeago'
 
 // Helper Functions
 
-function getParams () {
+function getParams (url = window.location.href) {
     let match
     let plus = /\+/g
     let search = /([^&=]+)=?([^&]*)/g
-    let query = window.location.search.substring(1)
+    let query = (url.split('?')[1] || '').split('#')[0]
 
-    const decode = s => decodeURIComponent(s.replace(pl, " "))
+    const decode = s => decodeURIComponent(s.replace(plus, " "))
 
     let result = {}
     while (match = search.exec(query))
@@ -28,19 +29,25 @@ function Router () { this._init() }
 Router.prototype = {
 
     _init () {
+        this.url = ''
+        this.params = {}
         this._eventBus = $({})
         // Listen `popstate` event
         $(window).on('popstate', this._fireRouteEvent.bind(this))
         // Trigger event when page loaded
-        $(this._fireRouteEvent.bind(this))
+        $(() => this._fireRouteEvent(true))
     },
 
-    _fireRouteEvent () {
-        this._eventBus.trigger('route', location.pathname, getParams())
+    _fireRouteEvent (first = false) {
+        this.url = location.pathname
+        this.params = getParams()
+        this._eventBus.trigger('route', [this.url, this.params, first])
     },
 
-    go (url, title = '') {
+    go (url, title = '', trigger = true) {
+        console.log('go', url)
         history.pushState(null, title, url)
+        if (trigger) this._fireRouteEvent()
     },
 
     route (cb) {
@@ -55,13 +62,18 @@ const router = new Router()
 
 const $topNav = $('#article-top-nav'), $sideNav = $('#article-side-nav')
 
+let $sideNavItems
+
 const $tabContents = $('div.tab-content')
 
 const getTabId = name => `tab-${name}`
+const id = function () { return getTabId(this.name) }
 
 export const articleListManager = {
 
     _listViews: {},
+
+    activeName: '',
 
     /**
      *
@@ -79,29 +91,43 @@ export const articleListManager = {
     },
 
     _createMenus () {
-        const tmplSuffix = data => $.isArray(data.data[1]) ? 'stacked' : 'single'
+        const tmplSuffix = data => data.items ? 'stacked' : 'single'
         const navTmplId = prefix => data => `${prefix}-${tmplSuffix(data)}`
-        const id = function () { return getTabId(this[1] || this.data[1]) }
+        const pack = item => ({ name: item[1], title: item[0], id })
 
-        const packedData = {
-            data: this._menus,
-            dataPipe: data => ({ data, id })
-        }
+        const menus = this._menus.map(item =>
+            $.isArray(item[1]) ? {
+                title: item[0],
+                items: item[1].map(pack)
+            } : pack(item)
+        )
 
-        tmpl.renderEachTo($topNav, navTmplId('article-top-nav'), packedData)
+        tmpl.renderEachTo($topNav, navTmplId('article-top-nav'), menus)
 
-        tmpl.renderEachTo($sideNav, navTmplId('article-side-nav'), packedData)
+        tmpl.renderEachTo($sideNav, navTmplId('article-side-nav'), menus)
 
-        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            router.go(`/articles/list/${$(this).data('name')}/`)
+        $sideNavItems = $('a', $sideNav)
+
+        $sideNavItems.click(e => {
+            e.preventDefault()
+            this._showTab($(e.currentTarget).data('name'))
         })
     },
 
     _registerRouteEvents () {
-        router.route(url => {
+        router.route((url, params, first) => {
             let name = (/\/list\/(.+)\/$/.exec(url) || '')[1] || this._defaultName
-            this._listViews[name].activate()
+            this.activeName = name
+
+            if (first) this._showTab(name)
         })
+    },
+
+    _showTab (name) {
+        let sel = `a[data-name=${name}]`
+        $(sel, $topNav).tab('show')
+        $(`a`, $sideNav).removeClass('active')
+        let $sideItem = $(sel, $sideNav).addClass('active')
     },
 
     _createListViews () {
@@ -112,7 +138,7 @@ export const articleListManager = {
 }
 
 function ArticleListView (name, api) {
-    this._api = api
+    this._api = (new API(api))
     this._name = name
     this._init()
 }
@@ -123,18 +149,33 @@ ArticleListView.prototype = {
         // Init tab panel
         this._$pane = tmpl.renderTo($tabContents, 'tab-pane', {
             name: this._name,
-            id: function () { return getTabId(this.name) }
+            id
+        })
+        this._registerPagerEvents()
+        this._registerRouteEvents()
+    },
+
+    _registerRouteEvents () {
+        router
+            .route((url, params, first) => {
+                if (articleListManager.activeName !== this._name) return
+                this._load(this._api.param(params))
+            })
+    },
+
+    _registerPagerEvents () {
+        $(this._$pane).on('click', 'a.page-link', e => {
+            e.preventDefault()
+            let api = $(e.target).data('api')
+            router.go(`?${$.param(getParams(api))}`, '', false)
+            this._load(api)
         })
     },
 
     _load (api) {
         return new API(api).get().ok(data => {
             tmpl.renderInto(this._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') })
+            timeago.bind()
         })
-    },
-
-    activate () {
-        $(`a[data-name=${this._name}]`).tab('show')
-        this._load(this._api)
     }
 }
