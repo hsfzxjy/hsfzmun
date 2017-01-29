@@ -85,6 +85,17 @@ API.prototype = {
     formdata () {
         this.contentType = undefined
     },
+    currentUrl () {
+        let url = this.url
+        $.each(this.params, (key, value) =>
+            url = updateQueryStringParameter(url, key, value)
+        )
+        return url
+    },
+    currentParamString () {
+        let url = this.currentUrl()
+        return (url.split('?')[1] || '')
+    },
     _request (method, payload) {
         if (this.contentType === JSON_TYPE)
             payload = JSON.stringify(payload)
@@ -120,7 +131,7 @@ API.prototype = {
     }
 }
 
-$(['get', 'post', 'put', 'patch', 'remove']).each((_, name) =>
+$(['get', 'post', 'put', 'patch', 'delete']).each((_, name) =>
     API.prototype[name] = function (payload) {
         return this._request(name, payload)
     }

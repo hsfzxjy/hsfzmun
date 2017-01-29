@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-from .keys import SECRET_KEY
+from .local_settings import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'articles',
     'notices',
+    'files',
     'rest_framework',
     'api'
 ]
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-from .keys import DB
+from .local_settings import DB
 
 DATABASES = {
     'default': {
@@ -153,4 +154,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-from .keys import STATICFILES_DIRS
+from .local_settings import STATICFILES_DIRS
+
+# Media files
+
+from .local_settings import MEDIA_ROOT, MEDIA_URL

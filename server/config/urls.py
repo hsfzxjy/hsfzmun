@@ -16,11 +16,16 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic.base import TemplateView
+from django.conf import settings
+
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/', include('users.urls', namespace="users")),
     url(r'^articles/', include('articles.urls', namespace='articles')),
+    url(r'^files/', include('files.urls', namespace='files')),
     url(r'^api/', include('api.urls', namespace="api")),
-    url(r'^test/$', TemplateView.as_view(template_name='bases/base-with-header.html'))
-]
+    url(r'^test/$', TemplateView.as_view(
+        template_name='bases/base-with-header.html'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

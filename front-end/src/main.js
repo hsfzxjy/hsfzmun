@@ -8,9 +8,12 @@ requirejs.config({
         jquery: 'jquery/jquery',
         tether: 'tether/js/tether.min',
         bootstrap: 'bootstrap/js/bootstrap.min',
-        trumbowyg: 'trumbowyg/trumbowyg',
+        _trumbowyg: 'trumbowyg/trumbowyg.min',
+        _trumbowygUpload: 'trumbowyg/plugins/upload/trumbowyg.upload',
         mustache: 'mustache/mustache.min',
-        _timeago: 'timeago/jquery.timeago'
+        _timeago: 'timeago/jquery.timeago',
+        'file-upload': 'file-upload/js/jquery.fileupload',
+        'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget'
     },
     shim: {
         jquery: {
@@ -25,14 +28,19 @@ requirejs.config({
         summernote: {
             deps: ['bootstrap']
         },
-        trumbowyg: {
+        _trumbowyg: {
             deps: ['jquery']
+        },
+        _trumbowygUpload: {
+            deps: ['_trumbowyg']
         },
         _timeago: {
             deps: ['jquery']
         }
     }
 })
+
+define('trumbowyg', ['_trumbowyg', '_trumbowygUpload'])
 
 require(['bootstrap'], function () {
     $(function () {

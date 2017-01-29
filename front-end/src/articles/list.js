@@ -112,13 +112,19 @@ export const articleListManager = {
             e.preventDefault()
             this._showTab($(e.currentTarget).data('name'))
         })
+
+        $topNav.find('a[data-name]').on('show.bs.tab', ({ target }) => {
+            let name = $(target).data('name')
+            if (!this._first) router.go(this._listViews[name].currentUrl(), '')
+            this._first = false
+        })
     },
 
     _registerRouteEvents () {
         router.route((url, params, first) => {
             let name = (/\/list\/(.+)\/$/.exec(url) || '')[1] || this._defaultName
             this.activeName = name
-
+            this._first = first
             if (first) this._showTab(name)
         })
     },
@@ -138,7 +144,7 @@ export const articleListManager = {
 }
 
 function ArticleListView (name, api) {
-    this._api = (new API(api))
+    this._currentAPI = this._api = (new API(api))
     this._name = name
     this._init()
 }
@@ -146,6 +152,7 @@ function ArticleListView (name, api) {
 ArticleListView.prototype = {
 
     _init () {
+        this._first = true
         // Init tab panel
         this._$pane = tmpl.renderTo($tabContents, 'tab-pane', {
             name: this._name,
@@ -159,7 +166,7 @@ ArticleListView.prototype = {
         router
             .route((url, params, first) => {
                 if (articleListManager.activeName !== this._name) return
-                this._load(this._api.param(params))
+                if (this._first) this._load(this._api.param(params))
             })
     },
 
@@ -167,13 +174,18 @@ ArticleListView.prototype = {
         $(this._$pane).on('click', 'a.page-link', e => {
             e.preventDefault()
             let api = $(e.target).data('api')
-            router.go(`?${$.param(getParams(api))}`, '', false)
             this._load(api)
+            router.go(this.currentUrl(), '', false)
         })
     },
 
+    currentUrl () {
+        return `/articles/list/${this._name}/?${this._currentAPI.currentParamString()}`
+    },
+
     _load (api) {
-        return new API(api).get().ok(data => {
+        this._first = false
+        return (this._currentAPI = new API(api)).get().ok(data => {
             tmpl.renderInto(this._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') })
             timeago.bind()
         })

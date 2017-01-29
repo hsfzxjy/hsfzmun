@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Article, Tag, Comment
 
-from operator import itemgetter
+from files.models import Attachment
+from files.serializers import AttachmentSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -12,23 +13,44 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ['name']
 
-    def validate(self, data):
-        return data
+    def to_internal_value(self, data):
+        if isinstance(data, (int, str)):
+            return data
+
+        return super(TagSerializer, self).to_internal_value(data)
 
 
 class ArticleSerializer(serializers.ModelSerializer):
 
     tags = TagSerializer(many=True)
-
-    def validate_tags(self, value):
-        return value
+    attachments = AttachmentSerializer(many=True, validators=[])
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
 
     def create(self, validated_data):
-        tag_list = list(
-            map(itemgetter('name'), validated_data.pop('tags', []))
-        )
+        tag_list = validated_data.pop('tags', [])
+        attachments = validated_data.pop('attachments', [])
+
         article = Article.objects.create(**validated_data)
+
         article.tags.add(*Tag.objects.create_from_list(tag_list))
+        article.attachments.set(Attachment.objects.filter(
+            pk__in=attachments))
+
+        return article
+
+    def update(self, instance, validated_data):
+        tag_list = validated_data.pop('tags', [])
+        attachments = validated_data.pop('attachments', [])
+        print(attachments)
+        old_tags = instance.tags.values_list('name', flat=True)
+
+        article = super(ArticleSerializer, self).update(
+            instance, validated_data)
+
+        article.tags.set(Tag.objects.update_from_list(
+            old_tags, tag_list), clear=True)
+        article.attachments.set(Attachment.objects.filter(
+            pk__in=attachments))
 
         return article
 

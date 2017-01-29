@@ -6,23 +6,62 @@
         <input type="hidden" name="author" value="{{user.id}}">
         <div class="form-group">
             <label for="title" class="form-control-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title">
+            <input type="text" class="form-control" id="title" name="title" value="{{article.title}}">
         </div>
         <div class="form-group">
             <label for="tags" class="form-control-label">Tags</label>
-            <input type="text" name="tags" id="tags" class="form-control">
+            <input type="text" name="tags" id="tags" class="form-control" value="{{article.tags.all|join:' '}}">
         </div>
         <div class="form-group">
-            <textarea name="content" id="content" cols="30" rows="10"></textarea>
+            <textarea name="content" id="content" cols="30" rows="10">{{article.content}}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="float-right btn btn-primary">Submit</button>
     </form>
+    <span class="btn btn-success fileinput-button" id="attachments">
+        <span>Attachments</span>
+        <input type="file" name="file">
+    </span>
+    <div class="bg-faded">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0; height: 2px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div id="file-box" class="row mx-0"></div>
+        <h5 class="text-center py-5 no-files">No Files.</h5>
+    </div>
 </div>
+
+{% verbatim %}
+<template id="tmpl-file-item">
+    <div class="media my-1 px-0 col-md-6">
+        <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
+        <div class="media-body clearfix">
+            <h5 class="file-name">{{name}}</h5>
+            <time class="file-time timeago" datetime="{{created}}"></time>
+        </div>
+        <div class="d-flex align-self-center btn btn-danger file-cancel">
+            <i class="fa fa-trash-o fa-2x"></i>
+        </div>
+    </div>
+</template>
+{% endverbatim %}
+
 {% endblock %}
 
 {% block scripts %}
 <link rel="stylesheet" href="/static/trumbowyg/ui/trumbowyg.min.css">
+<link rel="stylesheet" href="/static/file-upload/css/jquery.fileupload.css">
 <script>
+    define('page-config', {
+        articleId: "{{article.id}}"
+    })
     require(['articles/edit'])
 </script>
+<style type="text/css">
+    div.file-cancel {
+        background-color: transparent;
+        color: inherit;
+        border-radius: 0;
+        border: none;
+    }
+</style>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 from model_utils.fields import StatusField, MonitorField
 from model_utils.models import StatusModel
@@ -22,6 +23,11 @@ class Article(StatusModel):
 
     tags = models.ManyToManyField('Tag', blank=True, related_name='articles')
 
+    attachments = models.ManyToManyField('files.Attachment', blank=True)
+
+    def get_absolute_url(self):
+        return reverse('articles:detail', kwargs={'article_id': self.id})
+
 
 class TagQuerySet(models.QuerySet):
 
@@ -37,7 +43,9 @@ class TagQuerySet(models.QuerySet):
     def update_from_list(self, old, new):
         old, new = set(old), set(new)
         to_remove, to_create = old - new, new - old - set(self.existed(new))
-        self.filter(name__in=to_remove, articles__count=0).delete()
+        self.filter(name__in=to_remove)\
+            .annotate(acount=models.Count('articles'))\
+            .filter(acount__lte=1).delete()
         self.bulk_create(Tag(name=name) for name in to_create)
         return self.filter(name__in=new)
 
@@ -47,6 +55,9 @@ class Tag(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     objects = TagQuerySet.as_manager()
+
+    def __str__(self):
+        return self.name
 
 
 class Comment(models.Model):

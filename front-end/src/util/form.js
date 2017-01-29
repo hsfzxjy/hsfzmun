@@ -9,7 +9,17 @@ const elHasNames = (el, keys) => keys.some(name => name == $(el).attr('name'))
 function getFormPayload ($form) {
     let payload = {}
     $form.serializeArray()
-        .forEach(({name, value}) => payload[name] = value)
+        .forEach(({name, value}) => {
+            let matched = /^(.*)\[\]$/.exec(name)
+            if (matched) name = matched[1]
+
+            if (payload[name] === undefined)
+                payload[name] = matched ? [value] : value
+            else if (!$.isArray(payload[name]))
+                payload[name] = [payload[name], value]
+            else
+                payload[name].push(value)
+        })
     return payload
 }
 

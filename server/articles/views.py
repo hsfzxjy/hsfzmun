@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from .models import Article, Comment
 from .serializers import ArticleSerializer, CommentSerializer
+from files.serializers import AttachmentSerializer
 
 
 class ArticleViewSet(ModelViewSet):
@@ -25,8 +26,26 @@ class CommentViewSet(ModelViewSet):
             if article_id else self.queryset
 
 
+class AttachmentViewSet(ReadOnlyModelViewSet):
+
+    serializer_class = AttachmentSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        article = get_object_or_404(Article, pk=self.kwargs['article_id'])
+
+        return article.attachments.all()
+
+
 def article_detail(request, article_id):
 
     article = get_object_or_404(Article, pk=article_id)
 
     return render(request, 'articles/detail.html', {'article': article})
+
+
+def article_edit(request, article_id):
+
+    article = get_object_or_404(Article, pk=article_id)
+
+    return render(request, 'articles/edit.html', {'article': article})
