@@ -5,6 +5,9 @@ const tmplCache = {}
 
 const tempTextarea = $('<textarea />')
 
+export const BEFORE = 'before'
+export const AFTER = 'after'
+
 export const getTmpl = id => {
     if (tmplCache[id]) return tmplCache[id]
 
@@ -19,6 +22,10 @@ export function render (tmplId, data, partials) {
     return Mustache.render(getTmpl(tmplId), data, partials)
 }
 
+export function renderBefore ($target, ...rest) {
+    return $(render(...rest)).prependTo($target)
+}
+
 export function renderTo ($target, ...rest) {
     return $(render(...rest)).appendTo($target)
 }
@@ -27,10 +34,18 @@ export function renderInto ($target, ...rest) {
     $($target).html(render(...rest))
 }
 
+export function renderSwitch (direction, ...rest) {
+    return (direction === BEFORE ? renderBefore : renderTo)(...rest)
+}
+
 export function renderEach (tmplId, data, partials) {
     return data
         .map(item => render(tmplId, item, partials))
         .join('')
+}
+
+export function renderEachBefore ($target, ...rest) {
+    return $(renderEach(...rest)).prependTo($target)
 }
 
 export function renderEachTo ($target, ...rest) {
@@ -39,4 +54,8 @@ export function renderEachTo ($target, ...rest) {
 
 export function renderEachInto ($target, ...rest) {
     $($target).html(renderEach(...rest))
+}
+
+export function renderEachSwitch (direction, ...rest) {
+    return (direction === BEFORE ? renderEachBefore : renderEachTo)(...rest)
 }

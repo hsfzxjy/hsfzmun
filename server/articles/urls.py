@@ -1,15 +1,16 @@
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
-from rest_framework.routers import DefaultRouter
+from api.routers import router
 
 from .views import ArticleViewSet, article_detail, CommentViewSet
 
-router = DefaultRouter()
-router.register(r'^api/articles', ArticleViewSet)
-router.register(r'^api/comments', CommentViewSet)
 
-urlpatterns = router.urls + [
+router.register(r'^articles', ArticleViewSet)
+router.register(r'^comments', CommentViewSet)
+router.register(r'^articles/(?P<article_id>\d+)/comments', CommentViewSet)
+
+urlpatterns = [
     url(r'^new/$', TemplateView.as_view(
         template_name='articles/edit.html'), name='new'),
     url(r'^list/', TemplateView.as_view(

@@ -1,5 +1,7 @@
 import $ from 'jquery'
 
+import API from 'util/rest'
+
 // Helper Functions
 
 const elHasNames = (el, keys) => keys.some(name => name == $(el).attr('name'))
@@ -43,9 +45,9 @@ function clearFormValues ($form) {
 // `Form` Class Definition
 
 function Form ($el, api, action) {
-    this._$el = $($el),
+    this._$el = $($el)
     this._$submitButtons = $('[type=submit]', this._$el)
-    this._api = api
+    this._api = new API(api)
     this._action = action
     this._init()
 }

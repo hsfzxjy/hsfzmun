@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/', include('users.urls', namespace="users")),
     url(r'^articles/', include('articles.urls', namespace='articles')),
+    url(r'^api/', include('api.urls', namespace="api")),
     url(r'^test/$', TemplateView.as_view(template_name='bases/base-with-header.html'))
 ]

@@ -15,7 +15,14 @@ class ArticleViewSet(ModelViewSet):
 class CommentViewSet(ModelViewSet):
 
     serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.order_by('-posted')
+
+    def get_queryset(self):
+        article_id = self.kwargs.get('article_id', '')
+        print(article_id)
+
+        return self.queryset.filter(article=article_id) \
+            if article_id else self.queryset
 
 
 def article_detail(request, article_id):

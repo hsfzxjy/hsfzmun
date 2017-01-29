@@ -1,6 +1,23 @@
 {% extends "bases/base-with-header.html" %}
 
 {% block content %}
+
+{% verbatim %}
+<template id="tmpl-comment-item">
+    <li class="media my-4">
+        <div class="media-body">
+            {{content}}
+            <p>
+                <small class="mt-1 mb-0">
+                    {{author}}&middot;
+                    <time class="timeago" datetime="{{posted}}"></time>
+                </small>
+            </p>
+        </div>
+    </li>
+</template>
+{% endverbatim %}
+
 <div class="container-fluid">
     <article class="col-md-8 offset-md-2">
         <section>
@@ -28,7 +45,8 @@
             </form>
         </section>
         <section>
-
+            <ul class="list-unstyled" id="comment-box"></ul>
+            <p id="load-more-comments">Load more</p>
         </section>
     </article>
 </div>
@@ -37,6 +55,9 @@
 
 {% block scripts %}
 <script>
+    define('page-config', {
+        articleId: {{article.id}}
+    })
     require(['articles/detail'])
 </script>
 {% endblock %}
