@@ -1,3 +1,3 @@
-from .routers import router
+from . import routers
 
-urlpatterns = router.urls
+urlpatterns = routers.router.urls + routers.urlpatterns

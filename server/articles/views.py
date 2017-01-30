@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from .models import Article, Comment
-from .serializers import ArticleSerializer, CommentSerializer
+from .models import Article, Comment, Tag
+from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
 from files.serializers import AttachmentSerializer
 
 
@@ -11,6 +11,13 @@ class ArticleViewSet(ModelViewSet):
 
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+
+
+class TagViewSet(ModelViewSet):
+
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+    pagination_class = None
 
 
 class CommentViewSet(ModelViewSet):

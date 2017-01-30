@@ -1,6 +1,7 @@
 from django.db import models
 
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import BaseUserManager, \
+    AbstractBaseUser, PermissionsMixin, Permission
 
 
 class UserManager(BaseUserManager):
@@ -25,6 +26,13 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+
+    def get_verifiers(self):
+        Q = models.Q
+        perm = Permission.objects.get(codename='can_verify')
+        return User.objects.filter(
+            Q(groups__permissions=perm) |
+            Q(user_permissions=perm) | Q(is_superuser=True)).distinct()
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -58,3 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return True
+
+    @property
+    def is_verifier(self):
+        return self.has_perm('articles.can_verify')

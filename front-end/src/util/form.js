@@ -54,11 +54,12 @@ function clearFormValues ($form) {
 
 // `Form` Class Definition
 
-function Form ($el, api, action) {
+function Form ($el, api, action, clearForm = true) {
     this._$el = $($el)
     this._$submitButtons = $('[type=submit]', this._$el)
     this._api = new API(api)
     this._action = action
+    this._clearForm = clearForm
     this._init()
 }
 
@@ -98,7 +99,9 @@ Form.prototype = {
         response
             .always(() => this._toggleButtons(false))
             .paramerror(data => setErrors(this._$el, data))
-            .ok(() => clearFormValues(this._$el))
+            .ok(() => {
+                if (this._clearForm) clearFormValues(this._$el)
+            })
     }
 }
 

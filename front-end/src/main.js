@@ -13,7 +13,8 @@ requirejs.config({
         mustache: 'mustache/mustache.min',
         _timeago: 'timeago/jquery.timeago',
         'file-upload': 'file-upload/js/jquery.fileupload',
-        'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget'
+        'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
+        'tagator': 'tagator/fm.tagator.jquery'
     },
     shim: {
         jquery: {
@@ -35,6 +36,9 @@ requirejs.config({
             deps: ['_trumbowyg']
         },
         _timeago: {
+            deps: ['jquery']
+        },
+        tagator: {
             deps: ['jquery']
         }
     }

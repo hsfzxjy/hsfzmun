@@ -1,13 +1,15 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout
 
-from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, profile, my_profile
+from api.routers import router, add_urlpattern
+from .views import UserViewSet, profile, my_profile, user_nicknames
 
-router = DefaultRouter()
 router.register(r'a', UserViewSet)
 
-urlpatterns = router.urls + [
+add_urlpattern(
+    url(r'^user_nicknames/$', user_nicknames, name='user-nicknames'))
+
+urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
     url(r'^profile/$', my_profile, name='my-profile'),

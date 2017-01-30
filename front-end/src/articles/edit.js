@@ -1,6 +1,8 @@
 import 'trumbowyg'
 import Form from 'util/form'
 import { articleId } from 'page-config'
+import 'tagator'
+import API from 'util/rest'
 
 let $content = $('#content').trumbowyg({
     btnsDef: {
@@ -39,11 +41,13 @@ const action = articleId ? 'patch' : 'post'
 
 let editForm = new Form('#edit-form', api, action)
     .payload(data =>
-        data.tags = data.tags.split(/\s+/).filter(name => name)
+        data.tags = !data.tags ? [] : data.tags.split(',')
     ).payload(data =>
         data.content = getContent($content)
-    ).submitted(response =>
-        response.ok(({ url }) => location.href = url)
+    ).payload(data =>
+        data.mentions = data.mentions.split(',')
+    ).submitted(response =>0
+        //response.ok(({ url }) => location.href = url)
     )
 
 // File Uploads
@@ -59,3 +63,24 @@ new Upload({
     $noFiles: '.no-files',
     initialAPI: articleId ? `/api/articles/${articleId}/attachments/`: undefined
 })
+
+// Tagify
+
+new API('/api/tags/').get()
+    .ok(tags => {
+        $('#tags').tagator({
+            autocomplete: tags.map(item => item.name),
+            showAllOptionsOnFocus: true
+        })
+    })
+
+if (!articleId) {
+    new API('/api/user_nicknames/').get()
+        .ok(nicknames => {
+            $('#mentions').tagator({
+                autocomplete: nicknames,
+                showAllOptionsOnFocus: true,
+                allowAutocompleteOnly: true
+            })
+        })
+}

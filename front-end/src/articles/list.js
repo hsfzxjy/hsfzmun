@@ -113,10 +113,9 @@ export const articleListManager = {
             this._showTab($(e.currentTarget).data('name'))
         })
 
-        $topNav.find('a[data-name]').on('show.bs.tab', ({ target }) => {
+        $('a[data-name]').on('click', ({ target }) => {
             let name = $(target).data('name')
-            if (!this._first) router.go(this._listViews[name].currentUrl(), '')
-            this._first = false
+            router.go(this._listViews[name].currentUrl(), '')
         })
     },
 
@@ -124,7 +123,6 @@ export const articleListManager = {
         router.route((url, params, first) => {
             let name = (/\/list\/(.+)\/$/.exec(url) || '')[1] || this._defaultName
             this.activeName = name
-            this._first = first
             if (first) this._showTab(name)
         })
     },
@@ -164,7 +162,7 @@ ArticleListView.prototype = {
 
     _registerRouteEvents () {
         router
-            .route((url, params, first) => {
+            .route((url, params) => {
                 if (articleListManager.activeName !== this._name) return
                 if (this._first) this._load(this._api.param(params))
             })
