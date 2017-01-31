@@ -21,7 +21,7 @@ class Article(StatusModel):
     content = models.TextField()
 
     status = StatusField(default='pending')
-    published = MonitorField(monitor='status', when=['published'])
+    published = MonitorField(monitor='status', when=['verified'])
     edited = MonitorField(monitor='content')
     views = models.PositiveIntegerField(default=0)
 

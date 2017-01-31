@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 
 from .models import Article, Comment, Tag
 from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
@@ -11,6 +13,18 @@ class ArticleViewSet(ModelViewSet):
 
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+
+    @detail_route(methods=['POST'])
+    def accept(self, *args, **kwargs):
+        self.get_object().accept()
+
+        return Response('OK')
+
+    @detail_route(methods=['POST'])
+    def reject(self, *args, **kwargs):
+        self.get_object().reject()
+
+        return Response('OK')
 
 
 class TagViewSet(ModelViewSet):

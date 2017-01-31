@@ -18,3 +18,13 @@ new Form('#comment-form', commentAPI, 'post')
     .submitted(response => {
         response.ok(commentList.prepend.bind(commentList))
     })
+
+// Verification
+
+$('#accept, #reject').on('click', function () {
+    let action = $(this).attr('id')
+    new API(`/api/articles/${pageConfig.articleId}/${action}/`)
+        .post().ok(() => {
+            $(this).parent().remove()
+        })
+})

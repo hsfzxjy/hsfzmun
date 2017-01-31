@@ -32,6 +32,9 @@ class NoticeQuerySet(models.QuerySet):
 
         return results
 
+    def categories(self):
+        return self.values_list('category', flat=True).distinct()
+
 
 class Notice(models.Model):
 
@@ -51,3 +54,7 @@ class Notice(models.Model):
     category = models.CharField(max_length=255)
 
     objects = NoticeQuerySet.as_manager()
+
+    def mark_as_read(self):
+        self.has_read = True
+        self.save()

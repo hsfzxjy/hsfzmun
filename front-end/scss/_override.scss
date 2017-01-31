@@ -1,3 +1,8 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 button {
     &:focus, &:active {
         outline: none;
@@ -6,4 +11,13 @@ button {
 
 .tagator_element {
     width: 100%!important;
+}
+
+.nav.nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

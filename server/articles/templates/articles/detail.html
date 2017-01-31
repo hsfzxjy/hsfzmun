@@ -22,15 +22,35 @@
     <article class="col-md-8 offset-md-2">
         <section>
             <h1 class="text-center">{{article.title}}</h1>
-            <small class="text-muted">
-                {{article.author.nickname}} &middot;
-                <time class="timeago" datetime="{{article.published|date:'c'}}"></time>
-            </small>
         </section>
-        <section>
+        <section class="my-3">
+            <span class="text-muted">
+                {{article.author.nickname}} &middot;
+                Publish at <time class="timeago" datetime="{{article.published|date:'c'}}"></time> &middot;
+                Edit at <time class="timeago" datetime="{{article.published|date:'c'}}"></time>
+            </span>
+        </section>
+        <section class="my-3">
+            {% if perms.articles.can_verify %}
+            <div class="btn-group btn-group-sm">
+                {% if article.status != 'rejected' %}
+                <button class="btn btn-secondary btn-danger" id="reject">Reject</button>
+                {% endif %}
+                {% if article.status != 'verified' %}
+                <button class="btn btn-secondary btn-success" id="accept">Accept</button>
+                {% endif %}
+            </div>
+            {% endif %}
+        </section>
+        <section class="my-2">
             {{article.content|safe}}
         </section>
-        <section>
+        <section class="my-2">
+            {% for tag in article.tags.all %}
+            <span class="badge badge-default">{{tag.name}}</span>
+            {% endfor %}
+        </section>
+        <section class="my-5">
             <h6>Comment</h6>
             <form class="clearfix" id="comment-form">
                 <input type="hidden" name="author" value="{{user.id}}">

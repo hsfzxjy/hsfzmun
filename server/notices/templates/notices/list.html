@@ -1,0 +1,50 @@
+{% extends "bases/base-with-header.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-8 offset-md-2">
+        <ul class="nav nav-tabs">
+            {% for item in categories %}
+            <li class="nav-item">
+                <a href="{{item.url}}"
+                    class="nav-link {{item.class}}">
+                    {{item.name}}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="list-group">
+            {% for notice in results %}
+            <a href="{{notice.url}}"
+                data-id="{{notice.id}}"
+                class="list-group-item list-group-item-action flex-column align-items-start {% if not notice.has_read %}list-group-item-warning{% endif %}">
+                <p class="mb-1">
+                    {{notice.message}}
+                </p>
+                <small class="text-muted">
+                    <time class="timeago" datetime="{{notice.created}}"></time>
+                </small>
+            </a>
+            {% endfor %}
+        </div>
+        <ul class="pagination">
+            {% if previous %}
+            <li class="page-item">
+                <a href="{{previous}}" class="page-link">Previous</a>
+            </li>
+            {% endif %}
+            {% if next %}
+            <li class="page-item">
+                <a href="{{next}}" class="page-link">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    require(['notices/list'])
+</script>
+{% endblock %}
