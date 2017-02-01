@@ -11,6 +11,7 @@ export function List ({ $box, $loadMore, tmpl, api, direction = AFTER }) {
     this._api = api
     this._tmpl = tmpl
     this._direction = direction
+    this._eventBus = $({})
 
     this._init()
 }
@@ -29,9 +30,15 @@ List.prototype = {
 
     _load (api) {
         new API(api).get().ok(({ next, results }) => {
+            this._eventBus.trigger('results', [results])
             this._buildItems(results, this._direction)
             this._setNext(next)
         })
+    },
+
+    results (cb) {
+        this._eventBus.on('results', (e, ...rest) => cb(...rest))
+        return this
     },
 
     _setNext (next) {

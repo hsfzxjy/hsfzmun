@@ -4,7 +4,7 @@ from .models import Article, Tag, Comment
 from files.models import Attachment
 from users.models import User
 from files.serializers import AttachmentSerializer
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, normalize_user
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -24,6 +24,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
 
+    author = UserSerializer(validators=[])
     tags = TagSerializer(many=True)
     attachments = AttachmentSerializer(
         many=True, validators=[], required=False)
@@ -34,6 +35,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         tag_list = validated_data.pop('tags', [])
         attachments = validated_data.pop('attachments', [])
         mentions = validated_data.pop('mentions', [])
+        normalize_user(validated_data, 'author')
 
         article = Article.objects.create(**validated_data)
 
@@ -49,6 +51,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         tag_list = validated_data.pop('tags', [])
         attachments = validated_data.pop('attachments', [])
         old_tags = instance.tags.values_list('name', flat=True)
+        normalize_user(validated_data, 'author')
 
         article = super(ArticleSerializer, self).update(
             instance, validated_data)
@@ -67,6 +70,14 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
+    author = UserSerializer(validators=[])
+    reply_to = UserSerializer(validators=[], required=False)
+
     class Meta:
         model = Comment
         fields = '__all__'
+
+    def create(self, validated_data):
+        normalize_user(validated_data, 'author')
+        normalize_user(validated_data, 'reply_to')
+        return super(CommentSerializer, self).create(validated_data)
