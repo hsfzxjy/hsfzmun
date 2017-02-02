@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-02 21:59+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: articles/models.py:48
+#, python-brace-format
+msgid "Administrator rejects your article {target.title}."
+msgstr "管理员驳回了你的文章《{target.title}》"
+
+#: articles/models.py:60
+#, python-brace-format
+msgid "Administrator verified your article {target.title}."
+msgstr "管理员认证了你的文章《{target.title}》"
+
+#: articles/models.py:129
+msgid ""
+"{target.author.nickname} posts an article {target.title} and requires "
+"verification."
+msgstr "{target.author.nickname} 发表了文章 《{target.title}》 并请求你的认证"
+
+#: articles/models.py:141
+msgid "{target.author.nickname} metions you in article {target.title}."
+msgstr "{target.author.nickname} 在文章《{target.title}》中提到了你"
+
+#: articles/models.py:153
+msgid "{target.author.nickname} comments your article {target.article.title}."
+msgstr "{target.author.nickname} 评论了你的文章《{target.article.title}》"
+
+#: articles/models.py:167
+msgid ""
+"{target.author.nickname} replies your comment in article {target.article."
+"title}."
+msgstr "{target.author.nickname} 回复了你在《{target.article.title}》中的评论"
+
+#: articles/models.py:177
+msgid "mentions"
+msgstr "@我的"
+
+#: articles/models.py:178
+msgid "verification"
+msgstr "认证"
+
+#: articles/models.py:179
+msgid "comments"
+msgstr "评论"
+
+#: articles/models.py:180
+msgid "all"
+msgstr "全部"
+
+#: articles/templates/articles/detail.html:35
+msgid "Publish at"
+msgstr "发布于"
+
+#: articles/templates/articles/detail.html:36
+msgid "Edit at"
+msgstr "编辑于"
+
+#: articles/templates/articles/detail.html:43
+msgid "Reject"
+msgstr "驳回"
+
+#: articles/templates/articles/detail.html:46
+msgid "Accept"
+msgstr "接受"
+
+#: articles/templates/articles/detail.html:60
+msgid "Comment"
+msgstr "评论"
+
+#: articles/templates/articles/detail.html:68
+#: articles/templates/articles/edit.html:24
+msgid "Submit"
+msgstr "提交"
+
+#: articles/templates/articles/detail.html:69
+msgid "Cancel Reply"
+msgstr "取消回复"
+
+#: articles/templates/articles/detail.html:76
+msgid "Load More"
+msgstr "加载更多"
+
+#: articles/templates/articles/edit.html:8
+msgid "Title"
+msgstr "标题"
+
+#: articles/templates/articles/edit.html:12
+msgid "Tags"
+msgstr "标签"
+
+#: articles/templates/articles/edit.html:17
+msgid "Mentions"
+msgstr "@用户"
+
+#: articles/templates/articles/edit.html:27
+msgid "Attachments"
+msgstr "附件"
+
+#: articles/templates/articles/edit.html:35
+msgid "No Files"
+msgstr "暂无文件"
+
+#: articles/templates/articles/list.html:65
+#: notices/templates/notices/list.html:33
+msgid "Previous"
+msgstr "上一页"
+
+#: articles/templates/articles/list.html:70
+#: notices/templates/notices/list.html:38
+msgid "Next"
+msgstr "下一页"
+
+#: config/settings.py:150
+msgid "Chinese"
+msgstr "中文"
+
+#: config/settings.py:151
+msgid "English"
+msgstr "英文"
+
+#: templates/components/header.html:11
+msgid "Articles"
+msgstr "文章"
+
+#: templates/components/header.html:14
+msgid "Languages"
+msgstr "语言"
+
+#: templates/components/header.html:27
+msgid "Notifications"
+msgstr "通知"
+
+#: templates/components/header.html:34
+msgid "Log out"
+msgstr "注销"
+
+#: templates/components/header.html:38
+msgid "Log in"
+msgstr "登录"

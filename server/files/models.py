@@ -13,6 +13,9 @@ class Attachment(models.Model):
     file = models.FileField(upload_to=upload_to)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-created',)
+
     @property
     def name(self):
         return os.path.basename(self.file.name)

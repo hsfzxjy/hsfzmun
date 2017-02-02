@@ -72,9 +72,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
             'builtins': [
                 'ui_extensions.templatetags.filters',
+                'django.templatetags.i18n',
             ]
         },
     },
@@ -147,6 +149,10 @@ LANGUAGE_CODE = 'zh-Hans'
 LANGUAGES = (
     ('zh-hans', _('Chinese')),
     ('en-us', _('English'))
+)
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 TIME_ZONE = 'Asia/Shanghai'

@@ -13,11 +13,15 @@ button {
     width: 100%!important;
 }
 
-.nav.nav-tabs {
+.h-scroll {
     overflow-x: auto;
     overflow-y: hidden;
 
     &::-webkit-scrollbar {
         display: none;
     }
+}
+
+textarea {
+    resize: none;
 }

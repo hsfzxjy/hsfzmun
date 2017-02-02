@@ -4,6 +4,8 @@ import * as tmpl from 'util/tmpl'
 import API from 'util/rest'
 import * as timeago from 'timeago'
 
+Mustache.tags = ['[[', ']]']
+
 // Helper Functions
 
 function getParams (url = window.location.href) {
@@ -45,7 +47,6 @@ Router.prototype = {
     },
 
     go (url, title = '', trigger = true) {
-        console.log('go', url)
         history.pushState(null, title, url)
         if (trigger) this._fireRouteEvent()
     },
@@ -116,6 +117,12 @@ export const articleListManager = {
         $('a[data-name]').on('click', ({ target }) => {
             let name = $(target).data('name')
             router.go(this._listViews[name].currentUrl(), '')
+        })
+
+        $('a[data-name]', $topNav).click(({ target }) => {
+            let name = $(target).data('name')
+            $(`a`, $sideNav).removeClass('active')
+            let $sideItem = $(`a[data-name=${name}]`, $sideNav).addClass('active')
         })
     },
 

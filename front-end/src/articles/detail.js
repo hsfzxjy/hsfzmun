@@ -32,7 +32,7 @@ let commentList = new list.List({
     tmpl: 'comment-item',
     $loadMore: '#load-more-comments'
 }).results(results => results.forEach(item => {
-    item.can_reply = user.authenticated && item.author.id == user.userId
+    item.can_reply = user.authenticated && item.author.id !== user.userId
 }))
 
 $commentBox.on('click', '.btn-reply', function () {

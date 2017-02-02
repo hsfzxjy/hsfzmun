@@ -2,6 +2,11 @@ define('__tether', ['tether'], function (Tether) {
     window.Tether = Tether
 })
 
+var TIMEAGO_I18N_MAP = {
+    'zh-hans': 'zh-CN',
+    'en-us': 'en'
+}
+
 requirejs.config({
     baseUrl: '/static',
     paths: {
@@ -12,6 +17,7 @@ requirejs.config({
         _trumbowygUpload: 'trumbowyg/plugins/upload/trumbowyg.upload',
         mustache: 'mustache/mustache.min',
         _timeago: 'timeago/jquery.timeago',
+        _timeagoLocale: 'timeago/locales/jquery.timeago.' + TIMEAGO_I18N_MAP[i18nInfo.langCode],
         'file-upload': 'file-upload/js/jquery.fileupload',
         'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
         'tagator': 'tagator/fm.tagator.jquery'
@@ -38,6 +44,9 @@ requirejs.config({
         _timeago: {
             deps: ['jquery']
         },
+        _timeagoLocale: {
+            deps: ['_timeago']
+        },
         tagator: {
             deps: ['jquery']
         }
@@ -52,7 +61,7 @@ require(['bootstrap'], function () {
     })
 })
 
-define('timeago', ['exports', '_timeago'], function (exports) {
+define('timeago', ['exports', '_timeagoLocale'], function (exports) {
     function bind () {
         $('time.timeago').timeago()
     }

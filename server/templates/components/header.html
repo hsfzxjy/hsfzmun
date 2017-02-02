@@ -1,13 +1,43 @@
+{% get_available_languages as LANGUAGES %}
+
 <nav class="navbar navbar-toggleable-md bg-primary navbar-inverse">
     <button class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#top-nav-bar">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a href="#" class="navbar-brand">NavBar</a>
+    <a href="#" class="navbar-brand">HFMUN</a>
     <div class="collapse navbar-collapse" id="top-nav-bar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a href="/articles/" class="nav-link">Articles</a>
+                <a href="{% url 'articles:list' %}" class="nav-link">{% trans 'Articles' %}</a>
             </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{% trans 'Languages' %}</a>
+                <div class="dropdown-menu">
+                    {% for language in LANGUAGES %}
+                    <a href="{% url 'language:set' lang_code=language.0 %}" class="dropdown-item">{{language.1}}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="{% url 'notices:list' %}" class="nav-link">
+                    <i class="fa fa-bell-o"></i>
+                    <span class="hidden-md-up">&nbsp;{% trans 'Notifications' %}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'users:my-profile' %}" class="nav-link">{{user.nickname}}</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'users:logout' %}" class="nav-link">{% trans 'Log out' %}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a href="{% url 'users:login' %}" class="nav-link">{% trans 'Log in' %}</a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

@@ -4,10 +4,27 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+from django.utils import timezone
+
+
+def make_keyword(args):
+    args = map(str, (arg.id if isinstance(
+        arg, models.Model) else arg for arg in args))
+    return '_'.join(args)
+
 
 class NoticeQuerySet(models.QuerySet):
 
     def send(self, receiver, tmpl, *args, **kwargs):
+        keyword = make_keyword(kwargs.pop('keyword', []))
+
+        if keyword:
+            affected = self.filter(keyword=keyword, receiver=receiver)\
+                .update(has_read=False, created=timezone.now())
+
+            if affected:
+                return
+
         target = kwargs.get('target', None)
         url = kwargs.get('url', None)
         category = kwargs.get('category', '')
@@ -16,7 +33,7 @@ class NoticeQuerySet(models.QuerySet):
             url = target.get_absolute_url()
 
         notice = Notice(receiver=receiver, target=target,
-                        url=url, category=category)
+                        url=url, category=category, keyword=keyword)
 
         kwargs.update({'receiver': receiver, 'target': target})
         notice.message = tmpl.format(*args, **kwargs)
@@ -33,7 +50,7 @@ class NoticeQuerySet(models.QuerySet):
         return results
 
     def categories(self):
-        return self.values_list('category', flat=True).distinct()
+        return self.order_by().values_list('category', flat=True).distinct()
 
 
 class Notice(models.Model):
@@ -49,6 +66,7 @@ class Notice(models.Model):
     has_read = models.BooleanField(default=False)
 
     message = models.TextField()
+    keyword = models.CharField(max_length=255)
 
     url = models.URLField()
     category = models.CharField(max_length=255)
@@ -58,3 +76,6 @@ class Notice(models.Model):
     def mark_as_read(self):
         self.has_read = True
         self.save()
+
+    class Meta:
+        ordering = ('has_read', '-created')

@@ -4,13 +4,16 @@
     <head>
         <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
         <script type="text/javascript" src="/static/requirejs/require.js"></script>
-        <script type="text/javascript" src="/static/main.js"></script>
         <script>
             define('user-info', {
                 authenticated: {{user.is_authenticated|yesno:'true,false'}},
                 userId: parseInt('{{user.id}}')
             })
+            var i18nInfo = {
+                langCode: '{{LANGUAGE_CODE}}'
+            }
         </script>
+        <script type="text/javascript" src="/static/main.js"></script>
         {% block after_scripts %} {% endblock %}
     </head>
     <body>

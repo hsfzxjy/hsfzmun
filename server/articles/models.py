@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 
 from model_utils.fields import StatusField, MonitorField
 from model_utils.models import StatusModel
@@ -25,7 +26,6 @@ class Article(StatusModel, AbstractLanguage):
     status = StatusField(default='pending')
     published = MonitorField(monitor='status', when=['verified'])
     edited = MonitorField(monitor='content')
-    views = models.PositiveIntegerField(default=0)
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
 
@@ -45,9 +45,10 @@ class Article(StatusModel, AbstractLanguage):
 
         Notice.objects.send(
             self.author,
-            'Administrator rejects your article {target.title}.',
+            _('Administrator rejects your article {target.title}.'),
             target=self,
-            category='verification'
+            category='verification',
+            keyword=('article', 'reject', self.id)
         )
 
     def accept(self):
@@ -56,9 +57,10 @@ class Article(StatusModel, AbstractLanguage):
 
         Notice.objects.send(
             self.author,
-            'Administrator verified your article {target.title}.',
+            _('Administrator verified your article {target.title}.'),
             target=self,
-            category='verification'
+            category='verification',
+            keyword=('article', 'verify', self.id)
         )
 
     def get_absolute_url(self):
@@ -68,6 +70,7 @@ class Article(StatusModel, AbstractLanguage):
         permissions = [
             ('can_verify', 'Can verify'),
         ]
+        ordering = ('-published', '-edited')
 
 
 class TagQuerySet(models.QuerySet):
@@ -110,6 +113,9 @@ class Comment(models.Model):
     posted = models.DateTimeField(auto_now_add=True)
     reply_to = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
+    class Meta:
+        ordering = ('-posted',)
+
     def get_absolute_url(self):
         return reverse('articles:detail',
                        kwargs={'article_id': self.article.id})
@@ -120,8 +126,8 @@ def post_verify_notice(sender, instance, created, **kwargs):
     if created and not instance.author.is_verifier:
         Notice.objects.send_bulk(
             User.objects.get_verifiers(),
-            '{target.author.nickname} '
-            'posts an article {target.title} and requires verification.',
+            _('{target.author.nickname} '
+              'posts an article {target.title} and requires verification.'),
             target=instance,
             category='verification'
         )
@@ -132,8 +138,8 @@ def post_mention_notice(sender, action, pk_set, instance, **kwargs):
     if action == 'post_add':
         Notice.objects.send_bulk(
             instance.mentions.all(),
-            '{target.author.nickname} '
-            'metions you in article {target.title}.',
+            _('{target.author.nickname} '
+              'metions you in article {target.title}.'),
             target=instance,
             category='mentions'
         )
@@ -141,22 +147,34 @@ def post_mention_notice(sender, action, pk_set, instance, **kwargs):
 
 @receiver(post_save, sender=Comment)
 def post_comment_notice(sender, instance, created, **kwargs):
-    if created:
+    if created and instance.author.id != instance.article.author.id:
         Notice.objects.send(
             instance.article.author,
-            '{target.author} comments your article {target.article.title}.',
+            _('{target.author.nickname} comments your '
+                'article {target.article.title}.'),
             target=instance,
-            category='comments'
+            category='comments',
+            keyword=('comment', 'create', instance.article, instance.author)
         )
 
 
 @receiver(post_save, sender=Comment)
 def post_reply_notice(sender, instance, created, **kwargs):
-    if created and instance.reply_to is not None:
+    if created and instance.reply_to is not None \
+            and instance.reply_to.id != instance.author.id:
         Notice.objects.send(
             instance.reply_to,
-            '{target.author} replies your comment in article '
-            '{target.article.title}.',
+            _('{target.author.nickname} replies your comment in article '
+              '{target.article.title}.'),
             target=instance,
-            category='comments'
+            category='comments',
+            keyword=('comment', 'reply', instance.author,
+                     instance.reply_to, instance.article)
         )
+
+
+def dummy():
+    _('mentions')
+    _('verification')
+    _('comments')
+    _('all')

@@ -3,12 +3,12 @@
 {% block content %}
 <div class="container">
     <div class="col-md-8 offset-md-2">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs h-scroll">
             {% for item in categories %}
             <li class="nav-item">
                 <a href="{{item.url}}"
                     class="nav-link {{item.class}}">
-                    {{item.name}}
+                    {% trans item.name %}
                 </a>
             </li>
             {% endfor %}
@@ -30,12 +30,12 @@
         <ul class="pagination">
             {% if previous %}
             <li class="page-item">
-                <a href="{{previous}}" class="page-link">Previous</a>
+                <a href="{{previous}}" class="page-link">{% trans 'Previous' %}</a>
             </li>
             {% endif %}
             {% if next %}
             <li class="page-item">
-                <a href="{{next}}" class="page-link">Next</a>
+                <a href="{{next}}" class="page-link">{% trans 'Next' %}</a>
             </li>
             {% endif %}
         </ul>

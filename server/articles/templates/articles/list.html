@@ -2,79 +2,77 @@
 
 {% block content %}
 
-{% verbatim %}
 <template id="tmpl-article-top-nav-single">
     <li class="nav-item">
-        <a href="#{{id}}" data-toggle="tab" class="nav-link" data-name="{{name}}">
-            {{title}}
+        <a href="#[[id]]" data-toggle="tab" class="nav-link" data-name="[[name]]">
+            [[title]]
         </a>
     </li>
 </template>
 
 <template id="tmpl-article-top-nav-stacked">
     <li class="nav-item dropdown">
-        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">{{title}}</a>
+        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">[[title]]</a>
         <div class="dropdown-menu">
-            {{#items}}
-            <a href="#{{id}}" class="dropdown-item" data-name="{{name}}" data-toggle="tab">{{title}}</a>
-            {{/items}}
+            [[#items]]
+            <a href="#[[id]]" class="dropdown-item" data-name="[[name]]" data-toggle="tab">[[title]]</a>
+            [[/items]]
         </div>
     </li>
 </template>
 
 <template id="tmpl-article-side-nav-single">
     <li class="nav-item">
-        <a href="#{{id}}" class="nav-link" data-name="{{name}}">{{title}}</a>
+        <a href="#[[id]]" class="nav-link" data-name="[[name]]">[[title]]</a>
     </li>
 </template>
 
 <template id="tmpl-article-side-nav-stacked">
     <li class="nav-item">
-        <a href="#" data-toggle="tab" class="nav-link disabled">{{title}}</a>
+        <a href="#" data-toggle="tab" class="nav-link disabled">[[title]]</a>
     </li>
-    {{#items}}
+    [[#items]]
     <li class="nav-item">
-        <a href="#{{id}}" class="nav-link" data-name="{{name}}">=> {{title}}</a>
+        <a href="#[[id]]" class="nav-link" data-name="[[name]]">=> [[title]]</a>
     </li>
-    {{/items}}
+    [[/items]]
 </template>
 
 <template id="tmpl-tab-pane">
-    <div class="tab-pane" id="{{id}}" data-name="{{name}}"></div>
+    <div class="tab-pane" id="[[id]]" data-name="[[name]]"></div>
 </template>
 
 <template id="tmpl-article">
     <li class="media my-4">
         <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
         <div class="media-body">
-            <h5 class="mt-0">{{title}}</h5>
-            <time class="timeago" datetime="{{published}}"></time>
+            <h5 class="mt-0">[[title]]</h5>
+            <time class="timeago" datetime="[[published]]"></time>
         </div>
     </li>
 </template>
 
 <template id="tmpl-article-list-view">
     <ul class="list-unstyled">
-    {{#results}}
-        {{>article}}
-    {{/results}}
+    [[#results]]
+        [[>article]]
+    [[/results]]
     </ul>
     <nav>
         <ul class="pagination">
-            {{#previous}}
+            [[#previous]]
             <li class="page-item">
-                <a href="#" class="page-link" data-api="{{previous}}">Previous</a>
+                <a href="#" class="page-link" data-api="[[previous]]">{% trans 'Previous' %}</a>
             </li>
-            {{/previous}}
-            {{#next}}
+            [[/previous]]
+            [[#next]]
             <li class="page-item">
-                <a href="#" class="page-link" data-api="{{next}}">Next</a>
+                <a href="#" class="page-link" data-api="[[next]]">{% trans 'Next' %}</a>
             </li>
-            {{/next}}
+            [[/next]]
         </ul>
     </nav>
 </template>
-{% endverbatim %}
 
 <div class="container">
     <ul class="nav nav-tabs hidden-md-up" id="article-top-nav"></ul>
