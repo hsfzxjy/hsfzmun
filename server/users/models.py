@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, \
     AbstractBaseUser, PermissionsMixin, Permission
 
+from language.models import lang_manager, AbstractLanguage
+
 
 class UserManager(BaseUserManager):
 
@@ -35,7 +37,7 @@ class UserManager(BaseUserManager):
             Q(user_permissions=perm) | Q(is_superuser=True)).distinct()
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     username = models.CharField(
         verbose_name='user name',
         max_length=255,
@@ -52,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
 
-    objects = UserManager()
+    objects = lang_manager(UserManager)()
 
     def get_full_name(self):
         return self.nickname

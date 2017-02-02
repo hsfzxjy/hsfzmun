@@ -31,6 +31,7 @@ class TagViewSet(ModelViewSet):
 
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
+    permission_classes = ()
     pagination_class = None
 
 
@@ -41,7 +42,6 @@ class CommentViewSet(ModelViewSet):
 
     def get_queryset(self):
         article_id = self.kwargs.get('article_id', '')
-        print(article_id)
 
         return self.queryset.filter(article=article_id) \
             if article_id else self.queryset
@@ -66,7 +66,6 @@ def article_detail(request, article_id):
 
 
 def article_edit(request, article_id):
-
     article = get_object_or_404(Article, pk=article_id)
 
     return render(request, 'articles/edit.html', {'article': article})

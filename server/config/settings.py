@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
+from django.utils.translation import ugettext_lazy as _
 
 import os
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rules.apps.AutodiscoverRulesConfig',
+    'language',
     'users',
     'articles',
     'notices',
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -139,7 +142,12 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
+
+LANGUAGES = (
+    ('zh-hans', _('Chinese')),
+    ('en-us', _('English'))
+)
 
 TIME_ZONE = 'Asia/Shanghai'
 

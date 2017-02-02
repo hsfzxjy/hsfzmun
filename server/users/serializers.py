@@ -1,8 +1,10 @@
 from .models import User
 from rest_framework import serializers
 
+from language.serializers import AbstractLanguageSerializer
 
-class UserSerializer(serializers.ModelSerializer):
+
+class UserSerializer(AbstractLanguageSerializer):
 
     class Meta:
         model = User

@@ -5,6 +5,7 @@ from files.models import Attachment
 from users.models import User
 from files.serializers import AttachmentSerializer
 from users.serializers import UserSerializer, normalize_user
+from language.serializers import AbstractLanguageSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -22,7 +23,7 @@ class TagSerializer(serializers.ModelSerializer):
         return super(TagSerializer, self).to_internal_value(data)
 
 
-class ArticleSerializer(serializers.ModelSerializer):
+class ArticleSerializer(AbstractLanguageSerializer):
 
     author = UserSerializer(validators=[])
     tags = TagSerializer(many=True)

@@ -12,8 +12,10 @@ from django.dispatch import receiver
 from notices.models import Notice
 from users.models import User
 
+from language.models import lang_manager, AbstractLanguage
 
-class Article(StatusModel):
+
+class Article(StatusModel, AbstractLanguage):
 
     STATUS = Choices('verified', 'pending', 'rejected')
 
@@ -34,6 +36,8 @@ class Article(StatusModel):
         blank=True)
 
     attachments = models.ManyToManyField('files.Attachment', blank=True)
+
+    objects = lang_manager()
 
     def reject(self):
         self.status = 'rejected'
