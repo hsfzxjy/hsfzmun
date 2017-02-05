@@ -26,6 +26,7 @@
     "jquery": "^3.1.1",
     "mustache": "^2.3.0",
     "node-sass": "^4.3.0",
+    "pinyin": "^2.8.0",
     "requirejs": "^2.3.2",
     "timeago": "^1.5.4",
     "trumbowyg": "^2.4.2"

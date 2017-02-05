@@ -22,11 +22,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^avatars/', include('panavatar.urls', namespace='avatar')),
     url(r'^lang/', include('language.urls', namespace="language")),
     url(r'^users/', include('users.urls', namespace="users")),
     url(r'^articles/', include('articles.urls', namespace='articles')),
     url(r'^files/', include('files.urls', namespace='files')),
     url(r'^n/', include('notices.urls', namespace='notices')),
+    url(r'^chat/', include('chat.urls', namespace='chat')),
     url(r'^api/', include('api.urls', namespace="api")),
     url(r'^test/$', TemplateView.as_view(
         template_name='bases/base-with-header.html'))

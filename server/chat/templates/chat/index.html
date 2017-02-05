@@ -1,0 +1,55 @@
+{% extends "bases/base.html" %}
+{% load static %}
+
+{% block body %}
+{% verbatim %}
+<template id="tmpl-user-contact">
+    <li class="media py-3 px-2">
+        <img src="[[avatar_url]]" class="d-flex mr-3 align-self-center rounded">
+        <div class="media-body align-self-center">
+            <h6>[[nickname]]</h6>
+        </div>
+    </li>
+</template>
+{% endverbatim %}
+<div class="row justify-content-md-center full-height mx-0">
+    <div class="col-lg-10 test px-0">
+        <div class="col-md-3 test-green full-height px-0" id="sidebar">
+            <ul class="nav nav-pills nav-fill top-nav">
+                <li class="nav-item">
+                    <a href="#chat-pane" class="nav-link active" data-toggle="tab">
+                        <i class="fa fa-2x fa-comment" data-icon="comment"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#user-contacts-pane" class="nav-link" data-toggle="tab">
+                        <i class="fa fa-2x fa-address-card-o" data-icon="address-card"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#group-contacts-pane" class="nav-link" data-toggle="tab">
+                        <i class="fa fa-2x fa-building-o" data-icon="building"></i>
+                    </a>
+                </li>
+            </ul>
+            <input type="text" class="form-control" id="search-box" placeholder="{% trans 'Search' %}">
+            <div class="tab-content">
+                <div class="tab-pane active" id="chat-pane"></div>
+                <div class="tab-pane" id="user-contacts-pane">
+                    <ul class="list-unstyled pt-1">
+
+                    </ul>
+                </div>
+                <div class="tab-pane" id="group-contacts-pane"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block after_scripts %}
+<link rel="stylesheet" href="{% static 'css/chat.css' %}">
+<script>
+    require(['chat/index'])
+</script>
+{% endblock %}

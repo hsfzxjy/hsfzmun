@@ -8,6 +8,10 @@ const tempTextarea = $('<textarea />')
 export const BEFORE = 'before'
 export const AFTER = 'after'
 
+export const verbatim = () => {
+    Mustache.tags = ['[[', ']]']
+}
+
 export const getTmpl = id => {
     if (tmplCache[id]) return tmplCache[id]
 

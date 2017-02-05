@@ -26,7 +26,7 @@ from .local_settings import SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rules.apps.AutodiscoverRulesConfig',
+    'channels',
+    'chat',
     'language',
     'users',
     'articles',
@@ -174,3 +176,13 @@ from .local_settings import STATICFILES_DIRS
 # Media files
 
 from .local_settings import MEDIA_ROOT, MEDIA_URL
+
+
+# Channels
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgiref.inmemory.ChannelLayer',
+        "ROUTING": "config.routing.channel_routing"
+    }
+}

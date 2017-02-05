@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from django.contrib.auth.models import BaseUserManager, \
     AbstractBaseUser, PermissionsMixin, Permission
@@ -72,3 +73,18 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     @property
     def is_verifier(self):
         return self.has_perm('articles.can_verify')
+
+    @property
+    def channel_group_name(self):
+        return 'user_{}'.format(self.id)
+
+    def session_name(self, chat_with):
+        return 'user_{}_{}'.format(*sorted([self.id, chat_with.id]))
+
+    @property
+    def avatar_url(self):
+        return reverse('avatar:bg', kwargs={
+            'width': 64,
+            'height': 64,
+            'seed': 'user_{}_avatar'.format(self.id)
+        })

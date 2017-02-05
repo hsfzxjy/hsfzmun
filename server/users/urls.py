@@ -4,7 +4,7 @@ from django.contrib.auth.views import login, logout
 from api.routers import router, add_urlpattern
 from .views import UserViewSet, profile, my_profile, user_nicknames
 
-router.register(r'a', UserViewSet)
+router.register(r'users', UserViewSet)
 
 add_urlpattern(
     url(r'^user_nicknames/$', user_nicknames, name='user-nicknames'))

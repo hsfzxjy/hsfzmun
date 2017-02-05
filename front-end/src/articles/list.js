@@ -4,7 +4,7 @@ import * as tmpl from 'util/tmpl'
 import API from 'util/rest'
 import * as timeago from 'timeago'
 
-Mustache.tags = ['[[', ']]']
+tmpl.verbatim()
 
 // Helper Functions
 

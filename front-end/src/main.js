@@ -20,7 +20,8 @@ requirejs.config({
         _timeagoLocale: 'timeago/locales/jquery.timeago.' + TIMEAGO_I18N_MAP[i18nInfo.langCode],
         'file-upload': 'file-upload/js/jquery.fileupload',
         'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
-        'tagator': 'tagator/fm.tagator.jquery'
+        'tagator': 'tagator/fm.tagator.jquery',
+        'pinyin': 'pinyin/web-pinyin'
     },
     shim: {
         jquery: {

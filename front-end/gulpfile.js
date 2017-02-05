@@ -14,7 +14,8 @@ const deps = [
     ['mustache', 'node_modules/mustache', 'node_modules/mustache/mustache.min.js'],
     ['timeago', 'node_modules/timeago', ['node_modules/timeago/jquery.timeago.js', 'node_modules/timeago/locales/**/*']],
     ['file-upload', 'node_modules/blueimp-file-upload'],
-    ['tagator', 'lib/tagator']
+    ['tagator', 'lib/tagator'],
+    ['pinyin', 'lib/pinyin']
 ]
 
 gulp.task('build-js', () => {
