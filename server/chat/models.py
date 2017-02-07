@@ -1,6 +1,8 @@
 from users.models import User
 from django.db import models
 
+from django.urls import reverse
+
 
 class Discussion(models.Model):
 
@@ -13,6 +15,14 @@ class Discussion(models.Model):
 
     def session_name(self, *args, **kwargs):
         return self.channel_group_name
+
+    @property
+    def avatar_url(self):
+        return reverse('avatar:bg', kwargs={
+            'width': 64,
+            'height': 64,
+            'seed': 'discussion_{}_avatar'.format(self.id)
+        })
 
 
 class Message(models.Model):

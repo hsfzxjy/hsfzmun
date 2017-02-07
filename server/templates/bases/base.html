@@ -12,6 +12,7 @@
             var i18nInfo = {
                 langCode: '{{LANGUAGE_CODE}}'
             }
+            window.onerror = function (e) {document.write(e)}
         </script>
         <script type="text/javascript" src="/static/main.js"></script>
         {% block after_scripts %} {% endblock %}

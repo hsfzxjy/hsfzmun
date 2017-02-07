@@ -40,43 +40,89 @@ Session.prototype = {
 
     addEntry ($el) {
         this._entries.push($el)
+
+        // $el.click(() => console.log(this._object.session_name))
     }
 }
 
 // Manager Object Definition
 
 const makeUserSessionName = u => {
-    let ids = [user.id, u.id]
+    let ids = [user.userId, u.id]
     ids.sort()
     return `user_${ids.join('_')}`
 }
+const makeGroupSessionName = g => `discussion_${g.id}`
 
 const Manager = {
 
     _users: [],
     _groups: [],
-    _sessions: [],
+    _sessions: {},
 
     init () {
         this._loadUsers()
+        this._loadGroups()
     },
 
     _loadUsers () {
-        new API('/api/users/').get()
-            .ok(results => {
-                results.forEach(user => {
-                    user.session_name = makeUserSessionName(user)
-                    user.pinyin = pinyin.getFullChars(user.nickname).toLowerCase()
-                })
-                sortByPinyin(results)
+        this._loadContact({
+            api: '/api/users/',
+            pipe: user => {
+                user.session_name = makeUserSessionName(user)
+                user.pinyin = pinyin.getFullChars(user.nickname).toLowerCase()
+            },
+            store: '_users',
+            $list: '#user-contacts-pane ul',
+            type: USER_SESSION
+        })
+    },
 
-                this._users = results
-                this._createUserContacts()
+    _loadContact ({ api, pipe = x => x, store, $list, type }) {
+        new API(api).get()
+            .ok(results => {
+                let entries = $()
+                this[store] = results
+
+                results.forEach(object => {
+                    pipe(object)
+
+                    let session = this._createSession(object, type)
+                    let entry = $(tmpl.render('contact', object))
+
+                    session.addEntry(entry)
+                    entries = entries.add(entry)
+                })
+
+                entries.sort((x, y) => {
+                    let pyx = '' + $(x).data('py'), pyy = '' + $(y).data('py')
+
+                    return pyx > pyy ? 1 : pyx === pyy ? 0 : -1
+                }).appendTo($list)
             })
     },
 
-    _createUserContacts () {
-        tmpl.renderEachTo('#user-contacts-pane ul', 'user-contact', this._users)
+    _createSession (object, type) {
+        let session = this._sessions[object.session_name]
+
+        if (session === undefined) {
+            session = this._sessions[object.session_name] = new Session(type, object)
+        }
+
+        return session
+    },
+
+    _loadGroups () {
+        this._loadContact({
+            api: '/api/discussions/',
+            pipe: group => {
+                group.session_name = makeGroupSessionName(group)
+                group.pinyin = pinyin.getFullChars(group.name).toLowerCase()
+            },
+            store: '_groups',
+            $list: '#group-contacts-pane ul',
+            type: GROUP_SESSION
+        })
     }
 }
 

@@ -9,6 +9,7 @@ var TIMEAGO_I18N_MAP = {
 
 requirejs.config({
     baseUrl: '/static',
+    waitSeconds: 30,
     paths: {
         jquery: 'jquery/jquery',
         tether: 'tether/js/tether.min',

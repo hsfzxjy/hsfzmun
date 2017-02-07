@@ -3,17 +3,17 @@
 
 {% block body %}
 {% verbatim %}
-<template id="tmpl-user-contact">
-    <li class="media py-3 px-2">
+<template id="tmpl-contact">
+    <li class="media py-3 px-2" data-py="[[pinyin]]">
         <img src="[[avatar_url]]" class="d-flex mr-3 align-self-center rounded">
         <div class="media-body align-self-center">
-            <h6>[[nickname]]</h6>
+            <h6>[[nickname]][[name]]</h6>
         </div>
     </li>
 </template>
 {% endverbatim %}
 <div class="row justify-content-md-center full-height mx-0">
-    <div class="col-lg-10 test px-0">
+    <div class="col-lg-10 test px-0 row mx-0 full-height">
         <div class="col-md-3 test-green full-height px-0" id="sidebar">
             <ul class="nav nav-pills nav-fill top-nav">
                 <li class="nav-item">
@@ -35,14 +35,15 @@
             <input type="text" class="form-control" id="search-box" placeholder="{% trans 'Search' %}">
             <div class="tab-content">
                 <div class="tab-pane active" id="chat-pane"></div>
-                <div class="tab-pane" id="user-contacts-pane">
-                    <ul class="list-unstyled pt-1">
-
-                    </ul>
+                <div class="tab-pane contact-pane" id="user-contacts-pane">
+                    <ul class="list-unstyled pt-1"></ul>
                 </div>
-                <div class="tab-pane" id="group-contacts-pane"></div>
+                <div class="tab-pane contact-pane" id="group-contacts-pane">
+                    <ul class="list-unstyled pt-1"></ul>
+                </div>
             </div>
         </div>
+        <div class="col-md-9 test-green px-0 full-height hidden-sm-down"></div>
     </div>
 </div>
 {% endblock %}
