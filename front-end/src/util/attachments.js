@@ -72,11 +72,14 @@ export function Upload ({ $button, $noFiles = null, $form, $progress, initialAPI
     this._$button = $($button)
     this._$noFiles = $($noFiles)
     this._$form = $($form)
+
     this._$progress = $($progress)
     this._initialAPI = initialAPI
     this._$fileBox = $($fileBox)
     this._proxyFiles = []
     this._tmpl = tmpl
+
+    this._eventBus = $({})
 
     this._init()
 }
@@ -101,12 +104,15 @@ Upload.prototype = {
                 uploader: this,
                 fileObject: file
             })
+
+            this._eventBus.trigger('start')
         })
         .on('fileuploaddone', (e, { result, files: [fileObject] }) => this._uploaded(fileObject, result))
         .on('fileuploadprogressall', (e, { loaded, total }) => this._progress(parseInt(loaded / total * 100, 10)))
         .on('fileuploadalways', () => {
             this._setProgress(0)
             this._setButtonState(false)
+            this._eventBus.trigger('always')
         })
     },
 
@@ -136,6 +142,7 @@ Upload.prototype = {
 
     _uploaded (fileObject, data) {
         fileObject.proxyFile._setData(data)
+        this._eventBus.trigger('uploaded', data)
     },
 
     _progress (percent) {
@@ -144,6 +151,15 @@ Upload.prototype = {
 
     _setProgress (percent) {
         this._$progress.css('width', `${percent}%`)
+    },
+
+    on (name, cb) {
+        this._eventBus.on(name, (e, ...rest) => cb(...rest))
+        return this
+    },
+
+    abortAll () {
+        this._proxyFiles.slice().forEach(file => file._destroy())
     },
 
     add (proxyFile) {

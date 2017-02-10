@@ -4,15 +4,79 @@ import API from 'util/rest'
 import pinyin from 'util/pinyin'
 import user from 'user-info'
 import * as tmpl from 'util/tmpl'
+import socket from 'util/websocket'
+import Form from 'util/form'
+import { Upload } from 'util/attachments'
+
+import { throttle, randomString, wait } from 'util/common'
 
 tmpl.verbatim()
 
+// Global variables
+
+const $sidebar = $('#sidebar'), $chatview = $('#chat-view')
+const $textarea = $('#input-bar textarea')
+const $title = $('div.top-bar .title')
+const $cover = $('#chat-view div.cover')
+const $submitButton = $('#input-bar button[type=submit]')
+const $loadHistoryButton = $('#load-history')
+const $messagePane = $('#message-pane')
+const $chatList = $('#chat-pane ul')
+const $searchInput = $('#search-box')
+const $searchPane = $('#search-pane')
+
+// Submit Button State
+
+$textarea.on('input change', () => $submitButton.prop('disabled', !$textarea.val()))
+
+// Search
+
+$searchInput.on('focus', () => {
+    $searchPane.show()
+}).on('input', () => {
+    let reg = new RegExp($searchInput.val())
+
+    $searchPane.find('li').each(function () {
+        let $this = $(this), pinyin = $this.data('py')
+
+        $this.toggle(reg.test(pinyin))
+    })
+})
+
+$('html').click(({ target }) => {
+    if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.hide()
+})
+
 // Util Functions
 
-function sortByPinyin (array) {
-    array.sort((a, b) => a.pinyin > b.pinyin ? 1 : a.pinyin < b.pinyin ? -1 : 0)
-    return array
+
+// Util for Input Bar
+
+function clearInput () {
+    $textarea.val('').change()
+    $form.find('input[name="attachments[]"]').remove()
 }
+
+// Input Form
+
+const $form = $('#input-bar form')
+
+const form = new Form($form, null, null).payload(data => data.uid = randomString())
+
+// Upload Attachments
+
+const $controlButton = $('#upload-file-button .control-button')
+
+const uploader = new Upload({
+    $button: '#upload-file-button',
+    $form,
+    $progress: '#input-bar .progress .progress-bar'
+}).on('start', () => {
+    $controlButton.show().find('i').icons('times')
+}).on('always', () => $controlButton.fadeOut())
+.on('uploaded', () => manager.submit())
+
+$controlButton.click(() => uploader.abortAll())
 
 // Top nav icons
 
@@ -24,28 +88,207 @@ $('#sidebar ul.top-nav li a')
             .toggleClass(`${iconBaseName}-o`, type === 'hidden')
     })
 
-$('a[href="#user-contacts-pane"]').tab('show')
+// sidebar & chat-view toggler
+
+function toggleView () {
+    $sidebar.toggleClass('hidden-sm-down')
+    $chatview.toggleClass('hidden-sm-down')
+}
+
+$('body').on('click', '.toggle-view', toggleView)
 
 // Session Class Definition
 
 const USER_SESSION = 'user', GROUP_SESSION = 'group'
 
 function Session (type, object) {
+    this.session_name = object.session_name
     this._type = type
     this._object = object
     this._entries = []
+    this._messages = []
+    this._historyAPI = new API('/api/messages/history/').param('session_name', object.session_name)
+    this._unreadCount = 0
 }
 
 Session.prototype = {
 
+    _decorateMessage (message) {
+        message.sender = manager._users.filter(u => u.id === message.sender)[0]
+        message.is_me = message.sender.id === user.userId
+        message.direction = message.is_me ? 'right' : 'left'
+        message.digest = (message.is_me ? '' : `${message.sender.nickname}: `) + message.content
+
+        console.log(message.sender)
+    },
+
+    _earliestTime () {
+        if (!this._messages.length) return manager.getLastTime()
+        return this._messages[0].created
+    },
+
+    loadHistory () {
+        this._historyAPI.param('before', this._earliestTime()).get()
+            .ok(({ results }) => {
+                results.forEach(message => {
+                    this._decorateMessage(message)
+                    this._messages.unshift(message)
+                })
+
+                if (this.isActive()) this.renderHistory(results)
+            })
+    },
+
+    renderHistory (messages) {
+        let oldHeight = $messageBox.height()
+        messageRenderer.renderMessages(messages.reverse(), tmpl.BEFORE)
+        $messagePane.scrollTop($messageBox.height() - oldHeight)
+    },
+
     addEntry ($el) {
         this._entries.push($el)
 
-        // $el.click(() => console.log(this._object.session_name))
+        $el.click(() => manager.activate(this))
+    },
+
+    extraFields () {
+        let result = { session_name: this._object.session_name }
+
+        if (this._type === USER_SESSION) result.receiver = this._object.id
+
+        return result
+    },
+
+    receivedMessage (message) {
+        this._decorateMessage(message)
+        this._messages.push(message)
+        if (this.isActive()) messageRenderer.renderMessage(message, tmpl.AFTER)
+        let item = chatList.getItem(this)
+        item.receivedMessage(message)
+        if (!this.isActive()) {
+            this._incUnread()
+            item.setUnread(true)
+        }
+    },
+
+    _incUnread () {
+        this._unreadCount++
+        unreadManager.inc(1)
+    },
+
+    _clearUnread () {
+        unreadManager.dec(this._unreadCount)
+        this._unreadCount = 0
+    },
+
+    isActive () {
+        return this === manager.currentSession
+    },
+
+    activate () {
+        $title.html(this._object.title)
+        messageRenderer.clear()
+        messageRenderer.renderMessages(this._messages, tmpl.AFTER)
+        $messagePane.scrollTop($messageBox.height())
+        let item = chatList.getItem(this)
+        this._clearUnread()
+        item.setUnread(false)
     }
 }
 
-// Manager Object Definition
+// ChatListItem Class Definition
+
+function ChatListItem (session) {
+    this._session = session
+    this._init()
+}
+
+ChatListItem.prototype = {
+
+    _init () {
+        this._createElement()
+    },
+
+    _createElement () {
+        this._$el = tmpl.renderBefore($chatList, 'chat', this._session._object)
+        this._session.addEntry(this._$el)
+    },
+
+    topElement () {
+        this._$el.detach().prependTo($chatList)
+    },
+
+    receivedMessage (message) {
+        chatList.top(this._session)
+        this._$el.find('.message-digest').html(message.digest)
+    },
+
+    setUnread (value) {
+        console.log(this._$el)
+        this._$el.find('.dot').toggle(value)
+    }
+}
+
+// chatList Object Definition
+
+const chatList = {
+
+    _chatItems: {},
+    _names: [],
+
+    getItem (session) {
+        let item = this._chatItems[session.session_name]
+
+        if (item !== undefined) return item
+        item = this._chatItems[session.session_name] = new ChatListItem(session)
+        this._names.unshift(session.session_name)
+        this._storeNames()
+        return item
+    },
+
+    top (session) {
+        let item = this.getItem(session), name = session.session_name
+
+        item.topElement()
+        this._names.remove(name).unshift(name)
+        this._storeNames()
+    },
+
+    _storeNames () {
+        window.localStorage.setObj('chat-items', this._names)
+    },
+
+    recover () {
+        this._names = window.localStorage.getObj('chat-items') || []
+
+        this._names.slice().reverse().forEach(session_name => {
+            console.log(session_name)
+            this.getItem(manager._sessions[session_name])
+        })
+    }
+}
+
+
+// messageRenderer Object Definition
+
+const $messageBox = $('#message-box')
+
+const messageRenderer = {
+
+    clear () {
+        $messageBox.html('')
+    },
+
+    renderMessages (messages, direction) {
+        tmpl.renderEachSwitch(direction, $messageBox, 'message', messages)
+    },
+
+    renderMessage (message, direction) {
+        this.renderMessages([message], direction)
+    }
+}
+
+// manager Object Definition
 
 const makeUserSessionName = u => {
     let ids = [user.userId, u.id]
@@ -54,42 +297,110 @@ const makeUserSessionName = u => {
 }
 const makeGroupSessionName = g => `discussion_${g.id}`
 
-const Manager = {
+const manager = {
 
     _users: [],
     _groups: [],
     _sessions: {},
 
+    _usersLoaded: false,
+    _groupsLoaded: false,
+
+    currentSession: null,
+
     init () {
         this._loadUsers()
         this._loadGroups()
+
+        wait(() => this._groupsLoaded && this._usersLoaded).then(() => {
+            chatList.recover()
+            socket.connect()
+        })
+
+        this._bindEventListeners()
+        this._bindSocketListeners()
+    },
+
+    _loadUnreadMessages () {
+        new API('/api/messages/unread/').param('after', this.getLastTime()).get()
+            .ok(results => this.receivedMessages(results))
+    },
+
+    _bindEventListeners () {
+        $submitButton
+            .loading({
+                start: function () { this.find('i').removeClass('fa-send-o').addClass('fa-spin fa-circle-o-notch') },
+                stop: function () { this.find('i').removeClass('fa-spin fa-circle-o-notch').addClass('fa-send-o') }
+            })
+            .click(this.submit.bind(this))
+
+        $loadHistoryButton
+            .click(() => this.currentSession.loadHistory())
+    },
+
+    _bindSocketListeners () {
+        socket.subscribe('chat', message => {
+            if (message.uid === $submitButton.data('waiting-uid')) this.submitted()
+            this.receivedMessages([message])
+        }).open(() => this._loadUnreadMessages())
+    },
+
+    receivedMessages (messages) {
+        messages.forEach(this.receivedMessage.bind(this))
+    },
+
+    receivedMessage (message) {
+        this._updateLastTime(message.created)
+        this._sessions[message.session_name].receivedMessage(message)
+    },
+
+    _updateLastTime (time) {
+        window.localStorage.setItem('last-time', time)
+    },
+
+    getLastTime () {
+        return window.localStorage.getItem('last-time') || new Date().toISOString()
+    },
+
+    submitted () {
+        $submitButton.loading('stop')
+        clearInput()
+    },
+
+    submit () {
+        let payload = form.getPayload()
+        $submitButton.loading('start').data('waiting-uid', payload.uid)
+        socket.send(payload)
     },
 
     _loadUsers () {
-        this._loadContact({
+        return this._loadContact({
             api: '/api/users/',
-            pipe: user => {
-                user.session_name = makeUserSessionName(user)
-                user.pinyin = pinyin.getFullChars(user.nickname).toLowerCase()
-            },
+            sessionName: makeUserSessionName,
+            title: 'nickname',
             store: '_users',
             $list: '#user-contacts-pane ul',
             type: USER_SESSION
-        })
+        }).ok(() => this._usersLoaded = true)
     },
 
-    _loadContact ({ api, pipe = x => x, store, $list, type }) {
-        new API(api).get()
+    _loadContact ({ api, pipe = x => x, store, $list, type, title, sessionName }) {
+        return new API(api).get()
             .ok(results => {
                 let entries = $()
                 this[store] = results
 
                 results.forEach(object => {
                     pipe(object)
+                    object.title = object[title]
+                    object.pinyin = pinyin.getFullChars(object.title).toLowerCase()
+                    object.session_name = sessionName(object)
 
                     let session = this._createSession(object, type)
                     let entry = $(tmpl.render('contact', object))
+                    let searchEntry = entry.clone().appendTo($searchPane.find('ul'))
 
+                    session.addEntry(searchEntry)
                     session.addEntry(entry)
                     entries = entries.add(entry)
                 })
@@ -113,17 +424,49 @@ const Manager = {
     },
 
     _loadGroups () {
-        this._loadContact({
+        return this._loadContact({
             api: '/api/discussions/',
-            pipe: group => {
-                group.session_name = makeGroupSessionName(group)
-                group.pinyin = pinyin.getFullChars(group.name).toLowerCase()
-            },
+            sessionName: makeGroupSessionName,
+            title: 'name',
             store: '_groups',
             $list: '#group-contacts-pane ul',
             type: GROUP_SESSION
-        })
+        }).ok(() => this._groupsLoaded = true)
+    },
+
+    activate (session) {
+        $cover.toggle(session === null)
+        this.currentSession = session
+        if (this.currentSession === null) return
+
+        clearInput()
+        tmpl.renderInto('#input-bar div.extra-fields', 'extra-fields', session.extraFields())
+        session.activate()
+        toggleView()
     }
 }
 
-Manager.init()
+manager.init()
+
+// unreadManager Definition
+
+const unreadManager = {
+
+    _count: 0,
+
+    inc (number) {
+        this._count += number
+        this._syncState()
+    },
+
+    dec (number) {
+        this._count -= number
+        this._syncState()
+    },
+
+    _syncState () {
+        if (this._count < 0) this._count = 0
+
+        $('.global.dot').toggle(this._count !== 0)
+    }
+}

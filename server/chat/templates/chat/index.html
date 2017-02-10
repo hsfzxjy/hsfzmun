@@ -2,23 +2,51 @@
 {% load static %}
 
 {% block body %}
-{% verbatim %}
 <template id="tmpl-contact">
     <li class="media py-3 px-2" data-py="[[pinyin]]">
         <img src="[[avatar_url]]" class="d-flex mr-3 align-self-center rounded">
         <div class="media-body align-self-center">
-            <h6>[[nickname]][[name]]</h6>
+            <h6>[[title]]</h6>
         </div>
     </li>
 </template>
-{% endverbatim %}
+<template id="tmpl-extra-fields">
+    <input type="hidden" name="session_name" value="[[session_name]]">
+    <input type="hidden" name="sender" value="{{user.id}}">
+    <input type="hidden" name="receiver" value="[[receiver]]">
+</template>
+<template id="tmpl-message">
+    <div class="message-item [[direction]] media my-3">
+        <img src="[[sender.avatar_url]]" class="avatar avatar-left d-flex rounded">
+        <div class="message-body media-body">
+            <p class="message-content rounded">[[content]]</p>
+        </div>
+        <img src="[[sender.avatar_url]]" class="avatar avatar-right d-flex rounded">
+    </div>
+</template>
+<template id="tmpl-chat">
+    <li class="media py-3 px-2">
+        <span class="d-flex mr-3 align-self-center rounded red-point">
+            <img src="[[avatar_url]]">
+            <span class="dot"></span>
+        </span>
+        <div class="media-body">
+            <p class="mb-2"><b>[[title]]</b></p>
+            <small class="message-digest text-muted"></small>
+        </div>
+        <div class="d-flex"></div>
+    </li>
+</template>
+
 <div class="row justify-content-md-center full-height mx-0">
-    <div class="col-lg-10 test px-0 row mx-0 full-height">
+    <div class="col-lg-12 test px-0 row mx-0 full-height">
         <div class="col-md-3 test-green full-height px-0" id="sidebar">
             <ul class="nav nav-pills nav-fill top-nav">
                 <li class="nav-item">
                     <a href="#chat-pane" class="nav-link active" data-toggle="tab">
-                        <i class="fa fa-2x fa-comment" data-icon="comment"></i>
+                        <i class="fa fa-2x fa-comment red-point" data-icon="comment">
+                            <span class="global dot"></span>
+                        </i>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -31,26 +59,67 @@
                         <i class="fa fa-2x fa-building-o" data-icon="building"></i>
                     </a>
                 </li>
+                <li class="nav-item hidden-xs-up">
+                    <a href="#search-pane" class="nav-link" data-toggle="tab"></a>
+                </li>
             </ul>
             <input type="text" class="form-control" id="search-box" placeholder="{% trans 'Search' %}">
             <div class="tab-content">
-                <div class="tab-pane active" id="chat-pane"></div>
+                <div class="tab-pane active" id="chat-pane">
+                    <ul class="list-unstyled pt-1"></ul>
+                </div>
                 <div class="tab-pane contact-pane" id="user-contacts-pane">
                     <ul class="list-unstyled pt-1"></ul>
                 </div>
                 <div class="tab-pane contact-pane" id="group-contacts-pane">
                     <ul class="list-unstyled pt-1"></ul>
                 </div>
+                <div class="tab-pane contact-pane" id="search-pane">
+                    <ul class="list-unstyled pt-1"></ul>
+                </div>
             </div>
         </div>
-        <div class="col-md-9 test-green px-0 full-height hidden-sm-down"></div>
+        <div class="col-md-9 test-green px-0 full-height hidden-sm-down" id="chat-view">
+            <div class="cover"></div>
+            <div class="top-bar clearfix">
+                <button class="toggle-view hidden-md-up float-left">
+                    <i class="fa fa-list red-point"><span class="dot global"></span></i>
+                </button>
+                <span class="title">&nbsp;</span>
+            </div>
+            <div id="message-pane">
+                <div id="load-history">load</div>
+                <div id="message-box"></div>
+            </div>
+            <div id="input-bar" class="media">
+                    <div class="progress">
+                        <div class="progress-bar bg-success"></div>
+                    </div>
+                    <form class="media-body mb-1 ml-1">
+                        <div class="extra-fields hidden-xs-up"></div>
+                        <textarea class="form-control media-body mb-1 ml-1" name="content"></textarea>
+                    </form>
+                    <button class="btn-circle d-flex align-self-end mx-1 my-1 fileinput-button" id="upload-file-button">
+                        <input type="file" name="file">
+                        <i class="fa fa-file-text-o" data-icons="text-o times check"></i>
+                        <div class="control-button">
+                            <i class="fa fa-times" data-icons="check times"></i>
+                        </div>
+                    </button>
+                    <button class="btn-circle d-flex align-self-end mx-1 my-1" type="submit" disabled>
+                        <i class="fa fa-send-o"></i>
+                    </button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block after_scripts %}
+<link rel="stylesheet" href="/static/file-upload/css/jquery.fileupload.css">
 <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 <script>
+    define('ws-config', '/chat/')
     require(['chat/index'])
 </script>
 {% endblock %}

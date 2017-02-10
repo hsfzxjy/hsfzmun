@@ -14,6 +14,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     pagination_class = None
+    permission_classes = ()
 
 
 @api_view(['GET'])

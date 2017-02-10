@@ -81,7 +81,7 @@ Form.prototype = {
         this._eventBus.on('submitted', (e, ...rest) => cb(...rest))
         return this
     },
-    _finalizePayload () {
+    getPayload () {
         let payload = getFormPayload(this._$el)
         this._eventBus.trigger('finalize-payload', payload)
         return payload
@@ -93,7 +93,7 @@ Form.prototype = {
         this._toggleButtons(true)
         clearErrors(this._$el)
 
-        let response = this._api[this._action](this._finalizePayload())
+        let response = this._api[this._action](this.getPayload())
         this._eventBus.trigger('submitted', response)
 
         response

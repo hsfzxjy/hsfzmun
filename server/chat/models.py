@@ -25,13 +25,31 @@ class Discussion(models.Model):
         })
 
 
+class MessageQuerySet(models.QuerySet):
+
+    def filter_user(self, user):
+        Q = models.Q
+        return self.filter(
+            Q(sender=user) |
+            Q(receiver=user) |
+            Q(session_name__in=map(lambda d: d.session_name(),
+                                   user.discussions.only('id')))
+        )
+
+
 class Message(models.Model):
 
     sender = models.ForeignKey(User, related_name='messages_sent')
     receiver = models.ForeignKey(
         User, null=True, related_name='messages_received')
-    content = models.TextField()
+    content = models.TextField(blank=True)
     session_name = models.CharField(max_length=255, db_index=True)
+    uid = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
 
-    attachments = models.ManyToManyField('files.Attachment')
+    attachments = models.ManyToManyField('files.Attachment', blank=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    objects = MessageQuerySet.as_manager()
