@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tagator Plugin</title>
+	<link rel="stylesheet" href="fm.tagator.jquery.css"/>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		#wrapper {
+			padding: 15px;
+		}
+		#input_tagator1 {
+			width: 300px;
+		}
+		#input_tagator2 {
+			width: 300px;
+		}
+	</style>
+	<script src="jquery-1.11.0.min.js"></script>
+	<script src="fm.tagator.jquery.js"></script>
+	<script>
+		$(function () {
+			var $input_tagator1 = $('#input_tagator1');
+			var $activate_tagator1 = $('#activate_tagator1');
+			$activate_tagator1.click(function () {
+				if ($input_tagator1.data('tagator') === undefined) {
+					$input_tagator1.tagator({
+						autocomplete: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'],
+						useDimmer: true
+					});
+					$activate_tagator1.val('destroy tagator');
+				} else {
+					$input_tagator1.tagator('destroy');
+					$activate_tagator1.val('activate tagator');
+				}
+			});
+			$activate_tagator1.trigger('click');
+		});
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<h3>
+			Normal initialization
+		</h3>
+<pre>
+$('#input_tagator1').tagator({
+	autocomplete: ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth'],
+	useDimmer: true
+});
+</pre>
+		<input id="input_tagator1" name="input_tagator1" value="Test,Best,Rest" placeholder="Please input some tags">
+		<input value="activate tagator" id="activate_tagator1" type="button">
+		<br>
+		<br>
+		<h3>
+			Markup initialization
+		</h3>
+		<pre>&lt;input value=&quot;test,123&quot; class=&quot;tagator&quot; data-datetator-show-all-options-on-focus=&quot;true&quot; data-tagator-autocomplete=&quot;['first', 'second', 'third']&quot;&gt;</pre>
+		<input id="activate_tagator2" type="text" class="tagator" value="test,123" data-tagator-show-all-options-on-focus="true" data-tagator-autocomplete="['first', 'second', 'third']">
+
+	</div>
+</body>
+</html>
