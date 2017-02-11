@@ -12,7 +12,6 @@ Jinja2==2.9.4
 MarkupSafe==0.23
 panavatar==0.3.3
 PyMySQL==0.7.9
-readline==6.2.4.1
 rules==1.2
 six==1.10.0
 Twisted==16.5.0
