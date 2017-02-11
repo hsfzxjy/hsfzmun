@@ -158,6 +158,8 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
+print(LOCALE_PATHS)
+
 TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
