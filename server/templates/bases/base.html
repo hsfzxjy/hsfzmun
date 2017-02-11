@@ -12,13 +12,19 @@
             var i18nInfo = {
                 langCode: '{{LANGUAGE_CODE}}'
             }
+            define('timeline-config', {{timeline_data|safe}})
             //window.onerror = function (e) {document.write(e)}
         </script>
         <script type="text/javascript" src="/static/main.js"></script>
         {% block after_scripts %} {% endblock %}
     </head>
     <body>
+        <div class="timeline alert alert-info">
+            <i class="fa fa-angle-left" data-icons="angle-left clock-o"></i>
+            <span></span>
+        </div>
         {% block body %} {% endblock %}
+        <script>require(['timeline'])</script>
         <link rel="stylesheet" type="text/css" href="/static/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="/static/css/common.css">

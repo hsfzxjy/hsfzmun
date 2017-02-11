@@ -160,3 +160,9 @@ $.fn.icons = function (name) {
     this.removeClass(icons.join(' '))
         .addClass(`fa-${name}`)
 }
+
+$.fn.toggleIcon = function () {
+    let icons = this.data('icons').split(' ').map(name => `fa-${name}`)
+    let icon = icons[(this.hasClass(icons[0])) ? 1 : 0]
+    this.removeClass(icons.join(' ')).addClass(icon)
+}

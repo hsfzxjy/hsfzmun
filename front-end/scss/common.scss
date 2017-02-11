@@ -1,1 +1,17 @@
 @import '_override.scss';
+
+.timeline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: .7;
+    display: none;
+    border-radius: 0;
+    overflow-y: hidden;
+    word-break: break-all;
+
+    span {
+        max-height: 1em;
+    }
+}

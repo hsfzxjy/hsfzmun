@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.generics import ListAPIView
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from rest_framework.renderers import TemplateHTMLRenderer
 
 from .models import Article, Comment, Tag
 from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
@@ -25,6 +27,24 @@ class ArticleViewSet(ModelViewSet):
         self.get_object().reject()
 
         return Response('OK')
+
+
+class ArticleFilterList(ListAPIView):
+
+    serializer_class = ArticleSerializer
+    renderer_classes = (TemplateHTMLRenderer,)
+    template_name = 'articles/search.html'
+
+    def get_queryset(self):
+        keyword = self.request.query_params.get('keyword', '')
+        self.keyword = keyword
+        return Article.objects.search(keyword)
+
+    def list(self, *args, **kwargs):
+        response = super(ArticleFilterList, self).list(*args, **kwargs)
+        response.data['keyword'] = self.keyword
+
+        return response
 
 
 class TagViewSet(ModelViewSet):

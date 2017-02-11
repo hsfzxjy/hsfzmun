@@ -15,6 +15,56 @@ from users.models import User
 
 from language.models import lang_manager, AbstractLanguage
 
+import re
+
+Q = models.Q
+
+
+class ArticleQuerySet(models.QuerySet):
+
+    def search(self, keyword):
+        if not keyword:
+            return self.none()
+
+        args = {s for s in re.split(r'[\s,]+', keyword) if s}
+
+        query = Q()
+
+        users = set(filter(lambda s: s.startswith('user:'), args))
+        args -= users
+
+        usernames = []
+
+        for arg in users:
+            username = arg.split(':', 1)[1]
+
+            if username:
+                usernames.append(username)
+
+        if usernames:
+            query &= Q(author__username__in=usernames)
+
+        tags = set(filter(lambda s: s.startswith('tag:'), args))
+        args -= tags
+
+        tagnames = []
+
+        for arg in tags:
+            tag = arg.split(':', 1)[1]
+
+            if tag:
+                tagnames.append(tag)
+
+        if tagnames:
+            query &= Q(tags__name__in=tagnames)
+
+
+        if args:
+            regex = '(%s)' % '|'.join(args)
+            query &= Q(title__iregex=regex) | Q(content__iregex=regex)
+
+        return self.filter(query)
+
 
 class Article(StatusModel, AbstractLanguage):
 
@@ -37,7 +87,8 @@ class Article(StatusModel, AbstractLanguage):
 
     attachments = models.ManyToManyField('files.Attachment', blank=True)
 
-    objects = lang_manager()
+    objects = ArticleQuerySet.as_manager()
+    lang_objects = lang_manager(objects.__class__)
 
     def reject(self):
         self.status = 'rejected'

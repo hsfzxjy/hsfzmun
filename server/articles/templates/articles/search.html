@@ -1,0 +1,48 @@
+{% extends 'bases/base-with-header.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+            <form action="" class="rw">
+                <div class="input-group">
+                        <input type="text" name="keyword" class="form-control" value="{{keyword}}">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">{% trans 'Search' %}</button>
+                    </div>
+                </div>
+            </form>
+            <ul class="list-unstyled">
+                {% for article in results %}
+                <li class="media my-4">
+                    <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{article.title}}</h5>
+                        <time class="timeago" datetime="{{article.published}}"></time>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <nav>
+                <ul class="pagination">
+                    {% if previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{previous}}">{% trans 'Previous' %}</a>
+                    </li>
+                    {% endif %}
+                    {% if next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{next}}">{% trans 'Next' %}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    require(['timeago'])
+</script>
+{% endblock %}

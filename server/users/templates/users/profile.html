@@ -1,10 +1,28 @@
 {% extends "bases/base-with-header.html" %}
 
 {% block content %}
-<div class="jumbotron">
-    <div class="display-3">
-        <i class="fa fa-user-circle-o"></i>
-        <span>{{user.nickname}}</span>
+<div class="jumbotron bg-warning">
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <img src="{{user.avatar_url}}" class="rounded-circle avatar">
+        </div>
+        <div class="col-md-9 text-center">
+            <h4>
+                {{user.nickname}}
+                <small class="text-muted">({{user.username}})</small>
+            </h4>
+            <div class="muted">
+                {{user.description}}
+            </div>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    img.avatar {
+        width: 80px;
+    }
+</style>
 {% endblock %}

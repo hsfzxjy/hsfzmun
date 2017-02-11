@@ -1,0 +1,36 @@
+{% extends 'bases/base-with-header.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="alert alert-info">
+        <pre>
+格式： <用户名> <昵称> <语言标示>（e|z，即英文|中文）
+例：
+
+zhangsan 张三 z
+lisi 李四 e</pre>
+    </div>
+    <form action="" method="post" class="mb-1">
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea name="users" id="users" cols="30" rows="10" class="form-control">{{raw_data}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans 'Submit' %}</button>
+    </form>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-info">
+            {{message}}
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% if created %}
+    <div class="alert alert-success">
+        已创建：
+        {% for user, new in created %}
+        <p>{{user.username}} {{user.nickname}} {{user.initial_password}}</p>
+        {% endfor %}
+    </div>
+    {% endif%}
+</div>
+{% endblock %}

@@ -55,7 +55,7 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
 
-    i18n_objects = lang_manager(UserManager)()
+    lang_objects = lang_manager(UserManager)()
     objects = UserManager()
 
     def get_full_name(self):
@@ -89,3 +89,9 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
             'height': 64,
             'seed': 'user_{}_avatar'.format(self.id)
         })
+
+    @property
+    def initial_password(self):
+        import hashlib
+
+        return hashlib.sha224(self.username.encode('utf8')).hexdigest()[:8]

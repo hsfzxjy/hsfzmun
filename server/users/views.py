@@ -8,6 +8,27 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from django.views.generic import View
+
+from .creator import create_from_string, FailToCreate
+
+
+class UserBulkCreationView(View):
+
+    def get(self, request):
+        return render(request, 'users/bulk-creation.html')
+
+    def post(self, request):
+        content = request.POST.get('users', '')
+
+        context = {}
+        try:
+            context['created'] = create_from_string(request, content)
+        except FailToCreate as e:
+            context.update(e.details)
+
+        return render(request, 'users/bulk-creation.html', context)
+
 
 class UserViewSet(viewsets.ModelViewSet):
 

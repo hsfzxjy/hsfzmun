@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-02 21:59+0800\n"
+"POT-Creation-Date: 2017-02-11 19:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,49 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: articles/models.py:48
+#: articles/models.py:99
 #, python-brace-format
 msgid "Administrator rejects your article {target.title}."
 msgstr "管理员驳回了你的文章《{target.title}》"
 
-#: articles/models.py:60
+#: articles/models.py:111
 #, python-brace-format
 msgid "Administrator verified your article {target.title}."
 msgstr "管理员认证了你的文章《{target.title}》"
 
-#: articles/models.py:129
+#: articles/models.py:180
 msgid ""
 "{target.author.nickname} posts an article {target.title} and requires "
 "verification."
 msgstr "{target.author.nickname} 发表了文章 《{target.title}》 并请求你的认证"
 
-#: articles/models.py:141
+#: articles/models.py:192
 msgid "{target.author.nickname} metions you in article {target.title}."
 msgstr "{target.author.nickname} 在文章《{target.title}》中提到了你"
 
-#: articles/models.py:153
+#: articles/models.py:204
 msgid "{target.author.nickname} comments your article {target.article.title}."
 msgstr "{target.author.nickname} 评论了你的文章《{target.article.title}》"
 
-#: articles/models.py:167
+#: articles/models.py:218
 msgid ""
 "{target.author.nickname} replies your comment in article {target.article."
 "title}."
 msgstr "{target.author.nickname} 回复了你在《{target.article.title}》中的评论"
 
-#: articles/models.py:177
+#: articles/models.py:228
 msgid "mentions"
 msgstr "@我的"
 
-#: articles/models.py:178
+#: articles/models.py:229
 msgid "verification"
 msgstr "认证"
 
-#: articles/models.py:179
+#: articles/models.py:230
 msgid "comments"
 msgstr "评论"
 
-#: articles/models.py:180
+#: articles/models.py:231
 msgid "all"
 msgstr "全部"
 
@@ -86,6 +86,7 @@ msgstr "评论"
 
 #: articles/templates/articles/detail.html:68
 #: articles/templates/articles/edit.html:24
+#: users/templates/users/bulk-creation.html:18
 msgid "Submit"
 msgstr "提交"
 
@@ -118,20 +119,38 @@ msgid "No Files"
 msgstr "暂无文件"
 
 #: articles/templates/articles/list.html:65
+#: articles/templates/articles/search.html:29
 #: notices/templates/notices/list.html:33
 msgid "Previous"
 msgstr "上一页"
 
 #: articles/templates/articles/list.html:70
+#: articles/templates/articles/search.html:34
 #: notices/templates/notices/list.html:38
 msgid "Next"
 msgstr "下一页"
 
-#: config/settings.py:150
+#: articles/templates/articles/search.html:10 chat/templates/chat/index.html:66
+msgid "Search"
+msgstr "搜索"
+
+#: chat/views.py:34
+msgid "The API should receive an `after` param."
+msgstr ""
+
+#: chat/views.py:50
+msgid "The API should receive an `before` param."
+msgstr ""
+
+#: chat/views.py:56
+msgid "The API should receive a `session_name` param."
+msgstr ""
+
+#: config/settings.py:153
 msgid "Chinese"
 msgstr "中文"
 
-#: config/settings.py:151
+#: config/settings.py:154
 msgid "English"
 msgstr "英文"
 
@@ -154,3 +173,26 @@ msgstr "注销"
 #: templates/components/header.html:38
 msgid "Log in"
 msgstr "登录"
+
+#: users/creator.py:32
+msgid "File not upload."
+msgstr ""
+
+#: users/creator.py:38
+msgid "DATA sheet not found."
+msgstr ""
+
+#: users/creator.py:50 users/creator.py:68
+#, python-format
+msgid "Row %s has invalid arguments number."
+msgstr "第 %s 行参数个数不正确。"
+
+#: users/creator.py:88
+#, python-format
+msgid "Invalid language code for user %s."
+msgstr "用户 %s 的语言标识不正确。"
+
+#: users/creator.py:97
+#, python-format
+msgid "Duplicate nickname %s."
+msgstr "昵称 %s 重复了。"
