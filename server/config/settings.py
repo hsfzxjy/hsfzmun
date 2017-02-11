@@ -172,7 +172,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-from .local_settings import STATICFILES_DIRS, STATIC_URL
+from .local_settings import STATICFILES_DIRS, STATIC_ROOT
 
 # Media files
 
