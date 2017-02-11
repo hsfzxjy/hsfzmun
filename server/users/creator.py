@@ -73,7 +73,7 @@ def create_from_string(request, string):
 
 lang_map = {
     'z': 'zh-hans',
-    'e': 'en-us',
+    'e': 'en-us'
 }
 
 
