@@ -8,6 +8,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     http_user = True
 
     def connect(self, message, **kwargs):
+        print('connect')
         message.reply_channel.send({'accept': message.user.is_authenticated()})
 
     def connection_groups(self, **kwargs):
@@ -18,6 +19,7 @@ class ChatConsumer(JsonWebsocketConsumer):
             )] if user.is_authenticated() else []
 
     def receive(self, content, **kwargs):
+        print('received')
         serializer = MessageSerializer(data=content)
         serializer.is_valid(raise_exception=True)
         message = serializer.save()

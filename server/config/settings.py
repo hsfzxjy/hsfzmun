@@ -183,7 +183,10 @@ from .local_settings import MEDIA_ROOT, MEDIA_URL
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'asgiref.inmemory.ChannelLayer',
-        "ROUTING": "config.routing.channel_routing"
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        "ROUTING": "config.routing.channel_routing",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)]
+        }
     }
 }
