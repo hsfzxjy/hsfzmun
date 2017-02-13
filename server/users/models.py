@@ -55,8 +55,8 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
 
-    lang_objects = lang_manager(UserManager)()
     objects = UserManager()
+    lang_objects = lang_manager(UserManager)()
 
     def get_full_name(self):
         return self.nickname
