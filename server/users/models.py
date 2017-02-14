@@ -51,6 +51,7 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     )
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
@@ -69,7 +70,7 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
 
     @property
     def is_staff(self):
-        return True
+        return self.is_admin
 
     @property
     def is_verifier(self):

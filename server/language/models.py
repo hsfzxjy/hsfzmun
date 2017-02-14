@@ -9,12 +9,13 @@ class AbstractLanguageQuerySet(models.QuerySet):
         if lang_name is None:
             lang_name = get_language()
 
-        return self.filter(lang_code__iexact=lang_name)
+        return self.filter(models.Q(lang_code__iexact=lang_name) |
+                           models.Q(lang_code__iexact='all'))
 
 
 class AbstractLanguage(models.Model):
 
-    lang_code = models.CharField(max_length=10)
+    lang_code = models.CharField(max_length=10, default='all')
 
     class Meta:
         abstract = True

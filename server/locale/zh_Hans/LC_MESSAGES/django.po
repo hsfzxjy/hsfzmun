@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-11 19:00+0800\n"
+"POT-Creation-Date: 2017-02-14 20:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,49 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: articles/models.py:99
+#: articles/management/__init__.py:7
+msgid "Instant Messages"
+msgstr "即时消息"
+
+#: articles/management/__init__.py:8
+msgid "Conference Files"
+msgstr "会场文件"
+
+#: articles/management/__init__.py:9
+msgid "Agreements & Treaties"
+msgstr "协议 & 条约"
+
+#: articles/management/__init__.py:10
+msgid "Brief News"
+msgstr "简讯"
+
+#: articles/management/__init__.py:11
+msgid "News"
+msgstr "新闻"
+
+#: articles/management/__init__.py:12
+msgid "Reviews"
+msgstr "时评"
+
+#: articles/management/__init__.py:13
+msgid "Declaration"
+msgstr "声明"
+
+#: articles/models.py:101
 #, python-brace-format
 msgid "Administrator rejects your article {target.title}."
 msgstr "管理员驳回了你的文章《{target.title}》"
 
-#: articles/models.py:111
+#: articles/models.py:113
 #, python-brace-format
 msgid "Administrator verified your article {target.title}."
 msgstr "管理员认证了你的文章《{target.title}》"
 
-#: articles/models.py:180
+#: articles/models.py:187
 msgid ""
 "{target.author.nickname} posts an article {target.title} and requires "
 "verification."
 msgstr "{target.author.nickname} 发表了文章 《{target.title}》 并请求你的认证"
 
-#: articles/models.py:192
+#: articles/models.py:199
 msgid "{target.author.nickname} metions you in article {target.title}."
 msgstr "{target.author.nickname} 在文章《{target.title}》中提到了你"
 
-#: articles/models.py:204
+#: articles/models.py:211
 msgid "{target.author.nickname} comments your article {target.article.title}."
 msgstr "{target.author.nickname} 评论了你的文章《{target.article.title}》"
 
-#: articles/models.py:218
+#: articles/models.py:225
 msgid ""
 "{target.author.nickname} replies your comment in article {target.article."
 "title}."
 msgstr "{target.author.nickname} 回复了你在《{target.article.title}》中的评论"
 
-#: articles/models.py:228
+#: articles/models.py:235
 msgid "mentions"
 msgstr "@我的"
 
-#: articles/models.py:229
+#: articles/models.py:236
 msgid "verification"
 msgstr "认证"
 
-#: articles/models.py:230
+#: articles/models.py:237
 msgid "comments"
 msgstr "评论"
 
-#: articles/models.py:231
+#: articles/models.py:238
 msgid "all"
 msgstr "全部"
 
@@ -196,3 +224,7 @@ msgstr "用户 %s 的语言标识不正确。"
 #, python-format
 msgid "Duplicate nickname %s."
 msgstr "昵称 %s 重复了。"
+
+#: users/management/__init__.py:6
+msgid "Verifiers"
+msgstr "认证者"

@@ -58,12 +58,14 @@ class ArticleQuerySet(models.QuerySet):
         if tagnames:
             query &= Q(tags__name__in=tagnames)
 
-
         if args:
             regex = '(%s)' % '|'.join(args)
             query &= Q(title__iregex=regex) | Q(content__iregex=regex)
 
         return self.filter(query)
+
+    def verified(self):
+        return self.filter(status='verified')
 
 
 class Article(StatusModel, AbstractLanguage):
@@ -88,7 +90,7 @@ class Article(StatusModel, AbstractLanguage):
     attachments = models.ManyToManyField('files.Attachment', blank=True)
 
     objects = ArticleQuerySet.as_manager()
-    lang_objects = lang_manager(objects.__class__)
+    lang_objects = lang_manager(objects.__class__)()
 
     def reject(self):
         self.status = 'rejected'
@@ -126,6 +128,9 @@ class Article(StatusModel, AbstractLanguage):
 
 class TagQuerySet(models.QuerySet):
 
+    def deletable(self):
+        return self.filter(slug='')
+
     def existed(self, tag_list):
         return self.filter(name__in=tag_list).values_list('name', flat=True)
 
@@ -140,16 +145,18 @@ class TagQuerySet(models.QuerySet):
         to_remove, to_create = old - new, new - old - set(self.existed(new))
         self.filter(name__in=to_remove)\
             .annotate(acount=models.Count('articles'))\
-            .filter(acount__lte=1).delete()
+            .filter(acount__lte=1).deletable().delete()
         self.bulk_create(Tag(name=name) for name in to_create)
         return self.filter(name__in=new)
 
 
-class Tag(models.Model):
+class Tag(AbstractLanguage):
 
     name = models.CharField(max_length=255, unique=True)
+    slug = models.CharField(max_length=255)
 
     objects = TagQuerySet.as_manager()
+    lang_objects = lang_manager(objects.__class__)()
 
     def __str__(self):
         return self.name

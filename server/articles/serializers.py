@@ -37,6 +37,7 @@ class ArticleSerializer(AbstractLanguageSerializer):
         attachments = validated_data.pop('attachments', [])
         mentions = validated_data.pop('mentions', [])
         normalize_user(validated_data, 'author')
+        validated_data['lang_code'] = validated_data['author'].lang_code
 
         article = Article.objects.create(**validated_data)
 
