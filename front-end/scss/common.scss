@@ -6,12 +6,14 @@
     left: 0;
     z-index: 1000;
     opacity: .7;
-    display: none;
     border-radius: 0;
+    display: none;
     overflow-y: hidden;
-    word-break: break-all;
 
     span {
+        display: none;
         max-height: 1em;
+        overflow-y: hidden;
+        overflow-x: hidden;
     }
 }

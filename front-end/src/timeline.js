@@ -31,6 +31,9 @@ function getFakeTime () {
 const $timeDisplay = $('.timeline')
 let timer, lastTime = 'not-start'
 
+function formatDate (date) {
+    return date.toISOString().split('.')[0].replace('T', ' ')
+}
 
 function timerCallback () {
     let fakeTime = getFakeTime()
@@ -44,7 +47,7 @@ function timerCallback () {
             break
         default:
             if (lastTime === 'not-start') $timeDisplay.fadeIn()
-            $timeDisplay.find('span').html(fakeTime.toString())
+            $timeDisplay.find('span').html(formatDate(fakeTime))
     }
 
     lastTime = fakeTime

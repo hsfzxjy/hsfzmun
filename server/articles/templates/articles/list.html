@@ -75,7 +75,7 @@
 </template>
 
 <div class="container">
-    <ul class="nav nav-tabs hidden-md-up" id="article-top-nav"></ul>
+    <ul class="nav nav-tabs hidden-md-up h-scroll" id="article-top-nav"></ul>
     <div class="row">
         <ul class="nav nav-pills flex-column hidden-sm-down col-md-4" id="article-side-nav"></ul>
         <div class="tab-content col-md-8"></div>
@@ -89,14 +89,20 @@
 <script>
     require(['articles/list', 'util/rest'], function (list, API) {
         list.articleListManager.config([
-            ['title', 'name'],
-            ['stacked', [
-                ['down1', 'name2']
+            ['{% trans "Instant Messages" %}', 'im'],
+            ['{% trans "Academic Files" %}', [
+                ['{% trans "Conference Files" %}', 'cf'],
+                ['{% trans "Agreements & Treaties" %}', 'at'],
+                ['{% trans "Declaration" %}', 'd']
+            ]],
+            ['{% trans "MPC Manuscripts" %}', [
+                ['{% trans "Brief News" %}', 'bn'],
+                ['{% trans "News" %}', 'n'],
+                ['{% trans "Reviews" %}', 'r']
             ]]
         ], {
-            name: '/api/articles/',
-            name2: '/api/articles/'
-        }, 'name2')
+            // TODO
+        }, 'im')
     })
 </script>
 {% endblock %}

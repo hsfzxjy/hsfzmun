@@ -21,6 +21,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    url(r'^$', TemplateView.as_view(template_name='core/index.html'),
+        name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^avatars/', include('panavatar.urls', namespace='avatar')),
     url(r'^lang/', include('language.urls', namespace="language")),
@@ -30,6 +32,4 @@ urlpatterns = [
     url(r'^n/', include('notices.urls', namespace='notices')),
     url(r'^chat/', include('chat.urls', namespace='chat')),
     url(r'^api/', include('api.urls', namespace="api")),
-    url(r'^test/$', TemplateView.as_view(
-        template_name='bases/base-with-header.html'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -41,6 +41,10 @@ define(['timeline-config', 'jquery', 'util/common'], function (_timelineConfig) 
     var timer = void 0,
         lastTime = 'not-start';
 
+    function formatDate(date) {
+        return date.toISOString().split('.')[0].replace('T', ' ');
+    }
+
     function timerCallback() {
         var fakeTime = getFakeTime();
 
@@ -53,7 +57,7 @@ define(['timeline-config', 'jquery', 'util/common'], function (_timelineConfig) 
                 break;
             default:
                 if (lastTime === 'not-start') $timeDisplay.fadeIn();
-                $timeDisplay.find('span').html(fakeTime.toString());
+                $timeDisplay.find('span').html(formatDate(fakeTime));
         }
 
         lastTime = fakeTime;

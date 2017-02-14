@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-14 20:26+0800\n"
+"POT-Creation-Date: 2017-02-14 21:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,77 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: articles/management/__init__.py:7
+#: articles/management/__init__.py:7 articles/templates/articles/list.html:92
 msgid "Instant Messages"
 msgstr "即时消息"
 
-#: articles/management/__init__.py:8
+#: articles/management/__init__.py:8 articles/templates/articles/list.html:94
 msgid "Conference Files"
 msgstr "会场文件"
 
-#: articles/management/__init__.py:9
+#: articles/management/__init__.py:9 articles/templates/articles/list.html:95
 msgid "Agreements & Treaties"
 msgstr "协议 & 条约"
 
-#: articles/management/__init__.py:10
+#: articles/management/__init__.py:10 articles/templates/articles/list.html:99
 msgid "Brief News"
 msgstr "简讯"
 
-#: articles/management/__init__.py:11
+#: articles/management/__init__.py:11 articles/templates/articles/list.html:100
 msgid "News"
 msgstr "新闻"
 
-#: articles/management/__init__.py:12
+#: articles/management/__init__.py:12 articles/templates/articles/list.html:101
 msgid "Reviews"
 msgstr "时评"
 
-#: articles/management/__init__.py:13
+#: articles/management/__init__.py:13 articles/templates/articles/list.html:96
 msgid "Declaration"
 msgstr "声明"
 
-#: articles/models.py:101
+#: articles/models.py:115
 #, python-brace-format
 msgid "Administrator rejects your article {target.title}."
 msgstr "管理员驳回了你的文章《{target.title}》"
 
-#: articles/models.py:113
+#: articles/models.py:127
 #, python-brace-format
 msgid "Administrator verified your article {target.title}."
 msgstr "管理员认证了你的文章《{target.title}》"
 
-#: articles/models.py:187
+#: articles/models.py:201
 msgid ""
 "{target.author.nickname} posts an article {target.title} and requires "
 "verification."
 msgstr "{target.author.nickname} 发表了文章 《{target.title}》 并请求你的认证"
 
-#: articles/models.py:199
+#: articles/models.py:213
 msgid "{target.author.nickname} metions you in article {target.title}."
 msgstr "{target.author.nickname} 在文章《{target.title}》中提到了你"
 
-#: articles/models.py:211
+#: articles/models.py:225
 msgid "{target.author.nickname} comments your article {target.article.title}."
 msgstr "{target.author.nickname} 评论了你的文章《{target.article.title}》"
 
-#: articles/models.py:225
+#: articles/models.py:239
 msgid ""
 "{target.author.nickname} replies your comment in article {target.article."
 "title}."
 msgstr "{target.author.nickname} 回复了你在《{target.article.title}》中的评论"
 
-#: articles/models.py:235
+#: articles/models.py:249
 msgid "mentions"
 msgstr "@我的"
 
-#: articles/models.py:236
+#: articles/models.py:250
 msgid "verification"
 msgstr "认证"
 
-#: articles/models.py:237
+#: articles/models.py:251
 msgid "comments"
 msgstr "评论"
 
-#: articles/models.py:238
+#: articles/models.py:252
 msgid "all"
 msgstr "全部"
 
@@ -157,6 +157,14 @@ msgstr "上一页"
 #: notices/templates/notices/list.html:38
 msgid "Next"
 msgstr "下一页"
+
+#: articles/templates/articles/list.html:93
+msgid "Academic Files"
+msgstr "学术文件"
+
+#: articles/templates/articles/list.html:98
+msgid "MPC Manuscripts"
+msgstr "MPC 稿件"
 
 #: articles/templates/articles/search.html:10 chat/templates/chat/index.html:66
 msgid "Search"

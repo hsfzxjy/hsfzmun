@@ -58,6 +58,20 @@ class ArticleQuerySet(models.QuerySet):
         if tagnames:
             query &= Q(tags__name__in=tagnames)
 
+        slugs = set(filter(lambda s: s.startswith('slug:'), args))
+        args -= slugs
+
+        slugnames = []
+
+        for arg in slugs:
+            slug = arg.split(':', 1)[1]
+
+            if slug:
+                slugnames.append(slug)
+
+        if slugnames:
+            query &= Q(tags__slug__in=slugnames)
+
         if args:
             regex = '(%s)' % '|'.join(args)
             query &= Q(title__iregex=regex) | Q(content__iregex=regex)

@@ -26,8 +26,6 @@ class NoticeList(NoticeMixin, ListAPIView):
 
     def list(self, *args, **kwargs):
         response = super(NoticeList, self).list(*args, **kwargs)
-        if not response.data['count']:
-            raise Http404
 
         current = self.request.query_params.get(
             'category', 'all')
