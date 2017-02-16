@@ -15,7 +15,8 @@ const deps = [
     ['timeago', 'node_modules/timeago', ['node_modules/timeago/jquery.timeago.js', 'node_modules/timeago/locales/**/*']],
     ['file-upload', 'node_modules/blueimp-file-upload'],
     ['tagator', 'lib/tagator'],
-    ['pinyin', 'lib/pinyin']
+    ['pinyin', 'lib/pinyin'],
+    ['sticky', 'lib/sticky']
 ]
 
 gulp.task('build-js', () => {

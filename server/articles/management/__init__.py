@@ -16,6 +16,7 @@ def dummy():
 tags_to_create = {'Instant Messages', 'Conference Files',
                   'Agreements & Treaties', 'Brief News',
                   'Reviews', 'Declaration'}
+slugs = {'_'.join(s.split()): s for s in tags_to_create}
 
 
 def create_tags(app_config, **kwargs):
@@ -27,12 +28,14 @@ def create_tags(app_config, **kwargs):
     except LookupError:
         return
 
+    print(settings.LANGUAGES)
+
     for lang_code, x in settings.LANGUAGES:
         with override(lang_code):
             created = Tag.objects.filter(name__in=map(
                 _, tags_to_create)).values_list('slug', flat=True)
             to_create = [
-                Tag(name=_(s), slug=s, lang_code=lang_code)
-                for s in tags_to_create - set(created)
+                Tag(name=_(slugs[s]), slug=s, lang_code=lang_code)
+                for s in set(slugs.keys()) - set(created)
             ]
             Tag.objects.bulk_create(to_create)

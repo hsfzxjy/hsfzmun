@@ -5,15 +5,17 @@
 <template id="tmpl-article-top-nav-single">
     <li class="nav-item">
         <a href="#[[id]]" data-toggle="tab" class="nav-link" data-name="[[name]]">
-            [[title]]
+            <i class="fa [[title.1]]"></i>
         </a>
     </li>
 </template>
 
 <template id="tmpl-article-top-nav-stacked">
     <li class="nav-item dropdown">
-        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">[[title]]</a>
-        <div class="dropdown-menu">
+        <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">
+            <i class="fa [[title.1]]"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
             [[#items]]
             <a href="#[[id]]" class="dropdown-item" data-name="[[name]]" data-toggle="tab">[[title]]</a>
             [[/items]]
@@ -23,13 +25,13 @@
 
 <template id="tmpl-article-side-nav-single">
     <li class="nav-item">
-        <a href="#[[id]]" class="nav-link" data-name="[[name]]">[[title]]</a>
+        <a href="#[[id]]" class="nav-link" data-name="[[name]]">[[title.0]]</a>
     </li>
 </template>
 
 <template id="tmpl-article-side-nav-stacked">
     <li class="nav-item">
-        <a href="#" data-toggle="tab" class="nav-link disabled">[[title]]</a>
+        [[title.0]]
     </li>
     [[#items]]
     <li class="nav-item">
@@ -75,9 +77,11 @@
 </template>
 
 <div class="container">
-    <ul class="nav nav-tabs hidden-md-up h-scroll" id="article-top-nav"></ul>
+    <ul class="nav nav-tabs hidden-md-up nav-fill sticky" id="article-top-nav" data-s-top="60" data-s-z-index="9999"></ul>
     <div class="row">
-        <ul class="nav nav-pills flex-column hidden-sm-down col-md-4" id="article-side-nav"></ul>
+        <div class="hidden-sm-down col-md-4">
+            <ul class="nav nav-pills flex-column sticky" id="article-side-nav" data-s-top="60" data-s-z-index="9999"></ul>
+        </div>
         <div class="tab-content col-md-8"></div>
     </div>
 </div>
@@ -88,20 +92,30 @@
 {% block scripts %}
 <script>
     require(['articles/list', 'util/rest'], function (list, API) {
+        var API = API.default
+        var baseAPI = new API('/api/articles/')
+        var makeAPI = function (arg) { return baseAPI.param('keyword', 'slug:' + arg) }
+
         list.articleListManager.config([
-            ['{% trans "Instant Messages" %}', 'im'],
-            ['{% trans "Academic Files" %}', [
+            [['{% trans "Instant Messages" %}', 'fa-comment-o'], 'im'],
+            [['{% trans "Academic Files" %}', 'fa-file-text-o'], [
                 ['{% trans "Conference Files" %}', 'cf'],
                 ['{% trans "Agreements & Treaties" %}', 'at'],
                 ['{% trans "Declaration" %}', 'd']
             ]],
-            ['{% trans "MPC Manuscripts" %}', [
+            [['{% trans "MPC Manuscripts" %}', 'fa-paperclip'], [
                 ['{% trans "Brief News" %}', 'bn'],
                 ['{% trans "News" %}', 'n'],
                 ['{% trans "Reviews" %}', 'r']
             ]]
         ], {
-            // TODO
+            im: makeAPI('Instant_Messages'),
+            cf: makeAPI('Conference_Files'),
+            at: makeAPI('Agreements_&_Treaties'),
+            d:  makeAPI('Declaration'),
+            bn: makeAPI('Brief_News'),
+            n:  makeAPI('News'),
+            r:  makeAPI('Reviews')
         }, 'im')
     })
 </script>

@@ -22,7 +22,8 @@ requirejs.config({
         'file-upload': 'file-upload/js/jquery.fileupload',
         'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
         'tagator': 'tagator/fm.tagator.jquery',
-        'pinyin': 'pinyin/web-pinyin'
+        'pinyin': 'pinyin/web-pinyin',
+        'sticky': 'sticky/jquery.sticky'
     },
     shim: {
         jquery: {
@@ -54,6 +55,30 @@ requirejs.config({
         }
     }
 })
+
+define('sticky-util', ['exports', 'sticky'], function (exports) {
+    function bind (sel) {
+        var $el = $(sel)
+        var top = $el.data('s-top'), bottom = $el.data('s-bottom'), zIndex = $el.data('s-z-index')
+
+        $el.sticky({
+            topSpacing: top,
+            bottomSpacing: bottom,
+            responsiveWidth: true,
+            zIndex: zIndex,
+            autoHeight: $el.data('s-auto-height')
+        })
+    }
+
+    exports.bind = bind
+    $(function () {
+        $('.sticky').each(function () {
+            bind(this)
+        })
+    })
+})
+
+require(['sticky-util'])
 
 define('trumbowyg', ['_trumbowyg', '_trumbowygUpload'])
 

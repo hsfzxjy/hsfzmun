@@ -11,7 +11,15 @@ from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
 from files.serializers import AttachmentSerializer
 
 
-class ArticleViewSet(ModelViewSet):
+class SearchViewMixin(object):
+
+    def get_queryset(self):
+        keyword = self.request.query_params.get('keyword', '')
+        self.keyword = keyword
+        return Article.objects.search(keyword)
+
+
+class ArticleViewSet(SearchViewMixin, ModelViewSet):
 
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
@@ -29,16 +37,11 @@ class ArticleViewSet(ModelViewSet):
         return Response('OK')
 
 
-class ArticleFilterList(ListAPIView):
+class ArticleFilterList(SearchViewMixin, ListAPIView):
 
     serializer_class = ArticleSerializer
     renderer_classes = (TemplateHTMLRenderer,)
     template_name = 'articles/search.html'
-
-    def get_queryset(self):
-        keyword = self.request.query_params.get('keyword', '')
-        self.keyword = keyword
-        return Article.objects.search(keyword)
 
     def list(self, *args, **kwargs):
         response = super(ArticleFilterList, self).list(*args, **kwargs)
@@ -50,7 +53,7 @@ class ArticleFilterList(ListAPIView):
 class TagViewSet(ModelViewSet):
 
     serializer_class = TagSerializer
-    queryset = Tag.objects.all()
+    queryset = Tag.lang_objects.all()
     permission_classes = ()
     pagination_class = None
 
