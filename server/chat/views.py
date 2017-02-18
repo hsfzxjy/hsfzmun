@@ -57,4 +57,4 @@ class HistoryMessagesList(ListAPIView):
             )
 
         return Message.objects.filter(
-            created__lt=parse_datetime(before), session_name=session_name)
+            created__lte=parse_datetime(before), session_name=session_name)

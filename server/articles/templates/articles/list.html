@@ -35,7 +35,7 @@
     </li>
     [[#items]]
     <li class="nav-item">
-        <a href="#[[id]]" class="nav-link" data-name="[[name]]">=> [[title]]</a>
+        <a href="#[[id]]" class="nav-link" data-name="[[name]]">[[title]]</a>
     </li>
     [[/items]]
 </template>
@@ -48,8 +48,23 @@
     <li class="media my-4">
         <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
         <div class="media-body">
-            <h5 class="mt-0">[[title]]</h5>
+            <h5 class="mt-0">
+                [[#is_article]]
+                <a href="[[url]]">[[title]]</a>
+                [[/is_article]]
+                [[^is_article]]
+                [[title]]
+                [[/is_article]]
+            </h5>
+            <a href="[[author.url]]">@[[author.nickname]]</a>
             <time class="timeago" datetime="[[published]]"></time>
+            <div class="list-group">
+                [[#attachments]]
+                <a href="[[file]]" class="list-group-item border-0 list-group-item-action" target="_blank">
+                    {% trans "Attachment: " %}[[name]]
+                </a>
+                [[/attachments]]
+            </div>
         </div>
     </li>
 </template>
@@ -77,7 +92,7 @@
 </template>
 
 <div class="container">
-    <ul class="nav nav-tabs hidden-md-up nav-fill sticky" id="article-top-nav" data-s-top="60" data-s-z-index="9999"></ul>
+    <ul class="nav nav-pills hidden-md-up nav-fill sticky" id="article-top-nav" data-s-top="60" data-s-z-index="9999"></ul>
     <div class="row">
         <div class="hidden-sm-down col-md-4">
             <ul class="nav nav-pills flex-column sticky" id="article-side-nav" data-s-top="60" data-s-z-index="9999"></ul>
@@ -94,13 +109,16 @@
     require(['articles/list', 'util/rest'], function (list, API) {
         var API = API.default
         var baseAPI = new API('/api/articles/')
-        var makeAPI = function (arg) { return baseAPI.param('keyword', 'slug:' + arg) }
+        var makeAPI = function (arg) {
+            return baseAPI.param('keyword', 'slug:' + encodeURIComponent(arg))
+                .param('status', 'verified')
+        }
 
         list.articleListManager.config([
             [['{% trans "Instant Messages" %}', 'fa-comment-o'], 'im'],
             [['{% trans "Academic Files" %}', 'fa-file-text-o'], [
                 ['{% trans "Conference Files" %}', 'cf'],
-                ['{% trans "Agreements & Treaties" %}', 'at'],
+                ['{% trans "Agreements and Treaties" %}', 'at'],
                 ['{% trans "Declaration" %}', 'd']
             ]],
             [['{% trans "MPC Manuscripts" %}', 'fa-paperclip'], [
@@ -111,7 +129,7 @@
         ], {
             im: makeAPI('Instant_Messages'),
             cf: makeAPI('Conference_Files'),
-            at: makeAPI('Agreements_&_Treaties'),
+            at: makeAPI('Agreements_and_Treaties'),
             d:  makeAPI('Declaration'),
             bn: makeAPI('Brief_News'),
             n:  makeAPI('News'),

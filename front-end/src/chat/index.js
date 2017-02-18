@@ -24,6 +24,7 @@ const $messagePane = $('#message-pane')
 const $chatList = $('#chat-pane ul')
 const $searchInput = $('#search-box')
 const $searchPane = $('#search-pane')
+const $messageNotifier = $('#message-notifier')
 
 // Submit Button State
 
@@ -47,8 +48,42 @@ $('html').click(({ target }) => {
     if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.hide()
 })
 
-// Util Functions
+// Scroll Utils
 
+function scrollToBottom () {
+    $messagePane.scrollTop($messagePane[0].scrollHeight)
+}
+
+function isBottomed () {
+    return $messagePane.scrollTop() + $messagePane.height() > $loadHistoryButton.height() + 10 + $messageBox.outerHeight()
+}
+
+$messagePane.scroll(throttle(() => {
+    if (isBottomed())
+        $messagePane.trigger('bottomed')
+}, 100))
+
+// Notifier Utils
+
+function showNotifier (message) {
+    if (!message.is_me && (!isBottomed() || message.session_name !== manager.currentSession.session_name))
+        $messageNotifier.html(message.digest).data('session_name', message.session_name).show()
+}
+
+function hideNotifier (message) {
+    $messageNotifier.hide()
+}
+
+$messagePane.on('bottomed', () => {
+    if (manager.currentSession.session_name === $messageNotifier.data('session_name'))
+        $messageNotifier.hide()
+})
+
+$messageNotifier.click(() => {
+    manager.activate(manager._sessions[$messageNotifier.data('session_name')])
+    scrollToBottom()
+    hideNotifier()
+})
 
 // Util for Input Bar
 
@@ -90,9 +125,10 @@ $('#sidebar ul.top-nav li a')
 
 // sidebar & chat-view toggler
 
-function toggleView () {
-    $sidebar.toggleClass('hidden-sm-down')
-    $chatview.toggleClass('hidden-sm-down')
+function toggleView (showView) {
+    let argSide = showView === undefined ? undefined : showView, argChat = showView === undefined ? undefined : !showView
+    $sidebar.toggleClass('hidden-sm-down', argSide)
+    $chatview.toggleClass('hidden-sm-down', argChat)
 }
 
 $('body').on('click', '.toggle-view', toggleView)
@@ -107,7 +143,9 @@ function Session (type, object) {
     this._object = object
     this._entries = []
     this._messages = []
-    this._historyAPI = new API('/api/messages/history/').param('session_name', object.session_name)
+    this._historyAPI = new API('/api/messages/history/')
+        .param('session_name', object.session_name)
+        .param('before', this._earliestTime())
     this._unreadCount = 0
 }
 
@@ -117,9 +155,7 @@ Session.prototype = {
         message.sender = manager._users.filter(u => u.id === message.sender)[0]
         message.is_me = message.sender.id === user.userId
         message.direction = message.is_me ? 'right' : 'left'
-        message.digest = (message.is_me ? '' : `${message.sender.nickname}: `) + message.content
-
-        console.log(message.sender)
+        message.digest = (message.is_me ? '' : `${message.sender.nickname}: `) + message.content.slice(0, 20).replace(/\s/g, '')
     },
 
     _earliestTime () {
@@ -128,14 +164,18 @@ Session.prototype = {
     },
 
     loadHistory () {
-        this._historyAPI.param('before', this._earliestTime()).get()
-            .ok(({ results }) => {
+        if (!this._historyAPI) return
+        new API(this._historyAPI).get()
+            .ok(({ results, next }) => {
                 results.forEach(message => {
                     this._decorateMessage(message)
                     this._messages.unshift(message)
                 })
 
                 if (this.isActive()) this.renderHistory(results)
+
+                this._historyAPI = next
+                if (!next) $loadHistoryButton.hide()
             })
     },
 
@@ -169,6 +209,7 @@ Session.prototype = {
             this._incUnread()
             item.setUnread(true)
         }
+        showNotifier(message)
     },
 
     _incUnread () {
@@ -191,6 +232,7 @@ Session.prototype = {
         messageRenderer.renderMessages(this._messages, tmpl.AFTER)
         $messagePane.scrollTop($messageBox.height())
         let item = chatList.getItem(this)
+        if (this._historyAPI) $loadHistoryButton.show()
         this._clearUnread()
         item.setUnread(false)
     }
@@ -224,7 +266,6 @@ ChatListItem.prototype = {
     },
 
     setUnread (value) {
-        console.log(this._$el)
         this._$el.find('.dot').toggle(value)
     }
 }
@@ -262,7 +303,6 @@ const chatList = {
         this._names = window.localStorage.getObj('chat-items') || []
 
         this._names.slice().reverse().forEach(session_name => {
-            console.log(session_name)
             this.getItem(manager._sessions[session_name])
         })
     }
@@ -365,6 +405,7 @@ const manager = {
     submitted () {
         $submitButton.loading('stop')
         clearInput()
+        setTimeout(() => scrollToBottom(), 150)
     },
 
     submit () {
@@ -436,13 +477,14 @@ const manager = {
 
     activate (session) {
         $cover.toggle(session === null)
+        if (this.currentSession === session) return
         this.currentSession = session
         if (this.currentSession === null) return
 
         clearInput()
         tmpl.renderInto('#input-bar div.extra-fields', 'extra-fields', session.extraFields())
         session.activate()
-        toggleView()
+        toggleView(true)
     }
 }
 

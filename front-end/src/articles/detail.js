@@ -3,6 +3,9 @@ import API from 'util/rest'
 import * as list from 'util/list'
 import pageConfig from 'page-config'
 import user from 'user-info'
+import * as tmpl from 'util/tmpl'
+
+tmpl.verbatim()
 
 function setReplyTo (data) {
     $('#comment-form input[name=reply_to]').remove()
@@ -53,4 +56,14 @@ $('#accept, #reject').on('click', function () {
         .post().ok(() => {
             $(this).parent().remove()
         })
+})
+
+$('#delete-article').click(() => {
+    if (confirm('Are you sure to delete?')) {
+        new API(`/api/articles/${pageConfig.articleId}/`).delete()
+            .ok(() => {
+                alert('OK')
+                location.href = '/articles/list/'
+            })
+    }
 })

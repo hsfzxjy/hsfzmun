@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import ugettext as _
+from django.utils.html import format_html
 
 from model_utils.fields import StatusField, MonitorField
 from model_utils.models import StatusModel
@@ -22,9 +23,9 @@ Q = models.Q
 
 class ArticleQuerySet(models.QuerySet):
 
-    def search(self, keyword):
+    def search(self, keyword, empty_when_blank=True):
         if not keyword:
-            return self.none()
+            return self.none() if empty_when_blank else self
 
         args = {s for s in re.split(r'[\s,]+', keyword) if s}
 
@@ -75,7 +76,7 @@ class ArticleQuerySet(models.QuerySet):
         if args:
             regex = '(%s)' % '|'.join(args)
             query &= Q(title__iregex=regex) | Q(content__iregex=regex)
-
+        print(query, keyword)
         return self.filter(query)
 
     def verified(self):
@@ -87,7 +88,7 @@ class Article(StatusModel, AbstractLanguage):
     STATUS = Choices('verified', 'pending', 'rejected')
 
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content = models.TextField(blank=True)
 
     status = StatusField(default='pending')
     published = MonitorField(monitor='status', when=['verified'])
@@ -102,6 +103,8 @@ class Article(StatusModel, AbstractLanguage):
         blank=True)
 
     attachments = models.ManyToManyField('files.Attachment', blank=True)
+
+    is_article = models.BooleanField()
 
     objects = ArticleQuerySet.as_manager()
     lang_objects = lang_manager(objects.__class__)()
@@ -130,8 +133,19 @@ class Article(StatusModel, AbstractLanguage):
             keyword=('article', 'verify', self.id)
         )
 
+    def save(self, *args, **kwargs):
+        self.is_article = bool(self.content)
+        return super(Article, self).save(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse('articles:detail', kwargs={'article_id': self.id})
+
+    def article_tag(self):
+        if self.is_article:
+            return format_html('''<a href="#{}">{}</a>''',
+                               self.get_absolute_url(), self.title)
+        else:
+            return self.title
 
     class Meta:
         permissions = [

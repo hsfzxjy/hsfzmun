@@ -1,0 +1,48 @@
+<template id="tmpl-article">
+    <li class="media my-4">
+        <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
+        <div class="media-body">
+            <h5 class="mt-0">
+                [[#is_article]]
+                <a href="[[url]]">[[title]]</a>
+                [[/is_article]]
+                [[^is_article]]
+                [[title]]
+                [[/is_article]]
+            </h5>
+            <time class="timeago text-muted" datetime="[[published]]"></time>
+            {% has_perm 'users:change_user' user user_object as can_change_article %}
+            {% if can_change_article %}
+            <a href="/articles/edit/[[id]]/">{% trans 'Edit' %}</a>
+            <a href="javascript:void(0)" class="text-danger delete-article" data-id="[[id]]">{% trans 'Delete' %}</a>
+            {% endif %}
+        </div>
+    </li>
+</template>
+
+<ul class="unstyled-list" id="article-box"></ul>
+
+<div class="text-muted text-center py-3" id="load-more-articles">{% trans 'Load More' %}</div>
+
+<script>
+    require(['util/tmpl', 'util/list', 'util/rest'], function (tmpl, list, API) {
+        tmpl.verbatim()
+        new list.List({
+            $box: '#article-box',
+            api: '/api/articles/user/{{user_object.username}}/',
+            tmpl: 'article',
+            $loadMore: '#load-more-articles'
+        })
+
+        $('#article-box').on('click', '.delete-article', function () {
+            var $this = $(this), id = $this.data('id')
+
+            if (confirm('Are you sure to delete?'))
+                new API.default('/api/articles/' + id + '/').delete()
+                    .ok(function () {
+                        alert('OK!')
+                        $this.closest('li.media').fadeOut()
+                    })
+        })
+    })
+</script>

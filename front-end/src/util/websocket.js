@@ -22,7 +22,6 @@ let connect = throttle(function () {
 }, 10000)
 
 function on (name, cb) {
-    console.log('hi')
     eventBus.on(name, (e, ...rest) => cb(...rest))
 }
 

@@ -1,0 +1,17 @@
+<form id="settings-form">
+    <div class="form-group">
+        <label for="description-input">{% trans 'Description' %}</label>
+        <textarea name="description" id="description-input" class="form-control">{{user_object.description}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">{% trans 'Modify' %}</button>
+</form>
+<script>
+    require(['util/form'], function (Form) {
+        new Form.default('#settings-form', '/api/users/{{user_object.id}}/', 'patch', false)
+            .submitted(function (response) {
+                response.ok(function () {
+                    alert('{% trans "Modified successfully!" %}')
+                })
+            })
+    })
+</script>

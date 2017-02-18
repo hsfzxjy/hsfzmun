@@ -45,7 +45,7 @@ let editForm = new Form('#edit-form', api, action)
     ).payload(data =>
         data.content = getContent($content)
     ).payload(data =>
-        data.mentions = data.mentions.split(',')
+        data.mentions !== undefined && (data.mentions = data.mentions.split(','))
     ).submitted(response =>0
         //response.ok(({ url }) => location.href = url)
     )

@@ -40,7 +40,7 @@ define(['util/form', 'page-config', 'util/rest', 'util/attachments', 'trumbowyg'
     }).payload(function (data) {
         return data.content = getContent($content);
     }).payload(function (data) {
-        return data.mentions = data.mentions.split(',');
+        return data.mentions !== undefined && (data.mentions = data.mentions.split(','));
     }).submitted(function (response) {
         return 0;
     }

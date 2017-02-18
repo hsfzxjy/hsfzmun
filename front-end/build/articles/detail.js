@@ -1,4 +1,4 @@
-define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info'], function (_form, _rest, _list, _pageConfig, _userInfo) {
+define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info', 'util/tmpl'], function (_form, _rest, _list, _pageConfig, _userInfo, _tmpl) {
     'use strict';
 
     var _form2 = _interopRequireDefault(_form);
@@ -10,6 +10,8 @@ define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info'], func
     var _pageConfig2 = _interopRequireDefault(_pageConfig);
 
     var _userInfo2 = _interopRequireDefault(_userInfo);
+
+    var tmpl = _interopRequireWildcard(_tmpl);
 
     function _interopRequireWildcard(obj) {
         if (obj && obj.__esModule) {
@@ -33,6 +35,8 @@ define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info'], func
             default: obj
         };
     }
+
+    tmpl.verbatim();
 
     function setReplyTo(data) {
         $('#comment-form input[name=reply_to]').remove();
@@ -82,6 +86,15 @@ define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info'], func
         new _rest2.default('/api/articles/' + _pageConfig2.default.articleId + '/' + action + '/').post().ok(function () {
             $(_this).parent().remove();
         });
+    });
+
+    $('#delete-article').click(function () {
+        if (confirm('Are you sure to delete?')) {
+            new _rest2.default('/api/articles/' + _pageConfig2.default.articleId + '/').delete().ok(function () {
+                alert('OK');
+                location.href = '/articles/list/';
+            });
+        }
     });
 });
 //# sourceMappingURL=../__maps__/articles/detail.js.map

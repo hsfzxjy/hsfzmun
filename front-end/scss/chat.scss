@@ -1,3 +1,5 @@
+@import 'node_modules/bootstrap/scss/_variables';
+
 $sidebar-bg: #2e3238;
 $chatview-bg: #eee;
 
@@ -47,7 +49,7 @@ body, html, .full-height {
 
 #sidebar {
     background-color: $sidebar-bg;
-    color: white;
+    color: invert($sidebar-bg);
 
     ul.top-nav {
         li a {
@@ -300,6 +302,16 @@ body, html, .full-height {
     }
 }
 
+#message-notifier {
+    position: absolute;
+    background: lighten($blue, 45%);
+    bottom: 62px;
+    left: 0;
+    right: 0;
+    opacity: .7;
+    display: none;
+}
+
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins/_breakpoints";
 
@@ -309,6 +321,10 @@ body, html, .full-height {
     }
 
     #message-pane {
+        bottom: 101px;
+    }
+
+    #message-notifier {
         bottom: 101px;
     }
 

@@ -51,6 +51,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     var $chatList = $('#chat-pane ul');
     var $searchInput = $('#search-box');
     var $searchPane = $('#search-pane');
+    var $messageNotifier = $('#message-notifier');
 
     // Submit Button State
 
@@ -79,8 +80,39 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.hide();
     });
 
-    // Util Functions
+    // Scroll Utils
 
+    function scrollToBottom() {
+        $messagePane.scrollTop($messagePane[0].scrollHeight);
+    }
+
+    function isBottomed() {
+        return $messagePane.scrollTop() + $messagePane.height() > $loadHistoryButton.height() + 10 + $messageBox.outerHeight();
+    }
+
+    $messagePane.scroll((0, _common.throttle)(function () {
+        if (isBottomed()) $messagePane.trigger('bottomed');
+    }, 100));
+
+    // Notifier Utils
+
+    function showNotifier(message) {
+        if (!message.is_me && (!isBottomed() || message.session_name !== manager.currentSession.session_name)) $messageNotifier.html(message.digest).data('session_name', message.session_name).show();
+    }
+
+    function hideNotifier(message) {
+        $messageNotifier.hide();
+    }
+
+    $messagePane.on('bottomed', function () {
+        if (manager.currentSession.session_name === $messageNotifier.data('session_name')) $messageNotifier.hide();
+    });
+
+    $messageNotifier.click(function () {
+        manager.activate(manager._sessions[$messageNotifier.data('session_name')]);
+        scrollToBottom();
+        hideNotifier();
+    });
 
     // Util for Input Bar
 
@@ -129,9 +161,11 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
 
     // sidebar & chat-view toggler
 
-    function toggleView() {
-        $sidebar.toggleClass('hidden-sm-down');
-        $chatview.toggleClass('hidden-sm-down');
+    function toggleView(showView) {
+        var argSide = showView === undefined ? undefined : showView,
+            argChat = showView === undefined ? undefined : !showView;
+        $sidebar.toggleClass('hidden-sm-down', argSide);
+        $chatview.toggleClass('hidden-sm-down', argChat);
     }
 
     $('body').on('click', '.toggle-view', toggleView);
@@ -147,7 +181,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         this._object = object;
         this._entries = [];
         this._messages = [];
-        this._historyAPI = new _rest2.default('/api/messages/history/').param('session_name', object.session_name);
+        this._historyAPI = new _rest2.default('/api/messages/history/').param('session_name', object.session_name).param('before', this._earliestTime());
         this._unreadCount = 0;
     }
 
@@ -158,9 +192,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             })[0];
             message.is_me = message.sender.id === _userInfo2.default.userId;
             message.direction = message.is_me ? 'right' : 'left';
-            message.digest = (message.is_me ? '' : message.sender.nickname + ': ') + message.content;
-
-            console.log(message.sender);
+            message.digest = (message.is_me ? '' : message.sender.nickname + ': ') + message.content.slice(0, 20).replace(/\s/g, '');
         },
         _earliestTime: function _earliestTime() {
             if (!this._messages.length) return manager.getLastTime();
@@ -169,8 +201,10 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         loadHistory: function loadHistory() {
             var _this = this;
 
-            this._historyAPI.param('before', this._earliestTime()).get().ok(function (_ref3) {
-                var results = _ref3.results;
+            if (!this._historyAPI) return;
+            new _rest2.default(this._historyAPI).get().ok(function (_ref3) {
+                var results = _ref3.results,
+                    next = _ref3.next;
 
                 results.forEach(function (message) {
                     _this._decorateMessage(message);
@@ -178,6 +212,9 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
                 });
 
                 if (_this.isActive()) _this.renderHistory(results);
+
+                _this._historyAPI = next;
+                if (!next) $loadHistoryButton.hide();
             });
         },
         renderHistory: function renderHistory(messages) {
@@ -211,6 +248,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
                 this._incUnread();
                 item.setUnread(true);
             }
+            showNotifier(message);
         },
         _incUnread: function _incUnread() {
             this._unreadCount++;
@@ -229,6 +267,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             messageRenderer.renderMessages(this._messages, tmpl.AFTER);
             $messagePane.scrollTop($messageBox.height());
             var item = chatList.getItem(this);
+            if (this._historyAPI) $loadHistoryButton.show();
             this._clearUnread();
             item.setUnread(false);
         }
@@ -257,7 +296,6 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             this._$el.find('.message-digest').html(message.digest);
         },
         setUnread: function setUnread(value) {
-            console.log(this._$el);
             this._$el.find('.dot').toggle(value);
         }
     };
@@ -295,7 +333,6 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             this._names = window.localStorage.getObj('chat-items') || [];
 
             this._names.slice().reverse().forEach(function (session_name) {
-                console.log(session_name);
                 _this3.getItem(manager._sessions[session_name]);
             });
         }
@@ -404,6 +441,9 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         submitted: function submitted() {
             $submitButton.loading('stop');
             clearInput();
+            setTimeout(function () {
+                return scrollToBottom();
+            }, 150);
         },
         submit: function submit() {
             var payload = form.getPayload();
@@ -490,13 +530,14 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         },
         activate: function activate(session) {
             $cover.toggle(session === null);
+            if (this.currentSession === session) return;
             this.currentSession = session;
             if (this.currentSession === null) return;
 
             clearInput();
             tmpl.renderInto('#input-bar div.extra-fields', 'extra-fields', session.extraFields());
             session.activate();
-            toggleView();
+            toggleView(true);
         }
     };
 

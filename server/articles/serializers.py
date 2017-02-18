@@ -31,6 +31,9 @@ class ArticleSerializer(AbstractLanguageSerializer):
         many=True, validators=[], required=False)
     mentions = UserSerializer(many=True, validators=[], required=False)
     url = serializers.CharField(source='get_absolute_url', read_only=True)
+    is_article = serializers.BooleanField(read_only=True)
+    content = serializers.CharField(required=False, allow_blank=True)
+    article_tag = serializers.CharField(read_only=True)
 
     def create(self, validated_data):
         tag_list = validated_data.pop('tags', [])

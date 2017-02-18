@@ -50,7 +50,7 @@ define(['exports', 'jquery', 'util/rest'], function (exports, _jquery, _rest) {
         }).each(function (_, el) {
             var $el = (0, _jquery2.default)(el);
             var name = $el.attr('name');
-            getFeedBackElement($el).html(data[name].join(' '));
+            getFeedBackElement($el).html(data[name].join && data[name].join(' '));
             $el.parent().addClass('has-danger');
         });
     }

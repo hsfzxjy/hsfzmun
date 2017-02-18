@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .serializers import UserSerializer
+from .serializers import UserSerializer, PasswordSerializer
 from .models import User
 
 from django.shortcuts import render, get_object_or_404
@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from django.views.generic import View
+from django.http import Http404
 
 from .creator import create_from_string, FailToCreate
 
@@ -45,11 +47,32 @@ def user_nicknames(request):
 
 
 def profile(request, username):
-    return render(request, 'users/profile.html',
-                  {'user': get_object_or_404(User, username)})
+    view = request.GET.get('view', 'articles')
+    return render(request, 'users/profile.html', {
+        'user_object': get_object_or_404(User, username=username),
+        'view': view,
+        'views': ('articles',)
+    })
 
 
 @login_required
 def my_profile(request):
+    from .consts import profile_views
+    view = request.GET.get('view', profile_views[0])
+    if view not in profile_views:
+        raise Http404
     return render(request, 'users/profile.html',
-                  {'user': request.user})
+                  {'user_object': request.user,
+                   'view': view, 'views': profile_views})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+
+    serializer = PasswordSerializer(
+        data=request.data, context=dict(request=request))
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+
+    return Response('OK')

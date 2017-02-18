@@ -40,7 +40,6 @@ define(['exports', 'ws-config', 'util/common', 'jquery'], function (exports, _ws
     }, 10000);
 
     function on(name, cb) {
-        console.log('hi');
         eventBus.on(name, function (e) {
             for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
                 rest[_key - 1] = arguments[_key];

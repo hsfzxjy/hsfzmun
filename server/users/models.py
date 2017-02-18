@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.html import format_html
 
 from django.contrib.auth.models import BaseUserManager, \
     AbstractBaseUser, PermissionsMixin, Permission
@@ -59,6 +60,13 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     objects = UserManager()
     lang_objects = lang_manager(UserManager)()
 
+    def get_absolute_url(self):
+        return reverse('users:profile', kwargs=dict(username=self.username))
+
+    def user_tag(self):
+        return format_html('<a href="{}">{}</a>',
+                           self.get_absolute_url(), self.nickname)
+
     def get_full_name(self):
         return self.nickname
 
@@ -86,8 +94,8 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     @property
     def avatar_url(self):
         return reverse('avatar:bg', kwargs={
-            'width': 64,
-            'height': 64,
+            'width': 48,
+            'height': 48,
             'seed': 'user_{}_avatar'.format(self.id)
         })
 

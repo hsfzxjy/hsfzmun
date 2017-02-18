@@ -4,16 +4,38 @@
 <div class="jumbotron bg-inverse text-white">
     <div class="row">
         <div class="col-md-3 text-center">
-            <img src="{{user.avatar_url}}" class="rounded-circle avatar">
+            <img src="{{user_object.avatar_url}}" class="rounded-circle avatar">
         </div>
         <div class="col-md-9 text-center">
             <h4>
-                {{user.nickname}}
-                <small class="text-muted">({{user.username}})</small>
+                {{user_object.nickname}}
+                <small class="text-muted">({{user_object.username}})</small>
             </h4>
             <div class="muted">
-                {{user.description}}
+                {{user_object.description}}
             </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid row">
+    <div class="col-md-3">
+        <ul class="nav nav-pills flex-column">
+            {% for view_item in views %}
+                <li class="nav-item">
+                    <a href="?view={{view_item}}" class="nav-link {% if view == view_item %}active{% endif %}">{% trans view_item %}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="tab-content">
+            {% for view_name in views %}
+                {% if view_name == view %}
+                <div class="tab-pane active">
+                    {% include  'users/profile/'|add:view_name|add:'.html' %}
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
 </div>

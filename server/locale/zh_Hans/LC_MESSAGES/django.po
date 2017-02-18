@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-14 21:43+0800\n"
+"POT-Creation-Date: 2017-02-18 12:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: articles/management/__init__.py:7 articles/templates/articles/list.html:92
+#: articles/management/__init__.py:7 articles/templates/articles/list.html:100
 msgid "Instant Messages"
 msgstr "即时消息"
 
-#: articles/management/__init__.py:8 articles/templates/articles/list.html:94
+#: articles/management/__init__.py:8 articles/templates/articles/list.html:102
 msgid "Conference Files"
 msgstr "会场文件"
 
-#: articles/management/__init__.py:9 articles/templates/articles/list.html:95
-msgid "Agreements & Treaties"
+#: articles/management/__init__.py:9 articles/templates/articles/list.html:103
+msgid "Agreements and Treaties"
 msgstr "协议 & 条约"
 
-#: articles/management/__init__.py:10 articles/templates/articles/list.html:99
+#: articles/management/__init__.py:10 articles/templates/articles/list.html:107
 msgid "Brief News"
 msgstr "简讯"
 
-#: articles/management/__init__.py:11 articles/templates/articles/list.html:100
+#: articles/management/__init__.py:11 articles/templates/articles/list.html:108
 msgid "News"
 msgstr "新闻"
 
-#: articles/management/__init__.py:12 articles/templates/articles/list.html:101
+#: articles/management/__init__.py:12 articles/templates/articles/list.html:109
 msgid "Reviews"
 msgstr "时评"
 
-#: articles/management/__init__.py:13 articles/templates/articles/list.html:96
+#: articles/management/__init__.py:13 articles/templates/articles/list.html:104
 msgid "Declaration"
 msgstr "声明"
 
@@ -146,23 +146,23 @@ msgstr "附件"
 msgid "No Files"
 msgstr "暂无文件"
 
-#: articles/templates/articles/list.html:65
+#: articles/templates/articles/list.html:67
 #: articles/templates/articles/search.html:29
 #: notices/templates/notices/list.html:33
 msgid "Previous"
 msgstr "上一页"
 
-#: articles/templates/articles/list.html:70
+#: articles/templates/articles/list.html:72
 #: articles/templates/articles/search.html:34
 #: notices/templates/notices/list.html:38
 msgid "Next"
 msgstr "下一页"
 
-#: articles/templates/articles/list.html:93
+#: articles/templates/articles/list.html:101
 msgid "Academic Files"
 msgstr "学术文件"
 
-#: articles/templates/articles/list.html:98
+#: articles/templates/articles/list.html:106
 msgid "MPC Manuscripts"
 msgstr "MPC 稿件"
 
@@ -210,6 +210,18 @@ msgstr "注销"
 msgid "Log in"
 msgstr "登录"
 
+#: users/consts.py:5
+msgid "settings"
+msgstr ""
+
+#: users/consts.py:6
+msgid "security"
+msgstr ""
+
+#: users/consts.py:7
+msgid "articles"
+msgstr "文章"
+
 #: users/creator.py:32
 msgid "File not upload."
 msgstr ""
@@ -236,3 +248,43 @@ msgstr "昵称 %s 重复了。"
 #: users/management/__init__.py:6
 msgid "Verifiers"
 msgstr "认证者"
+
+#: users/serializers.py:21
+msgid "Old password mismatched."
+msgstr ""
+
+#: users/serializers.py:31
+msgid "New passwords mismatched."
+msgstr ""
+
+#: users/templates/users/profile/security.html:3
+msgid "Old Password"
+msgstr ""
+
+#: users/templates/users/profile/security.html:7
+msgid "New Password"
+msgstr ""
+
+#: users/templates/users/profile/security.html:11
+msgid "New Password Again"
+msgstr ""
+
+#: users/templates/users/profile/security.html:14
+msgid "Change Password"
+msgstr ""
+
+#: users/templates/users/profile/security.html:22
+msgid "Modified password successfully!"
+msgstr ""
+
+#: users/templates/users/profile/settings.html:3
+msgid "Description"
+msgstr ""
+
+#: users/templates/users/profile/settings.html:6
+msgid "Modify"
+msgstr ""
+
+#: users/templates/users/profile/settings.html:13
+msgid "Modified successfully!"
+msgstr ""

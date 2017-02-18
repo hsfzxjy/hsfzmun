@@ -38,7 +38,7 @@ function setErrors ($form, data) {
     .each((_, el) => {
         let $el = $(el)
         let name = $el.attr('name')
-        getFeedBackElement($el).html(data[name].join(' '))
+        getFeedBackElement($el).html(data[name].join && data[name].join(' '))
         $el.parent().addClass('has-danger')
     })
 }

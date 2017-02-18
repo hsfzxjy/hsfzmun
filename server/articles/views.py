@@ -11,18 +11,40 @@ from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
 from files.serializers import AttachmentSerializer
 
 
+class UserArticleList(ListAPIView):
+
+    serializer_class = ArticleSerializer
+    permission_classes = ()
+
+    def get_queryset(self):
+        username = self.kwargs.get('username', '')
+        qs = Article.objects.filter(author__username=username)
+        user = self.request.user
+        if not (user.is_authenticated() and user.username == username):
+            qs = qs.verified()
+
+        return qs
+
+
 class SearchViewMixin(object):
+
+    empty_when_blank = True
+    permission_classes = ()
 
     def get_queryset(self):
         keyword = self.request.query_params.get('keyword', '')
         self.keyword = keyword
-        return Article.objects.search(keyword)
+        return Article.objects.search(
+            keyword,
+            empty_when_blank=self.empty_when_blank).verified()
 
 
 class ArticleViewSet(SearchViewMixin, ModelViewSet):
 
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+
+    empty_when_blank = False
 
     @detail_route(methods=['POST'])
     def accept(self, *args, **kwargs):
@@ -62,6 +84,7 @@ class CommentViewSet(ModelViewSet):
 
     serializer_class = CommentSerializer
     queryset = Comment.objects.order_by('-posted')
+    permission_classes = ()
 
     def get_queryset(self):
         article_id = self.kwargs.get('article_id', '')

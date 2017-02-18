@@ -80,6 +80,7 @@ TEMPLATES = [
             'builtins': [
                 'ui_extensions.templatetags.filters',
                 'django.templatetags.i18n',
+                'rules.templatetags.rules'
             ]
         },
     },
@@ -131,7 +132,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/users/profile/'
+LOGIN_URL = '/users/login/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Django REST Framework
 

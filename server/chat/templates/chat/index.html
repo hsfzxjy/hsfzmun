@@ -1,6 +1,8 @@
 {% extends "bases/base.html" %}
 {% load static %}
 
+{% block timeline %}{% endblock %}
+
 {% block body %}
 <template id="tmpl-contact">
     <li class="media py-3 px-2" data-py="[[pinyin]]">
@@ -19,7 +21,21 @@
     <div class="message-item [[direction]] media my-3">
         <img src="[[sender.avatar_url]]" class="avatar avatar-left d-flex rounded">
         <div class="message-body media-body">
-            <p class="message-content rounded">[[content]]</p>
+            <p class="message-content rounded">
+                [[content]]
+                [[#content]][[#attachments]]<br>[[/attachments]][[/content]]
+                [[#attachments]]
+                [[#is_image]]
+                <a href="[[file]]" target="_blank">
+                    <img src="[[file]]" alt="name">
+                </a>
+                [[/is_image]]
+                [[^is_image]]
+                {% trans 'Attachment: ' %}<a href="[[file]]" target="_blank">[[name]]</a>
+                [[/is_image]]
+                <br>
+                [[/attachments]]
+            </p>
         </div>
         <img src="[[sender.avatar_url]]" class="avatar avatar-right d-flex rounded">
     </div>
@@ -88,9 +104,10 @@
                 <span class="title">&nbsp;</span>
             </div>
             <div id="message-pane">
-                <div id="load-history">load</div>
+                <div id="load-history" class="py-2 text-center">{% trans "Load history" %}</div>
                 <div id="message-box"></div>
             </div>
+            <div id="message-notifier" class="px-2 py-2"></div>
             <div id="input-bar" class="media">
                     <div class="progress">
                         <div class="progress-bar bg-success"></div>

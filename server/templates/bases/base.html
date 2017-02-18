@@ -19,10 +19,12 @@
         {% block after_scripts %} {% endblock %}
     </head>
     <body>
+        {% block timeline %}
         <div class="timeline alert alert-info">
             <i class="fa fa-clock-o" data-icons="angle-left clock-o"></i>
             <span></span>
         </div>
+        {% endblock %}
         {% block body %} {% endblock %}
         <script>require(['timeline'])</script>
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">

@@ -6,7 +6,7 @@ from django.utils.translation import override, gettext as _
 def dummy():
     _('Instant Messages')
     _('Conference Files')
-    _('Agreements & Treaties')
+    _('Agreements and Treaties')
     _('Brief News')
     _('News')
     _('Reviews')
@@ -14,7 +14,7 @@ def dummy():
 
 
 tags_to_create = {'Instant Messages', 'Conference Files',
-                  'Agreements & Treaties', 'Brief News',
+                  'Agreements and Treaties', 'Brief News',
                   'Reviews', 'Declaration'}
 slugs = {'_'.join(s.split()): s for s in tags_to_create}
 
@@ -27,8 +27,6 @@ def create_tags(app_config, **kwargs):
         Tag = apps.get_model('articles', 'Tag')
     except LookupError:
         return
-
-    print(settings.LANGUAGES)
 
     for lang_code, x in settings.LANGUAGES:
         with override(lang_code):
