@@ -279,29 +279,6 @@ body, html, .full-height {
     }
 }
 
-.red-point {
-    position: relative;
-
-    @mixin make-dot ($size) {
-        position: absolute;
-        background-color: red;
-        right: - $size * 0.4;
-        top: - $size * 0.25;
-        width: $size;
-        height: $size;
-        border-radius: 50%;
-        display: none;
-    }
-
-    .dot {
-        @include make-dot(5px);
-    }
-
-    .dot.dot-2x {
-        @include make-dot(10px);
-    }
-}
-
 #message-notifier {
     position: absolute;
     background: lighten($blue, 45%);

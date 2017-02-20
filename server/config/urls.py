@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic.base import TemplateView
 from django.conf import settings
 
 from django.conf.urls.static import static
 
+from .views import index
+
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='core/index.html'),
-        name='index'),
+    url(r'^$', index, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^avatars/', include('panavatar.urls', namespace='avatar')),
     url(r'^lang/', include('language.urls', namespace="language")),

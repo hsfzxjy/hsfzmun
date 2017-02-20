@@ -4,13 +4,16 @@ from django.contrib.auth.decorators import login_required
 
 from api.routers import router, add_urlpattern
 
-from .views import DiscussionViewSet, UnreadMessagesList, HistoryMessagesList
+from .views import DiscussionViewSet, UnreadMessagesList, HistoryMessagesList,\
+    unread_count
 
 router.register(r'^discussions', DiscussionViewSet, base_name='discussion')
 add_urlpattern(url(r'^messages/unread/$', UnreadMessagesList.as_view(),
                    name='unread-messages'))
 add_urlpattern(url(r'^messages/history/$',
                    HistoryMessagesList.as_view(), name='history-messages'))
+add_urlpattern(url(r'^messages/unread/count/$',
+                   unread_count, name='unread-count'))
 
 urlpatterns = [
     url(r'^$', login_required(

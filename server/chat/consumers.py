@@ -14,7 +14,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     def connection_groups(self, **kwargs):
         user = self.message.user
 
-        return [user.channel_group_name] +\
+        return [user.channel_group_name, 'notices_{}'.format(user.id)] +\
             [d.channel_group_name for d in user.discussions.all(
             )] if user.is_authenticated() else []
 

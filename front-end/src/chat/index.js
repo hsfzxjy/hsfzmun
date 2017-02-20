@@ -66,7 +66,7 @@ $messagePane.scroll(throttle(() => {
 // Notifier Utils
 
 function showNotifier (message) {
-    if (!message.is_me && (!isBottomed() || message.session_name !== manager.currentSession.session_name))
+    if (!message.is_me && (!isBottomed() || manager.isCurrentSessionName(message.session_name)))
         $messageNotifier.html(message.digest).data('session_name', message.session_name).show()
 }
 
@@ -75,7 +75,7 @@ function hideNotifier (message) {
 }
 
 $messagePane.on('bottomed', () => {
-    if (manager.currentSession.session_name === $messageNotifier.data('session_name'))
+    if (manager.isCurrentSessionName($messageNotifier.data('session_name')))
         $messageNotifier.hide()
 })
 
@@ -473,6 +473,10 @@ const manager = {
             $list: '#group-contacts-pane ul',
             type: GROUP_SESSION
         }).ok(() => this._groupsLoaded = true)
+    },
+
+    isCurrentSessionName (sessionName) {
+        return this.currentSession && this.currentSession.session_name === sessionName
     },
 
     activate (session) {

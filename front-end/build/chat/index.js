@@ -97,7 +97,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     // Notifier Utils
 
     function showNotifier(message) {
-        if (!message.is_me && (!isBottomed() || message.session_name !== manager.currentSession.session_name)) $messageNotifier.html(message.digest).data('session_name', message.session_name).show();
+        if (!message.is_me && (!isBottomed() || manager.isCurrentSessionName(message.session_name))) $messageNotifier.html(message.digest).data('session_name', message.session_name).show();
     }
 
     function hideNotifier(message) {
@@ -105,7 +105,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     }
 
     $messagePane.on('bottomed', function () {
-        if (manager.currentSession.session_name === $messageNotifier.data('session_name')) $messageNotifier.hide();
+        if (manager.isCurrentSessionName($messageNotifier.data('session_name'))) $messageNotifier.hide();
     });
 
     $messageNotifier.click(function () {
@@ -527,6 +527,9 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             }).ok(function () {
                 return _this10._groupsLoaded = true;
             });
+        },
+        isCurrentSessionName: function isCurrentSessionName(sessionName) {
+            return this.currentSession && this.currentSession.session_name === sessionName;
         },
         activate: function activate(session) {
             $cover.toggle(session === null);

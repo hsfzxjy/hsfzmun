@@ -6,5 +6,11 @@
 {% endblock %}
 
 {% block after_scripts %}
+{% if user.is_authenticated %}
+<script>
+    define('ws-config', '/ws/notices/')
+    require(['notices/index'])
+</script>
+{% endif %}
 {% block scripts %} {% endblock %}
 {% endblock %}

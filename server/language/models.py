@@ -31,3 +31,13 @@ def lang_manager(manager_cls=None):
             return super(WrappedManager, self).get_queryset().lang()
 
     return WrappedManager.from_queryset(AbstractLanguageQuerySet)
+
+
+def lang_queryset(queryset_cls=None):
+    if queryset_cls is None:
+        queryset_cls = models.QuerySet
+
+    class WrappedQuerySet(queryset_cls, AbstractLanguageQuerySet):
+        pass
+
+    return WrappedQuerySet

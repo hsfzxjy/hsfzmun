@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from django.utils import timezone
 
+from .consumers import send_unread
+
 
 def make_keyword(args):
     args = map(str, (arg.id if isinstance(
@@ -38,6 +40,8 @@ class NoticeQuerySet(models.QuerySet):
         kwargs.update({'receiver': receiver, 'target': target})
         notice.message = tmpl.format(*args, **kwargs)
         notice.save()
+
+        send_unread(receiver)
 
         return notice
 
@@ -76,6 +80,7 @@ class Notice(models.Model):
     def mark_as_read(self):
         self.has_read = True
         self.save()
+        send_unread(self.receiver)
 
     class Meta:
         ordering = ('has_read', '-created')

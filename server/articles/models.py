@@ -14,7 +14,7 @@ from django.dispatch import receiver
 from notices.models import Notice
 from users.models import User
 
-from language.models import lang_manager, AbstractLanguage
+from language.models import lang_manager, AbstractLanguage, lang_queryset
 
 import re
 
@@ -107,7 +107,7 @@ class Article(StatusModel, AbstractLanguage):
     is_article = models.BooleanField()
 
     objects = ArticleQuerySet.as_manager()
-    lang_objects = lang_manager(objects.__class__)()
+    lang_objects = lang_queryset(ArticleQuerySet).as_manager()
 
     def reject(self):
         self.status = 'rejected'
@@ -184,7 +184,7 @@ class Tag(AbstractLanguage):
     slug = models.CharField(max_length=255)
 
     objects = TagQuerySet.as_manager()
-    lang_objects = lang_manager(objects.__class__)()
+    lang_objects = lang_queryset(TagQuerySet).as_manager()
 
     def __str__(self):
         return self.name

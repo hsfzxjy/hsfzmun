@@ -1,1 +1,47 @@
 {% include 'bases/base-with-header.html' %}
+
+{% block content %}
+<div class="jumbotron bg-inverse text-white">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="py-4 display-5">华附模联</h1>
+                <h5 class="float-right text-muted d-inline text-center">——梦开始的地方，让理想不再彷徨</h5>
+            </div>
+        </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-2 col-md-8">
+            <ul class="list-unstyled">
+                {% for article in articles %}
+                <li class="media my-4">
+                    <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
+                    <div class="media-body">
+                        <h5 class="mt-0">
+                            {% if article.is_article %}
+                            <a href="{{article.url}}">{{article.title}}</a>
+                            {% else %}
+                            {{article.title}}
+                            {% endif %}
+                        </h5>
+                        <a href="{{article.author.url}}">@{{article.author.nickname}}</a>
+                        <time class="timeago" datetime="{{article.published}}"></time>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-lg-2 col-md-4">
+            <ul class="list-group">
+                {% for file in files %}
+                <li class="list-group-item list-group-item-action">
+                    <a href="{{file.file}}">{{file.name}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

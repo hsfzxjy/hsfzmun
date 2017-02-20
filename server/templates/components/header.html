@@ -1,10 +1,12 @@
 {% get_available_languages as LANGUAGES %}
 
-<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse sticky" data-s-top="0" data-s-z-index="10000" data-s-auto-height="false">
+<nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse" data-s-top="0" data-s-z-index="10000" data-s-auto-height="false">
     <button class="navbar-toggler navbar-toggler-right border-0" data-toggle="collapse" data-target="#top-nav-bar">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon red-point">
+            <span class="both dot"></span>
+        </span>
     </button>
-    <a href="#" class="navbar-brand">HFMUN</a>
+    <a href="#" class="navbar-brand">HSFZMUN</a>
     <div class="collapse navbar-collapse" id="top-nav-bar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -23,8 +25,13 @@
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a href="{% url 'notices:list' %}" class="nav-link">
-                    <i class="fa fa-bell-o"></i>
+                    <i class="fa fa-bell-o red-point"><span class="notices dot"></span></i>
                     <span class="hidden-md-up">&nbsp;{% trans 'Notifications' %}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'chat:index' %}" class="nav-link">
+                    <span class="red-point">{% trans 'Discuss' %} <span class="dot chat"></span></span>
                 </a>
             </li>
             <li class="nav-item">
