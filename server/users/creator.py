@@ -73,7 +73,8 @@ def create_from_string(request, string):
 
 lang_map = {
     'z': 'zh-hans',
-    'e': 'en-us'
+    'e': 'en-us',
+    'a': 'all',
 }
 
 
@@ -98,10 +99,15 @@ def create(request, raw_data, raise_error=lambda: None):
                              )
             raise_error({'created': created_users})
 
+        is_new_user = True
+
         if created:
             user.set_password(user.initial_password)
             user.save()
+        else:
+            is_new_user = user.check_password(user.initial_password)
 
-        created_users.append([user, created])
+        if is_new_user:
+            created_users.append([user, created])
 
     return created_users

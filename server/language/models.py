@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.utils.translation import get_language
+from django.utils.translation import get_language, gettext as _
 
 
 class AbstractLanguageQuerySet(models.QuerySet):
@@ -15,7 +15,14 @@ class AbstractLanguageQuerySet(models.QuerySet):
 
 class AbstractLanguage(models.Model):
 
-    lang_code = models.CharField(max_length=10, default='all')
+    LANG_CODE_CHOICES = (
+        ('en-us', _('English')),
+        ('zh-hans', _('Chinese')),
+        ('all', _('All')),
+    )
+
+    lang_code = models.CharField(_('language code'), max_length=10,
+                                 default='all', choices=LANG_CODE_CHOICES)
 
     class Meta:
         abstract = True

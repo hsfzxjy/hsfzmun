@@ -14,7 +14,7 @@ from django.dispatch import receiver
 from notices.models import Notice
 from users.models import User
 
-from language.models import lang_manager, AbstractLanguage, lang_queryset
+from language.models import AbstractLanguage, lang_queryset
 
 import re
 
@@ -87,24 +87,32 @@ class Article(StatusModel, AbstractLanguage):
 
     STATUS = Choices('verified', 'pending', 'rejected')
 
-    title = models.CharField(max_length=255)
-    content = models.TextField(blank=True)
+    title = models.CharField(_('title'), max_length=255)
+    content = models.TextField(_('content'), blank=True)
 
-    status = StatusField(default='pending')
-    published = MonitorField(monitor='status', when=['verified'])
-    edited = MonitorField(monitor='content')
+    status = StatusField(_('status'), default='pending')
+    published = MonitorField(
+        _('published time'), monitor='status', when=['verified'])
+    edited = MonitorField(_('edited time'), monitor='content')
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('author')
+    )
 
-    tags = models.ManyToManyField('Tag', blank=True, related_name='articles')
+    tags = models.ManyToManyField(
+        'Tag', verbose_name=_('tags'), blank=True, related_name='articles')
 
     mentions = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='mentioned_articles',
-        blank=True)
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('mentions'), related_name='mentioned_articles',
+        blank=True
+    )
 
-    attachments = models.ManyToManyField('files.Attachment', blank=True)
+    attachments = models.ManyToManyField(
+        'files.Attachment', verbose_name=_('attachments'), blank=True)
 
-    is_article = models.BooleanField()
+    is_article = models.BooleanField(_('is_article'))
 
     objects = ArticleQuerySet.as_manager()
     lang_objects = lang_queryset(ArticleQuerySet).as_manager()
@@ -147,11 +155,16 @@ class Article(StatusModel, AbstractLanguage):
         else:
             return self.title
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         permissions = [
             ('can_verify', 'Can verify'),
         ]
         ordering = ('-published', '-edited')
+        verbose_name = _('article')
+        verbose_name_plural = _('articles')
 
 
 class TagQuerySet(models.QuerySet):

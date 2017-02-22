@@ -14,6 +14,8 @@ from django.http import Http404
 
 from .creator import create_from_string, FailToCreate
 
+from .consts import get_profile_views
+
 
 class UserBulkCreationView(View):
 
@@ -23,7 +25,7 @@ class UserBulkCreationView(View):
     def post(self, request):
         content = request.POST.get('users', '')
 
-        context = {}
+        context = {'raw_data': content}
         try:
             context['created'] = create_from_string(request, content)
         except FailToCreate as e:
@@ -48,22 +50,23 @@ def user_nicknames(request):
 
 def profile(request, username):
     view = request.GET.get('view', 'articles')
+    user = get_object_or_404(User, username=username)
     return render(request, 'users/profile.html', {
-        'user_object': get_object_or_404(User, username=username),
+        'user_object': user,
         'view': view,
-        'views': ('articles',)
+        'views': get_profile_views(request, user)
     })
 
 
 @login_required
 def my_profile(request):
-    from .consts import profile_views
-    view = request.GET.get('view', profile_views[0])
-    if view not in profile_views:
+    views = get_profile_views(request, request.user)
+    view = request.GET.get('view', views[0])
+    if view not in views:
         raise Http404
     return render(request, 'users/profile.html',
                   {'user_object': request.user,
-                   'view': view, 'views': profile_views})
+                   'view': view, 'views': views})
 
 
 @api_view(['POST'])
