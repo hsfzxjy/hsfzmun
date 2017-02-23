@@ -1,4 +1,4 @@
-define(['util/form', 'page-config', 'util/rest', 'util/attachments', 'trumbowyg', 'tagator'], function (_form, _pageConfig, _rest, _attachments) {
+define(['trumbowyg', 'util/form', 'page-config', 'util/rest', 'util/attachments', 'tagator'], function (_trumbowyg, _form, _pageConfig, _rest, _attachments) {
     'use strict';
 
     var _form2 = _interopRequireDefault(_form);
@@ -12,14 +12,13 @@ define(['util/form', 'page-config', 'util/rest', 'util/attachments', 'trumbowyg'
     }
 
     var $content = $('#content').trumbowyg({
+        lang: _trumbowyg.locale,
         btnsDef: {
-            // Customizables dropdowns
-            image: {
-                dropdown: ['insertImage', 'upload', 'base64', 'noembed'],
+            upload: {
                 ico: 'insertImage'
             }
         },
-        btns: [['viewHTML'], ['undo', 'redo'], ['formatting'], 'btnGrp-design', ['link'], ['image'], 'btnGrp-justify', 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']],
+        btns: [['undo', 'redo'], ['formatting'], 'btnGrp-design', ['link'], ['upload'], 'btnGrp-justify', 'btnGrp-lists', ['foreColor', 'backColor'], ['preformatted'], ['horizontalRule'], ['fullscreen']],
         'plugins': {
             upload: {
                 serverPath: '/files/image/',
@@ -42,10 +41,11 @@ define(['util/form', 'page-config', 'util/rest', 'util/attachments', 'trumbowyg'
     }).payload(function (data) {
         return data.mentions !== undefined && (data.mentions = data.mentions.split(','));
     }).submitted(function (response) {
-        return 0;
-    }
-    //response.ok(({ url }) => location.href = url)
-    );
+        return response.ok(function (_ref) {
+            var url = _ref.url;
+            return location.href = url;
+        });
+    });
 
     // File Uploads
 

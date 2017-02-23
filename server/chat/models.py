@@ -2,12 +2,15 @@ from users.models import User
 from django.db import models
 
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 
 
 class Discussion(models.Model):
 
-    name = models.CharField(max_length=255)
-    members = models.ManyToManyField(User, related_name='discussions')
+    name = models.CharField(_('name'), max_length=255,
+                            unique=True, db_index=True)
+    members = models.ManyToManyField(
+        User, verbose_name=_('members'), related_name='discussions')
 
     @property
     def channel_group_name(self):
@@ -23,6 +26,13 @@ class Discussion(models.Model):
             'height': 64,
             'seed': 'discussion_{}_avatar'.format(self.id)
         })
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('discussion')
+        verbose_name_plural = _('discussions')
 
 
 class MessageQuerySet(models.QuerySet):

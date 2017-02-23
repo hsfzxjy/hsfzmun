@@ -11,7 +11,7 @@ from django import forms, db
 class StaticHTMLWidget(forms.Widget):
 
     def render(self, name, value, attrs=None):
-        return mark_safe(value)
+        return mark_safe('<article style="margin-left:170px;">{}</article>'.format(value))
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -26,7 +26,7 @@ class ArticleAdmin(admin.ModelAdmin):
     fields = ('title', 'content')
     ordering = ('-edited',)
 
-    readonly_fields = ('title', 'content')
+    readonly_fields = ('title',)
 
     list_per_page = 30
 

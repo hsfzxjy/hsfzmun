@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | {{ _('HSFZMUN site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ _('HSFZMUN administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+    {% if site_url %}
+        <a href="{{ site_url }}">{% trans 'View site' %}</a>
+    {% endif %}
+{% endblock %}

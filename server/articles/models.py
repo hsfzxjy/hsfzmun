@@ -193,8 +193,8 @@ class TagQuerySet(models.QuerySet):
 
 class Tag(AbstractLanguage):
 
-    name = models.CharField(max_length=255, unique=True)
-    slug = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True, db_index=True)
+    slug = models.CharField(max_length=255, db_index=True)
 
     objects = TagQuerySet.as_manager()
     lang_objects = lang_queryset(TagQuerySet).as_manager()

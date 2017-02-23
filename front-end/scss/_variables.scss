@@ -1,8 +1,23 @@
-$gray: #95a5a6;
+//$gray: #95a5a6;
 $blue: #2c3e50;
 $green: #18bc9c;
 $teal: #3498db;
 $yellow: #f39c12;
 $red: #e74c3c;
-$gray-dark: #2c3e50;
+//$gray-dark: #2c3e50;
+//$gray-lighter: #eee;
 $enable-rounded: false;
+$enable-gradients: true;
+$enable-shadows: true;
+
+$inverse-bg: #2c3e50;
+
+$body-bg: #fafafa;
+//$body-color: darken($gray-dark, 3%);
+
+$input-bg: $body-bg;
+
+$list-group-bg: darken($body-bg, 1%);
+$list-group-hover-bg: lighten($list-group-bg, 3%);
+
+$pagination-bg: $body-bg;

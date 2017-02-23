@@ -25,6 +25,21 @@
     }
 }
 
+.navbar-inverse {
+    .dropdown-menu {
+        $bg: darken($inverse-bg, 3%);
+        background-color: $bg;
+
+        a {
+            color: $navbar-inverse-color;
+            @include hover-focus {
+                color: $navbar-inverse-hover-color;
+                background-color: $bg;
+            }
+        }
+    }
+}
+
 html, body {
     max-width: 100%;
     min-height: 100%;
@@ -44,6 +59,8 @@ button {
 
 .tagator_element {
     width: 100%!important;
+    border-radius: 0;
+    background-color: inherit;
 }
 
 .h-scroll {

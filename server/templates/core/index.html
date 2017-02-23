@@ -19,7 +19,7 @@
                     <div class="media-body">
                         <h5 class="mt-0">
                             {% if article.is_article %}
-                            <a href="{{article.url}}">{{article.title}}</a>
+                            <a href="{{article.get_absolute_url}}">{{article.title}}</a>
                             {% else %}
                             {{article.title}}
                             {% endif %}

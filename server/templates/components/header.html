@@ -20,6 +20,25 @@
                     {% endfor %}
                 </div>
             </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="{% url 'chat:index' %}" class="nav-link">
+                    <span class="red-point">{% trans 'Discuss' %} <span class="dot chat"></span></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'articles:new' %}" class="nav-link">
+                    {% trans 'Write' %}
+                </a>
+            </li>
+            {% endif %}
+            {% if perms.can_manage %}
+            <li class="nav-item">
+                <a href="{% url 'users:my-profile' %}?view=admin" class="nav-link">
+                    {% trans 'Admin' %}
+                </a>
+            </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}
@@ -27,11 +46,6 @@
                 <a href="{% url 'notices:list' %}" class="nav-link">
                     <i class="fa fa-bell-o red-point"><span class="notices dot"></span></i>
                     <span class="hidden-md-up">&nbsp;{% trans 'Notifications' %}</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{% url 'chat:index' %}" class="nav-link">
-                    <span class="red-point">{% trans 'Discuss' %} <span class="dot chat"></span></span>
                 </a>
             </li>
             <li class="nav-item">

@@ -92,7 +92,7 @@ Upload.prototype = {
         this._$button.find('input[type=file]').fileupload({
             url: '/api/attachments/',
             dataType: 'json',
-            maxFileSize: 10000000
+            maxFileSize: 3 * 1024 * 1024
         })
         .on('fileuploadadd', (e, data) => {
             this._setButtonState(true)

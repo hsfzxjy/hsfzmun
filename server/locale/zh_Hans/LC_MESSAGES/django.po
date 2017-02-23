@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-22 18:00+0800\n"
+"POT-Creation-Date: 2017-02-23 19:48+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: articles/admin.py:36 articles/models.py:104
+msgid "tags"
+msgstr "标签"
+
+#: articles/apps.py:10 articles/models.py:167 users/consts.py:18
+msgid "articles"
+msgstr "文章"
 
 #: articles/management/__init__.py:7 articles/templates/articles/list.html:118
 msgid "Instant Messages"
@@ -66,10 +74,6 @@ msgstr "编辑时间"
 msgid "author"
 msgstr "作者"
 
-#: articles/models.py:104
-msgid "tags"
-msgstr "标签"
-
 #: articles/models.py:108 articles/models.py:276
 msgid "mentions"
 msgstr "@我的"
@@ -94,10 +98,6 @@ msgstr "管理员认证了你的文章《{target.title}》"
 
 #: articles/models.py:166
 msgid "article"
-msgstr "文章"
-
-#: articles/models.py:167 users/consts.py:18
-msgid "articles"
 msgstr "文章"
 
 #: articles/models.py:228
@@ -235,6 +235,26 @@ msgstr "MPC 稿件"
 msgid "Search"
 msgstr "搜索"
 
+#: chat/admin.py:14 chat/admin.py:15 chat/models.py:13
+msgid "members"
+msgstr "成员"
+
+#: chat/apps.py:7
+msgid "chat system"
+msgstr "聊天系统"
+
+#: chat/models.py:10
+msgid "name"
+msgstr "名称"
+
+#: chat/models.py:34
+msgid "discussion"
+msgstr "讨论组"
+
+#: chat/models.py:35
+msgid "discussions"
+msgstr "讨论组"
+
 #: chat/templates/chat/index.html:107
 msgid "Load history"
 msgstr "加载历史消息"
@@ -263,6 +283,18 @@ msgstr "全部"
 msgid "language code"
 msgstr "语言标识"
 
+#: templates/admin/base_site.html:3
+msgid "HSFZMUN site admin"
+msgstr "HSFZMUN 站点管理"
+
+#: templates/admin/base_site.html:6
+msgid "HSFZMUN administration"
+msgstr "HSFZMUN 管理"
+
+#: templates/admin/base_site.html:13
+msgid "View site"
+msgstr ""
+
 #: templates/admin/submit_line.html:3
 msgid "Save"
 msgstr ""
@@ -288,19 +320,27 @@ msgstr "文章"
 msgid "Languages"
 msgstr "语言"
 
-#: templates/components/header.html:29
-msgid "Notifications"
-msgstr "通知"
-
-#: templates/components/header.html:34
+#: templates/components/header.html:26
 msgid "Discuss"
 msgstr "讨论"
 
-#: templates/components/header.html:41
+#: templates/components/header.html:31
+msgid "Write"
+msgstr "撰写"
+
+#: templates/components/header.html:38
+msgid "Admin"
+msgstr "管理"
+
+#: templates/components/header.html:48
+msgid "Notifications"
+msgstr "通知"
+
+#: templates/components/header.html:55
 msgid "Log out"
 msgstr "注销"
 
-#: templates/components/header.html:45
+#: templates/components/header.html:59
 msgid "Log in"
 msgstr "登录"
 
@@ -332,7 +372,7 @@ msgstr "重置密码"
 msgid "set verifiers"
 msgstr "设置认证者"
 
-#: users/admin.py:110 users/admin.py:111 users/models.py:118
+#: users/admin.py:110 users/admin.py:111 users/apps.py:10 users/models.py:118
 msgid "users"
 msgstr "用户"
 
@@ -426,6 +466,14 @@ msgstr "快速创建用户"
 #: users/templates/users/profile/admin.html:16
 msgid "Article Management"
 msgstr "文章管理"
+
+#: users/templates/users/profile/admin.html:20
+msgid "Discussions"
+msgstr "讨论组"
+
+#: users/templates/users/profile/admin.html:22
+msgid "Discussion Management"
+msgstr "讨论组管理"
 
 #: users/templates/users/profile/security.html:3
 msgid "Old Password"

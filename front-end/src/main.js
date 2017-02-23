@@ -5,26 +5,33 @@ define('__tether', ['tether'], function (Tether) {
 var TIMEAGO_I18N_MAP = {
     'zh-hans': 'zh-CN',
     'en-us': 'en'
+}, TRUMBOWYG_I18N_MAP = {
+    'zh-hans': 'zh_cn'
 }
+
+var paths = {
+    jquery: 'jquery/jquery',
+    tether: 'tether/js/tether.min',
+    bootstrap: 'bootstrap/js/bootstrap.min',
+    _trumbowyg: 'trumbowyg/trumbowyg.min',
+    _trumbowygUpload: 'trumbowyg/plugins/upload/trumbowyg.upload',
+    mustache: 'mustache/mustache.min',
+    _timeago: 'timeago/jquery.timeago',
+    _timeagoLocale: 'timeago/locales/jquery.timeago.' + TIMEAGO_I18N_MAP[i18nInfo.langCode],
+    'file-upload': 'file-upload/js/jquery.fileupload',
+    'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
+    'tagator': 'tagator/fm.tagator.jquery',
+    'pinyin': 'pinyin/web-pinyin',
+    'sticky': 'sticky/jquery.sticky'
+}
+
+if (TRUMBOWYG_I18N_MAP[i18nInfo.langCode])
+    paths['_trumbowygLocale'] = 'trumbowyg/langs/' + TRUMBOWYG_I18N_MAP[i18nInfo.langCode] + '.min'
 
 requirejs.config({
     baseUrl: '/static',
     waitSeconds: 30,
-    paths: {
-        jquery: 'jquery/jquery',
-        tether: 'tether/js/tether.min',
-        bootstrap: 'bootstrap/js/bootstrap.min',
-        _trumbowyg: 'trumbowyg/trumbowyg.min',
-        _trumbowygUpload: 'trumbowyg/plugins/upload/trumbowyg.upload',
-        mustache: 'mustache/mustache.min',
-        _timeago: 'timeago/jquery.timeago',
-        _timeagoLocale: 'timeago/locales/jquery.timeago.' + TIMEAGO_I18N_MAP[i18nInfo.langCode],
-        'file-upload': 'file-upload/js/jquery.fileupload',
-        'jquery-ui/ui/widget': 'file-upload/js/vendor/jquery.ui.widget',
-        'tagator': 'tagator/fm.tagator.jquery',
-        'pinyin': 'pinyin/web-pinyin',
-        'sticky': 'sticky/jquery.sticky'
-    },
+    paths: paths,
     shim: {
         jquery: {
             exports: 'jQuery'
@@ -49,6 +56,9 @@ requirejs.config({
         },
         _timeagoLocale: {
             deps: ['_timeago']
+        },
+        _trumbowygLocale: {
+            deps: ['_trumbowyg']
         },
         tagator: {
             deps: ['jquery']
@@ -80,7 +90,11 @@ define('sticky-util', ['exports', 'sticky'], function (exports) {
 
 require(['sticky-util'])
 
-define('trumbowyg', ['_trumbowyg', '_trumbowygUpload'])
+define('trumbowyg', ['_trumbowyg', '_trumbowygUpload', '_trumbowygLocale'], function () {
+    return {
+        locale: TRUMBOWYG_I18N_MAP[i18nInfo.langCode]
+    }
+})
 
 require(['bootstrap'], function () {
     $(function () {

@@ -44,7 +44,8 @@ class UserManager(BaseUserManager):
         perm = Permission.objects.get(codename='can_verify')
         return User.objects.filter(
             Q(groups__permissions=perm) |
-            Q(user_permissions=perm) | Q(is_superuser=True)).distinct()
+            Q(user_permissions=perm) | Q(is_superuser=True) |
+            Q(is_admin=True)).distinct()
 
 
 class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):

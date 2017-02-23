@@ -1,24 +1,22 @@
-import 'trumbowyg'
+import { locale } from 'trumbowyg'
 import Form from 'util/form'
 import { articleId } from 'page-config'
 import 'tagator'
 import API from 'util/rest'
 
 let $content = $('#content').trumbowyg({
+    lang: locale,
     btnsDef: {
-        // Customizables dropdowns
-        image: {
-            dropdown: ['insertImage', 'upload', 'base64', 'noembed'],
+        upload: {
             ico: 'insertImage'
         }
     },
     btns: [
-        ['viewHTML'],
         ['undo', 'redo'],
         ['formatting'],
         'btnGrp-design',
         ['link'],
-        ['image'],
+        ['upload'],
         'btnGrp-justify',
         'btnGrp-lists',
         ['foreColor', 'backColor'],
@@ -46,8 +44,8 @@ let editForm = new Form('#edit-form', api, action)
         data.content = getContent($content)
     ).payload(data =>
         data.mentions !== undefined && (data.mentions = data.mentions.split(','))
-    ).submitted(response =>0
-        //response.ok(({ url }) => location.href = url)
+    ).submitted(response =>
+        response.ok(({ url }) => location.href = url)
     )
 
 // File Uploads

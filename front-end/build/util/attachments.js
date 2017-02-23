@@ -169,7 +169,7 @@ define(['exports', 'util/rest', 'util/tmpl', 'timeago', 'file-upload'], function
             this._$button.find('input[type=file]').fileupload({
                 url: '/api/attachments/',
                 dataType: 'json',
-                maxFileSize: 10000000
+                maxFileSize: 3 * 1024 * 1024
             }).on('fileuploadadd', function (e, data) {
                 _this2._setButtonState(true);
 
