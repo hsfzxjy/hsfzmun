@@ -303,7 +303,8 @@ const chatList = {
         this._names = window.localStorage.getObj('chat-items') || []
 
         this._names.slice().reverse().forEach(session_name => {
-            this.getItem(manager._sessions[session_name])
+            if (manager._sessions[session_name])
+                this.getItem(manager._sessions[session_name])
         })
     }
 }

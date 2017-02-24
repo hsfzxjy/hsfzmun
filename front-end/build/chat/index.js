@@ -333,7 +333,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             this._names = window.localStorage.getObj('chat-items') || [];
 
             this._names.slice().reverse().forEach(function (session_name) {
-                _this3.getItem(manager._sessions[session_name]);
+                if (manager._sessions[session_name]) _this3.getItem(manager._sessions[session_name]);
             });
         }
     };
