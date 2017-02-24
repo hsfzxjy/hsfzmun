@@ -8,6 +8,7 @@ from .models import Attachment
 from .serializers import AttachmentSerializer
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 
 @login_required
@@ -26,3 +27,4 @@ class AttachmentViewSet(ModelViewSet):
 
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
+    permission_classes = [IsAuthenticated]
