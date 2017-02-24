@@ -32,7 +32,7 @@
                 </a>
             </li>
             {% endif %}
-            {% if perms.can_manage %}
+            {% if perms.is_admin %}
             <li class="nav-item">
                 <a href="{% url 'users:my-profile' %}?view=admin" class="nav-link">
                     {% trans 'Admin' %}
