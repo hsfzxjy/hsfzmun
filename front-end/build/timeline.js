@@ -63,7 +63,7 @@ define(['timeline-config', 'jquery', 'util/common'], function (_timelineConfig) 
         lastTime = fakeTime;
     }
 
-    timer = setInterval(timerCallback, 100);
+    //timer = setInterval(timerCallback, 100)
 
     // Animation
 

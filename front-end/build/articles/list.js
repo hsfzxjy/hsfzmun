@@ -259,8 +259,9 @@ define(['exports', 'mustache', 'util/tmpl', 'util/rest', 'timeago', 'bootstrap']
             var _this7 = this;
 
             this._first = false;
-            return (this._currentAPI = new _rest2.default(api)).get().ok(function (data) {
-                tmpl.renderInto(_this7._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') });
+            return (this._currentAPI = new _rest2.default(api)).container(this._$pane).get().ok(function (data) {
+                data.has_pagination = data.next || data.previous;
+                tmpl.renderTo(_this7._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') });
                 timeago.bind();
             });
         }

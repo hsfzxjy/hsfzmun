@@ -35,10 +35,11 @@ class NoticeList(NoticeMixin, ListAPIView):
             {
                 'name': category,
                 'url': '?category={}'.format(category),
-                'class': get_class(category)
+                'class': get_class(category),
             } for category in Notice.objects.categories()])
 
         response.data['categories'] = categories
+        response.data['current'] = current
 
         return response
 
@@ -56,5 +57,13 @@ class NoticeViewSet(NoticeMixin, ModelViewSet):
     @detail_route(methods=['POST'])
     def mark_as_read(self, *args, **kwargs):
         self.get_object().mark_as_read()
+
+        return Response('OK')
+
+    @list_route(methods=['POST'])
+    def mark_all_as_read(self, *args, **kwargs):
+        qs = self.get_queryset()
+
+        qs.mark_all_as_read(self.request.query_params.get('category', ''))
 
         return Response('OK')

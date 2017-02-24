@@ -1,18 +1,18 @@
 {% extends "bases/base-with-header.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-sm-10">
-            <form method="post" action="{% url 'users:login' %}">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <form method="post" action="{% url 'users:login' %}" class="box">
                 {% csrf_token %}
                 <div class="form-group {{form|errclass:'username'}}">
-                    <label for="username" class="form-control-label">username</label>
+                    <label for="username" class="form-control-label">{% trans 'user name' %}</label>
                     <input type="text" class="form-control" id="username" name="username">
                     {{form|errtext:'username'}}
                 </div>
                 <div class="form-group {{form|errclass:'password'}}">
-                    <label for="password" class="form-control-label">password</label>
+                    <label for="password" class="form-control-label">{% trans 'password' %}</label>
                     <input type="password" class="form-control" id="password" name="password">
                     {{form|errtext:'password'}}
                 </div>

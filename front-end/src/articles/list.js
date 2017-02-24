@@ -190,9 +190,12 @@ ArticleListView.prototype = {
 
     _load (api) {
         this._first = false
-        return (this._currentAPI = new API(api)).get().ok(data => {
-            tmpl.renderInto(this._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') })
-            timeago.bind()
-        })
+        return (this._currentAPI = new API(api))
+            .container(this._$pane)
+            .get().ok(data => {
+                data.has_pagination = data.next || data.previous
+                tmpl.renderTo(this._$pane, 'article-list-view', data, { article: tmpl.getTmpl('article') })
+                timeago.bind()
+            })
     }
 }

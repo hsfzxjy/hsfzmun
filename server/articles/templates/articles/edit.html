@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-3">
-    <form id="edit-form">
+    <form id="edit-form" class="box clearfix">
         <input type="hidden" name="author" value="{{user.id}}">
         <div class="form-group">
             <label for="title" class="form-control-label">{% trans 'Title' %}</label>
@@ -23,11 +23,13 @@
         </div>
         <button type="submit" class="float-right btn btn-primary">{% trans 'Submit' %}</button>
     </form>
-    <span class="btn btn-success fileinput-button" id="attachments">
-        <span>{% trans 'Attachments' %}</span>
-        <input type="file" name="file">
-    </span>
-    <div class="bg-faded">
+    <div class="fileinput-button-container">
+        <span class="btn btn-success fileinput-button" id="attachments">
+            <span>{% trans 'Attachments' %}</span>
+            <input type="file" name="file">
+        </span>
+    </div>
+    <div class="box">
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: 0; height: 2px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
@@ -38,10 +40,9 @@
 
 {% verbatim %}
 <template id="tmpl-file-item">
-    <div class="media my-1 px-0 col-md-6">
-        <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
+    <div class="media col-md-6 file-item">
         <div class="media-body clearfix">
-            <h5 class="file-name">{{name}}</h5>
+            <h6 class="file-name font-weight-bold">{{name}}</h6>
             <time class="file-time timeago" datetime="{{created}}"></time>
         </div>
         <div class="d-flex align-self-center btn btn-danger file-cancel">
@@ -69,6 +70,21 @@
         color: inherit;
         border-radius: 0;
         border: none;
+        box-shadow: none;
+    }
+
+    .fileinput-button-container {
+        position: relative;
+    }
+
+    .fileinput-button {
+        position: absolute;
+        top: -4em;
+        left: 1.5em;
+    }
+
+    .progress {
+        background: transparent!important;
     }
 </style>
 {% endblock %}

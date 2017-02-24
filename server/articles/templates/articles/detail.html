@@ -25,59 +25,69 @@
 
 <div class="container-fluid mt-3">
     <article class="col-md-8 offset-md-2">
-        <section>
-            <h1 class="text-center">{{article.title}}</h1>
+        <section class="title">
+            <h4 class="mb-0">{{article.title}}</h4>
         </section>
-        <section class="my-3">
-            {% if perms.articles.can_verify %}
-            <div class="btn-group btn-group-sm">
-                {% if article.status != 'rejected' %}
-                <button class="btn btn-secondary btn-danger" id="reject">{% trans 'Reject' %}</button>
+        <section class="box pb-0">
+            <small class="d-block text-right">
+                {% if perms.articles.can_verify %}
+                <span>
+                    {% if article.status != 'rejected' %}
+                    <a class="text-danger" id="reject" href="javascript:void(0)">{% trans 'Reject' %}</a>
+                    {% endif %}
+                    {% if article.status != 'verified' %}
+                    <a class="text-success" id="accept" href="javascript:void(0)">{% trans 'Accept' %}</a>
+                    {% endif %}
+                </span>
                 {% endif %}
-                {% if article.status != 'verified' %}
-                <button class="btn btn-secondary btn-success" id="accept">{% trans 'Accept' %}</button>
+                {% has_perm 'articles:change_article' user article as can_change_article %}
+                {% if can_change_article %}
+                <a href="/articles/edit/{{article.id}}/" class="">{% trans 'Edit' %}</a>
+                <a href="javascript:void(0)" id="delete-article" class="text-danger">{% trans 'Delete' %}</a>
                 {% endif %}
+            </small>
+        </section>
+        <section class="box">
+            {% if article.is_article %}
+            {{article.content|safe}}
+            {% else %}
+            <div class="list-group">
+            {% for attachment in article.attachments.all %}
+                <a href="{{attachment.url}}" class="list-group-item list-group-item-action" target="_blank">{{attachment.name}}</a>
+            {% endfor %}
             </div>
             {% endif %}
         </section>
-        <section class="my-2">
-            {{article.content|safe}}
-        </section>
-        <section class="my-3">
-            <div class="text-right">
-                {% has_perm 'articles:change_article' user article as can_change_article %}
-                {% if can_change_article %}
-                <a href="/articles/edit/{{article.id}}/">{% trans 'Edit' %}</a>
-                <a href="javascript:void(0)" class="text-danger" id="delete-article">{% trans 'Delete' %}</a>
-                {% endif %}
-            </div>
-            <p class="text-muted text-right">
+        <section class="box py-0">
+            <small class="text-muted text-right d-block">
                 {{article.author.user_tag|safe}} &middot;
                 {% trans 'Publish at' %} <time class="timeago" datetime="{{article.published|date:'c'}}"></time> &middot;
                 {% trans 'Edit at' %} <time class="timeago" datetime="{{article.published|date:'c'}}"></time>
-            </p>
+            </small>
         </section>
-        <section class="my-2">
+        <section class="box pt-0">
             {% for tag in article.tags.all %}
             <span class="badge badge-primary">{{tag.name}}</span>
             {% endfor %}
         </section>
-        <section class="mt-3">
+        {% if article.is_article %}
+        <section class="box">
             <div class="list-group">
             {% for attachment in article.attachments.all %}
-                <a href="{{attachment.file}}" class="list-group-item list-group-item-action" target="_blank">{{attachment.name}}</a>
+                <a href="{{attachment.url}}" class="list-group-item list-group-item-action" target="_blank">{{attachment.name}}</a>
             {% endfor %}
             </div>
         </section>
-        <section class="my-5">
-            <h6 id='comment-title'>{% trans 'Comment' %}</h6>
-            <form class="clearfix" id="comment-form">
+        {% endif %}
+        <section class="my-3">
+            <h6 id='comment-title' class="title">{% trans 'Comment' %}</h6>
+            <form class="clearfix box" id="comment-form">
                 <input type="hidden" name="author" value="{{user.id}}">
                 <input type="hidden" name="article" value="{{article.id}}">
                 <div class="form-group">
                     <textarea name="content" class="form-control"></textarea>
                 </div>
-                <div class="form-group clearfix">
+                <div class="form-group clearfix mb-0">
                     {% if user.is_authenticated %}
                     <button type="submit" class="btn btn-primary float-right ml-2">{% trans 'Submit' %}</button>
                     <button type="button" class="btn btn-secondary ml-2 float-right hidden-xs-up" id="cancel-reply">{% trans 'Cancel Reply' %}</button>
@@ -87,9 +97,9 @@
                 </div>
             </form>
         </section>
-        <section>
-            <ul class="list-unstyled" id="comment-box"></ul>
-            <p id="load-more-comments" class="text-center bg-muted">{% trans 'Load More' %}</p>
+        <section class="box">
+            <ul class="list-unstyled mb-0" id="comment-box"></ul>
+            <div id="load-more-comments" class="load-more">{% trans 'Load More' %}</div>
         </section>
     </article>
 </div>

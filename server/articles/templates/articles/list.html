@@ -45,50 +45,18 @@
 </template>
 
 <template id="tmpl-article">
-    [[#is_article]]
-    <li class="media my-4">
-        <div class="d-flex mr-4">
-            <i class="fa fa-3x fa-file-text-o"></i>
-        </div>
-        <div class="media-body">
-            <h5 class="mt-0">
-                <a href="[[url]]">[[title]]</a>
-            </h5>
-            <small class="text-muted py-2 d-block">
-                <a href="[[author.url]]">@[[author.nickname]]</a>
-                <time class="timeago" datetime="[[published]]"></time>
-            </small>
-        </div>
-    </li>
-    [[/is_article]]
-    [[^is_article]]
-    [[#attachments]]
-    <li class="media my-4">
-        <span class="d-flex mr-4">
-            <i class="fa fa-paperclip fa-3x"></i>
-        </span>
-        <div class="media-body">
-            <h5 class="mt-0">
-                [[name]]
-            </h5>
-            <small class="text-muted d-block py-2">
-                <a href="[[url]]" class="text-success">{% trans 'Download' %}</a>
-                <time class="timeago" datetime="[[created]]"></time>
-            </small>
-        </div>
-    </li>
-    [[/attachments]]
-    [[/is_article]]
+    {% include 'articles/article-items-template.html' %}
 </template>
 
 <template id="tmpl-article-list-view">
-    <ul class="list-unstyled">
+    <ul class="list-unstyled box pt-0">
     [[#results]]
         [[>article]]
     [[/results]]
     </ul>
+    [[#has_pagination]]
     <nav>
-        <ul class="pagination">
+        <ul class="pagination box">
             [[#previous]]
             <li class="page-item">
                 <a href="#" class="page-link" data-api="[[previous]]">{% trans 'Previous' %}</a>
@@ -101,12 +69,19 @@
             [[/next]]
         </ul>
     </nav>
+    [[/has_pagination]]
 </template>
 
 <div class="container mt-3">
-    <ul class="nav nav-pills hidden-md-up nav-fill stiky" id="article-top-nav" data-s-top="60" data-s-z-index="9999"></ul>
+    <ul class="nav nav-pills hidden-md-up nav-fill stiky bg-container" id="article-top-nav" data-s-top="60" data-s-z-index="9999"></ul>
+    <div class="hidden-md-up box px-0 pb-0 pt-1">
+        {% include 'articles/search-bar.html' %}
+    </div>
     <div class="row">
         <div class="hidden-sm-down col-md-4">
+            <div class="mb-2">
+                {% include 'articles/search-bar.html' %}
+            </div>
             <ul class="nav nav-pills flex-column stiky" id="article-side-nav" data-s-top="60" data-s-z-index="9999"></ul>
         </div>
         <div class="tab-content col-md-8"></div>

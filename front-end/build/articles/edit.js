@@ -34,7 +34,7 @@ define(['trumbowyg', 'util/form', 'page-config', 'util/rest', 'util/attachments'
     var api = _pageConfig.articleId ? '/api/articles/' + _pageConfig.articleId + '/' : '/api/articles/';
     var action = _pageConfig.articleId ? 'patch' : 'post';
 
-    var editForm = new _form2.default('#edit-form', api, action).payload(function (data) {
+    var editForm = new _form2.default('#edit-form', api, action, !_pageConfig.articleId).payload(function (data) {
         return data.tags = !data.tags ? [] : data.tags.split(',');
     }).payload(function (data) {
         return data.content = getContent($content);

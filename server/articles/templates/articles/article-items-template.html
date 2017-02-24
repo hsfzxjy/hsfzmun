@@ -1,0 +1,36 @@
+{% if not only_article %}[[#is_article]]{% endif %}
+<li class="media pt-4">
+    <div class="d-flex mr-4">
+        <i class="fa fa-3x fa-file-text-o"></i>
+    </div>
+    <div class="media-body">
+        <h6 class="mt-0 font-weight-bold">
+            <a href="[[url]]">[[title]]</a>
+        </h6>
+        <small class="text-muted pt-2 d-block">
+            <a href="[[author.url]]">@[[author.nickname]]</a>
+            <time class="timeago" datetime="[[published]]"></time>
+        </small>
+    </div>
+</li>
+{% if not only_article %}[[/is_article]]{% endif %}
+{% if not only_article %}
+[[^is_article]]
+[[#attachments]]
+<li class="media pt-4">
+    <span class="d-flex mr-4">
+        <i class="fa fa-paperclip fa-3x"></i>
+    </span>
+    <div class="media-body">
+        <h6 class="mb-0 mt-1">
+            [[name]]
+        </h6>
+        <small class="text-muted d-block pt-2">
+            <a href="[[file]]" class="text-success">{% trans 'Download' %}</a>
+            <time class="timeago" datetime="[[created]]"></time>
+        </small>
+    </div>
+</li>
+[[/attachments]]
+[[/is_article]]
+{% endif %}

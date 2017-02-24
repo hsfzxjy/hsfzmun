@@ -18,7 +18,7 @@
     </div>
 </div>
 <div class="container-fluid row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3">
         <ul class="nav nav-pills flex-column">
             {% for view_item in views %}
                 <li class="nav-item">
@@ -28,7 +28,7 @@
         </ul>
     </div>
     <div class="col-md-9">
-        <div class="tab-content">
+        <div class="tab-content box">
             {% for view_name in views %}
                 {% if view_name == view %}
                 <div class="tab-pane active">

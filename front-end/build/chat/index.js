@@ -43,7 +43,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     var $sidebar = $('#sidebar'),
         $chatview = $('#chat-view');
     var $textarea = $('#input-bar textarea');
-    var $title = $('div.top-bar .title');
+    var $title = $('div.top-bar .top-title');
     var $cover = $('#chat-view div.cover');
     var $submitButton = $('#input-bar button[type=submit]');
     var $loadHistoryButton = $('#load-history');
@@ -62,7 +62,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     // Search
 
     $searchInput.on('focus', function () {
-        $searchPane.show();
+        $searchPane.fadeIn();
     }).on('input', function () {
         var reg = new RegExp($searchInput.val());
 
@@ -77,7 +77,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
     $('html').click(function (_ref) {
         var target = _ref.target;
 
-        if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.hide();
+        if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.fadeOut();
     });
 
     // Scroll Utils

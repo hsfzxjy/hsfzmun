@@ -37,7 +37,7 @@ const getContent = $el => $el.data('trumbowyg').$ed.html()
 const api = articleId ? `/api/articles/${articleId}/` : '/api/articles/'
 const action = articleId ? 'patch' : 'post'
 
-let editForm = new Form('#edit-form', api, action)
+let editForm = new Form('#edit-form', api, action, !articleId)
     .payload(data =>
         data.tags = !data.tags ? [] : data.tags.split(',')
     ).payload(data =>

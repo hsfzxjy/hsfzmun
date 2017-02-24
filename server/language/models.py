@@ -45,6 +45,16 @@ def lang_queryset(queryset_cls=None):
         queryset_cls = models.QuerySet
 
     class WrappedQuerySet(queryset_cls, AbstractLanguageQuerySet):
-        pass
+
+        @classmethod
+        def as_manager(cls, *args, **kwargs):
+            mgr_cls = super(WrappedQuerySet, cls).as_manager(*args, **kwargs).__class__
+
+            class WrappedManager(mgr_cls):
+
+                def get_queryset(self):
+                    return super(WrappedManager, self).get_queryset().lang()
+
+            return WrappedManager()
 
     return WrappedQuerySet

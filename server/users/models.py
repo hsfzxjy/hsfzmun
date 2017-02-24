@@ -72,6 +72,10 @@ class User(AbstractBaseUser, AbstractLanguage, PermissionsMixin):
     def get_absolute_url(self):
         return reverse('users:profile', kwargs=dict(username=self.username))
 
+    @property
+    def url(self):
+        return self.get_absolute_url()
+
     def user_tag(self):
         return format_html('<a href="{}">{}</a>',
                            self.get_absolute_url(), self.nickname)

@@ -26,12 +26,12 @@
                 [[#content]][[#attachments]]<br>[[/attachments]][[/content]]
                 [[#attachments]]
                 [[#is_image]]
-                <a href="[[file]]" target="_blank">
-                    <img src="[[file]]" alt="name">
+                <a href="[[url]]" target="_blank">
+                    <img src="[[url]]" alt="name">
                 </a>
                 [[/is_image]]
                 [[^is_image]]
-                {% trans 'Attachment: ' %}<a href="[[file]]" target="_blank">[[name]]</a>
+                {% trans 'Attachment: ' %}<a href="[[url]]" target="_blank">[[name]]</a>
                 [[/is_image]]
                 <br>
                 [[/attachments]]
@@ -55,8 +55,8 @@
 </template>
 
 <div class="row justify-content-md-center full-height mx-0">
-    <div class="col-lg-12 test px-0 row mx-0 full-height">
-        <div class="col-md-3 test-green full-height px-0" id="sidebar">
+    <div class="col-lg-12 px-0 row mx-0 full-height">
+        <div class="col-md-3 full-height px-0" id="sidebar">
             <ul class="nav nav-pills nav-fill top-nav">
                 <li class="nav-item">
                     <a href="#chat-pane" class="nav-link active" data-toggle="tab">
@@ -95,13 +95,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9 test-green px-0 full-height hidden-sm-down" id="chat-view">
+        <div class="col-md-9 px-0 full-height hidden-sm-down" id="chat-view">
             <div class="cover"></div>
             <div class="top-bar clearfix">
                 <button class="toggle-view hidden-md-up float-left">
                     <i class="fa fa-list red-point"><span class="dot global"></span></i>
                 </button>
-                <span class="title">&nbsp;</span>
+                <span class="top-title">&nbsp;</span>
             </div>
             <div id="message-pane">
                 <div id="load-history" class="py-2 text-center">{% trans "Load history" %}</div>

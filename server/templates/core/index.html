@@ -11,37 +11,26 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 offset-lg-2 col-md-8">
-            <ul class="list-unstyled">
-                {% for article in articles %}
-                <li class="media my-4">
-                    <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
-                    <div class="media-body">
-                        <h5 class="mt-0">
-                            {% if article.is_article %}
-                            <a href="{{article.get_absolute_url}}">{{article.title}}</a>
-                            {% else %}
-                            {{article.title}}
-                            {% endif %}
-                        </h5>
-                        <a href="{{article.author.url}}">@{{article.author.nickname}}</a>
-                        <time class="timeago" datetime="{{article.published}}"></time>
-                    </div>
-                </li>
-                {% endfor %}
+        <div class="col-lg-6">
+            <div class="title">
+                <a href="/articles/list/">{% trans 'Articles' %}</a>
+            </div>
+            <ul class="list-unstyled box pt-0 mb-3">
+                {% include 'articles/article-items.html' %}
             </ul>
         </div>
-        <div class="col-lg-2 col-md-4">
-            <ul class="list-group">
-                {% for file in files %}
-                <li class="list-group-item list-group-item-action">
-                    <a href="{{file.file}}">{{file.name}}</a>
-                </li>
-                {% endfor %}
+        <div class="col-lg-6">
+            <div class="title">
+                <a href="/articles/list/cf/">{% trans 'Conference Files' %}</a>
+            </div>
+            <ul class="list-unstyled box pt-0 mb-3">
+                {% include 'articles/article-items.html' with articles=file_articles %}
             </ul>
         </div>
 
     </div>
 </div>
-
+<script>
+    require(['timeago'])
+</script>
 {% endblock %}

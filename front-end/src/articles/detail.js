@@ -52,7 +52,7 @@ new Form('#comment-form', commentAPI, 'post')
 
 $('#accept, #reject').on('click', function () {
     let action = $(this).attr('id')
-    new API(`/api/articles/${pageConfig.articleId}/${action}/`)
+    new API(`/api/articles/v/${pageConfig.articleId}/${action}/`)
         .post().ok(() => {
             $(this).parent().remove()
         })

@@ -56,6 +56,15 @@ class NoticeQuerySet(models.QuerySet):
     def categories(self):
         return self.order_by().values_list('category', flat=True).distinct()
 
+    def mark_all_as_read(self, category='all'):
+        qs = self
+        if category != 'all':
+            qs = qs.filter(category=category)
+
+        qs.update(has_read=True)
+
+        return qs
+
 
 class Notice(models.Model):
 

@@ -14,7 +14,9 @@ def errclass(form, field):
 def errtext(form, field='__all__'):
     if form.has_error(field):
         return mark_safe(r"""
+                    <div class="form-group has-danger">
                     <div class="form-control-feedback">%s</div>
+                    </div>
                 """ % form.errors[field].as_text())
     else:
         return ''

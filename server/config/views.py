@@ -4,15 +4,11 @@ from articles.models import Article, Tag
 
 
 def index(request):
-    print(dir(Article.lang_objects))
-    articles = Article.lang_objects.verified()
-    tags = Tag.objects.filter(
-        slug__in=['Conference_Files']).values_list('id', flat=True)
-    files = [
-        item.attachment for item in
-        Article.attachments.through.objects.filter(
-            article__tags__id__in=tags).prefetch_related('attachment')
-    ]
+    print(Article.lang_objects.values_list('lang_code', flat=True))
+    articles = Article.lang_objects.verified().filter(is_article=True)[:10]
+    file_articles = Article.lang_objects\
+        .verified()\
+        .filter(tags__slug__in=['Conference_Files'], is_article=False)[:10]
 
     return render(request, 'core/index.html',
-                  dict(articles=articles, files=files))
+                  dict(articles=articles, file_articles=file_articles))

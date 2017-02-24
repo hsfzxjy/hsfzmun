@@ -1,0 +1,37 @@
+{% for article in articles %}
+    {% if article.is_article or only_article %}
+    <li class="media pt-4">
+        <div class="d-flex mr-4">
+            <i class="fa fa-3x fa-file-text-o"></i>
+        </div>
+        <div class="media-body">
+            <h6 class="mt-0 font-weight-bold">
+                <a href="{{article.url}}">{{article.title}}</a>
+            </h6>
+            <small class="text-muted pt-2 d-block">
+                <a href="{{article.author.url}}">@{{article.author.nickname}}</a>
+                <time class="timeago" datetime="{{article.published}}"></time>
+            </small>
+        </div>
+    </li>
+    {% elif not article.is_article or only_files %}
+    {% for attachment in article.attachments.all %}
+    <li class="media pt-4">
+        <span class="d-flex mr-4">
+            <i class="fa fa-paperclip fa-3x"></i>
+        </span>
+        <div class="media-body">
+            <h6 class="mb-0 mt-1">
+                {{attachment.name}}
+            </h6>
+            <small class="text-muted d-block pt-2">
+                <a href="{{attachment.url}}" class="text-success">{% trans 'Download' %}</a>
+                <time class="timeago" datetime="{{attachment.created}}"></time>
+            </small>
+        </div>
+    </li>
+    {% endfor %}
+    {% endif %}
+{% empty %}
+    {% include 'components/empty.html' %}
+{% endfor %}

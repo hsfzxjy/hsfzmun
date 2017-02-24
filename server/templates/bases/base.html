@@ -26,6 +26,12 @@
         </div>
         {% endblock %}
         {% block body %} {% endblock %}
+        <template id="tmpl-empty">
+            {% include 'components/empty.html' with hide=True %}
+        </template>
+        <template id="tmpl-mask">
+            {% include 'components/mask.html' %}
+        </template>
         <script>require(['timeline'])</script>
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
         <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">

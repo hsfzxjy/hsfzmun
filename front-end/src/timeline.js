@@ -53,7 +53,7 @@ function timerCallback () {
     lastTime = fakeTime
 }
 
-timer = setInterval(timerCallback, 100)
+//timer = setInterval(timerCallback, 100)
 
 // Animation
 

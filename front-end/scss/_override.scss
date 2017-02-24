@@ -2,6 +2,10 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Nimbus Sans L', Arial, 'Liberation Sans', 'Hiragino Sans GB', 'Source Han Sans CN Normal', 'Microsoft YaHei', '微软雅黑', 'Wenquanyi Micro Hei', 'WenQuanYi Zen Hei', 'ST Heiti', SimHei, 'WenQuanYi Zen Hei Sharp', sans-serif;
 }
 
+a, .btn, button {
+    cursor: pointer;
+}
+
 .red-point {
     position: relative;
 
@@ -50,6 +54,64 @@ html, body {
 .media-body {
     word-break: break-all;
 }
+
+.box {
+    background-color: $container-bg;
+    padding: 1.5em;
+    margin: 0;
+
+    .form-control {
+        background-color: $container-bg;
+    }
+
+    .load-more {
+        text-align: center;
+        padding: .5em 0;
+        //background-color: $gray-lighter;
+        display: none;
+
+        @include hover-focus {
+            background-color: $gray-lightest;
+            cursor: pointer;
+        }
+    }
+
+    position: relative;
+
+    .mask {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        padding: 5em;
+        opacity: .7;
+        display: none;
+        background: $container-bg;
+    }
+}
+
+.file-item {
+    border: 1px dashed $gray-lighter;
+    padding: .5em;
+    margin-bottom: .25em;
+}
+
+.title {
+    text-align: center;
+    @extend .box;
+    padding-bottom: 0;
+
+    ::after {
+        display: block;
+        margin-top: 1em;
+        content: "";
+        border-bottom: 1px solid $gray-lighter;
+    }
+}
+
+@include bg-variant('.bg-container', $container-bg);
 
 button {
     &:focus, &:active {

@@ -1,40 +1,11 @@
 {% extends 'bases/base-with-header.html' %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-3">
         <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
-            <form action="" class="rw">
-                <div class="input-group">
-                        <input type="text" name="keyword" class="form-control" value="{{keyword}}">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">{% trans 'Search' %}</button>
-                    </div>
-                </div>
-            </form>
-            <ul class="list-unstyled">
-                {% for article in results %}
-                <li class="media my-4">
-                    <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
-                    <div class="media-body">
-                        <h5 class="mt-0">
-                            {% if article.is_article %}
-                            <a href="{{article.url}}">{{article.title}}</a>
-                            {% else %}
-                            {{article.title}}
-                            {% endif %}
-                        </h5>
-                        <a href="{{article.author.url}}">@{{article.author.nickname}}</a>
-                        <time class="timeago" datetime="{{article.published}}"></time>
-                        <div class="list-group">
-                            {% for attachment in article.attachments %}
-                            <a href="{{attachment.file}}" class="list-group-item border-0 list-group-item-action" target="_blank">
-                                {% trans "Attachment: " %}{{attachment.name}}
-                            </a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
+            {% include 'articles/search-bar.html' %}
+            <ul class="list-unstyled box pt-0">
+                {% include 'articles/article-items.html' with articles=results %}
             </ul>
             <nav>
                 <ul class="pagination">

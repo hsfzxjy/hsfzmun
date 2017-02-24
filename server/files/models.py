@@ -3,7 +3,8 @@ from .utils import make_file_name
 
 import os.path
 
-image_extensions = ('.gif', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff', '.webp')
+image_extensions = ('.gif', '.jpg', '.jpeg', '.gif', '.bmp',
+                    '.tiff', '.webp', '.png')
 
 
 def is_image(file):
@@ -31,3 +32,10 @@ class Attachment(models.Model):
     @property
     def name(self):
         return os.path.basename(self.file.name)
+
+    @property
+    def url(self):
+        return self.get_absolute_url()
+
+    def get_absolute_url(self):
+        return self.file.url

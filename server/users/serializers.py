@@ -49,7 +49,7 @@ class UserSerializer(AbstractLanguageSerializer):
 
     avatar_url = serializers.CharField(read_only=True)
     description = serializers.CharField(write_only=True, required=False)
-    url = serializers.CharField(source='get_absolute_url', read_only=True)
+    url = serializers.CharField(read_only=True)
 
     class Meta:
         model = User

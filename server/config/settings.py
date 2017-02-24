@@ -145,13 +145,15 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    'PAGE_SIZE': 3
+    'PAGE_SIZE': 20
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'zh-Hans'
+
+DATETIME_FORMAT = 'c'
 
 LANGUAGES = (
     ('zh-hans', _('Chinese')),
@@ -166,7 +168,7 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 

@@ -11,13 +11,16 @@ $enable-gradients: true;
 $enable-shadows: true;
 
 $inverse-bg: #2c3e50;
+$brand-inverse: $inverse-bg;
 
-$body-bg: #fafafa;
+$body-bg: #f4f5f5;
 //$body-color: darken($gray-dark, 3%);
 
 $input-bg: $body-bg;
 
-$list-group-bg: darken($body-bg, 1%);
+$container-bg: lighten(#f6f8fa, 2%);
+
+$list-group-bg: $container-bg;// darken($container, 1%);
 $list-group-hover-bg: lighten($list-group-bg, 3%);
 
 $pagination-bg: $body-bg;

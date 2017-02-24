@@ -16,7 +16,7 @@ tmpl.verbatim()
 
 const $sidebar = $('#sidebar'), $chatview = $('#chat-view')
 const $textarea = $('#input-bar textarea')
-const $title = $('div.top-bar .title')
+const $title = $('div.top-bar .top-title')
 const $cover = $('#chat-view div.cover')
 const $submitButton = $('#input-bar button[type=submit]')
 const $loadHistoryButton = $('#load-history')
@@ -33,7 +33,7 @@ $textarea.on('input change', () => $submitButton.prop('disabled', !$textarea.val
 // Search
 
 $searchInput.on('focus', () => {
-    $searchPane.show()
+    $searchPane.fadeIn()
 }).on('input', () => {
     let reg = new RegExp($searchInput.val())
 
@@ -45,7 +45,7 @@ $searchInput.on('focus', () => {
 })
 
 $('html').click(({ target }) => {
-    if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.hide()
+    if ($searchPane.is(':visible') && !$(target).closest('#searchPane, #search-box').length) $searchPane.fadeOut()
 })
 
 // Scroll Utils

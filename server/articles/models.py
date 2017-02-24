@@ -148,6 +148,10 @@ class Article(StatusModel, AbstractLanguage):
     def get_absolute_url(self):
         return reverse('articles:detail', kwargs={'article_id': self.id})
 
+    @property
+    def url(self):
+        return self.get_absolute_url()
+
     def article_tag(self):
         if self.is_article:
             return format_html('''<a href="#{}">{}</a>''',
@@ -222,14 +226,17 @@ class Comment(models.Model):
 
 @receiver(post_save, sender=Article)
 def post_verify_notice(sender, instance, created, **kwargs):
-    if created and not instance.author.is_verifier:
-        Notice.objects.send_bulk(
-            User.objects.get_verifiers(),
-            _('{target.author.nickname} '
-              'posts an article {target.title} and requires verification.'),
-            target=instance,
-            category='verification'
-        )
+    if created:
+        if not instance.author.is_verifier:
+            Notice.objects.send_bulk(
+                User.objects.get_verifiers(),
+                _('{target.author.nickname} '
+                  'posts an article {target.title} and requires verification.'),
+                target=instance,
+                category='verification'
+            )
+        else:
+            instance.accept()
 
 
 @receiver(m2m_changed, sender=Article.mentions.through)

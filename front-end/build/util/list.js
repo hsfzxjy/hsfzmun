@@ -49,7 +49,7 @@ define(['exports', 'timeago', 'util/rest', 'util/tmpl'], function (exports, _tim
 
         this._$box = $($box);
         this._$loadMore = $($loadMore);
-        this._api = api;
+        this._api = new _rest2.default(api);
         this._tmpl = tmpl;
         this._direction = direction;
         this._eventBus = $({});
@@ -73,7 +73,7 @@ define(['exports', 'timeago', 'util/rest', 'util/tmpl'], function (exports, _tim
         _load: function _load(api) {
             var _this2 = this;
 
-            new _rest2.default(api).get().ok(function (_ref2) {
+            new _rest2.default(api).container(this._$box).get().ok(function (_ref2) {
                 var next = _ref2.next,
                     results = _ref2.results;
 
@@ -94,7 +94,7 @@ define(['exports', 'timeago', 'util/rest', 'util/tmpl'], function (exports, _tim
         },
         _setNext: function _setNext(next) {
             this._next = next;
-            if (!next) this._$loadMore.hide();
+            this._$loadMore.toggle(!!next);
         },
         _buildItem: function _buildItem(item, direction) {
             var result = tmpl.renderSwitch(direction, this._$box, this._tmpl, item);

@@ -5,10 +5,12 @@ from api.routers import router, add_urlpattern
 
 from .views import (ArticleViewSet, article_detail, TagViewSet,
                     CommentViewSet, article_edit, AttachmentViewSet,
-                    ArticleFilterList, UserArticleList)
+                    ArticleFilterList, UserArticleList,
+                    ArticleVerificationViewSet)
 
 
 router.register(r'^articles', ArticleViewSet)
+router.register(r'^articles/v', ArticleVerificationViewSet)
 router.register(r'^comments', CommentViewSet)
 router.register(r'^articles/(?P<article_id>\d+)/comments', CommentViewSet)
 router.register(r'^tags', TagViewSet)

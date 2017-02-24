@@ -1,4 +1,5 @@
 import 'jquery'
+import * as tmpl from 'util/tmpl'
 
 $.ajaxSetup({
     cache: false,
@@ -61,6 +62,7 @@ function API (url) {
         this.url = url.url
         this.params = $.extend({}, url.params)
         this.contentType = url.contentType
+        this._$container = url._$container
     } else {
         this.url = url
         this.params = {}
@@ -96,6 +98,10 @@ API.prototype = {
         let url = this.currentUrl()
         return (url.split('?')[1] || '')
     },
+    _toggleMask (value) {
+        if (this._$container)
+            this._$container.find('.mask').toggle(value)
+    },
     _request (method, payload) {
         if (this.contentType === JSON_TYPE)
             payload = JSON.stringify(payload)
@@ -104,12 +110,28 @@ API.prototype = {
             this.url = updateQueryStringParameter(this.url, key, value)
         )
 
+        this._toggleMask(true)
+
         return this._processResponse($.ajax({
             url: this.url,
             type: method,
             contentType: this.contentType,
             data: payload
-        }))
+        })).ok(data => {
+            if (!this._$container) return
+            if ($.isArray(data.results)) {
+                this._$container.find('.empty-placeholder').toggle(!data.results.length)
+            }
+        }).always(() => {
+            this._toggleMask(false)
+        })
+    },
+    container (el) {
+        let newObj = new API(this)
+        newObj._$container = $(el)
+        tmpl.renderBefore(newObj._$container, 'empty', {})
+        tmpl.renderBefore(newObj._$container, 'mask', {})
+        return newObj
     },
     _processResponse (response) {
         $.each(STATUSES, (name, codes) => {

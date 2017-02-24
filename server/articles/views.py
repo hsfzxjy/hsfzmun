@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
+from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.generics import ListAPIView
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
@@ -45,6 +46,12 @@ class ArticleViewSet(SearchViewMixin, ModelViewSet):
     queryset = Article.objects.all()
 
     empty_when_blank = False
+
+
+class ArticleVerificationViewSet(RetrieveModelMixin, GenericViewSet):
+
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
 
     @detail_route(methods=['POST'])
     def accept(self, *args, **kwargs):

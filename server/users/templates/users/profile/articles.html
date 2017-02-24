@@ -1,28 +1,10 @@
 <template id="tmpl-article">
-    <li class="media my-4">
-        <img class="d-flex mr-3" src="https://gold.xitu.io/images/welcome/entry-default-img@2x.png" alt="Generic placeholder image" style="width: 64px; height: 64px;">
-        <div class="media-body">
-            <h5 class="mt-0">
-                [[#is_article]]
-                <a href="[[url]]">[[title]]</a>
-                [[/is_article]]
-                [[^is_article]]
-                [[title]]
-                [[/is_article]]
-            </h5>
-            <time class="timeago text-muted" datetime="[[published]]"></time>
-            {% has_perm 'users:change_user' user user_object as can_change_article %}
-            {% if can_change_article %}
-            <a href="/articles/edit/[[id]]/">{% trans 'Edit' %}</a>
-            <a href="javascript:void(0)" class="text-danger delete-article" data-id="[[id]]">{% trans 'Delete' %}</a>
-            {% endif %}
-        </div>
-    </li>
+    {% include 'articles/article-items-template.html' with only_article=True %}
 </template>
 
-<ul class="unstyled-list" id="article-box"></ul>
+<ul class="list-unstyled" id="article-box"></ul>
 
-<div class="text-muted text-center py-3" id="load-more-articles">{% trans 'Load More' %}</div>
+<div class="load-more" id="load-more-articles">{% trans 'Load More' %}</div>
 
 <script>
     require(['util/tmpl', 'util/list', 'util/rest'], function (tmpl, list, API) {

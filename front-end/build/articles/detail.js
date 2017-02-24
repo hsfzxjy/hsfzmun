@@ -83,7 +83,7 @@ define(['util/form', 'util/rest', 'util/list', 'page-config', 'user-info', 'util
         var _this = this;
 
         var action = $(this).attr('id');
-        new _rest2.default('/api/articles/' + _pageConfig2.default.articleId + '/' + action + '/').post().ok(function () {
+        new _rest2.default('/api/articles/v/' + _pageConfig2.default.articleId + '/' + action + '/').post().ok(function () {
             $(_this).parent().remove();
         });
     });

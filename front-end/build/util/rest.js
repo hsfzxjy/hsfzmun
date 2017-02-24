@@ -1,10 +1,28 @@
-define(['exports', 'jquery'], function (exports) {
+define(['exports', 'util/tmpl', 'jquery'], function (exports, _tmpl) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
 
+    var tmpl = _interopRequireWildcard(_tmpl);
+
+    function _interopRequireWildcard(obj) {
+        if (obj && obj.__esModule) {
+            return obj;
+        } else {
+            var newObj = {};
+
+            if (obj != null) {
+                for (var key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+                }
+            }
+
+            newObj.default = obj;
+            return newObj;
+        }
+    }
 
     $.ajaxSetup({
         cache: false,
@@ -68,6 +86,7 @@ define(['exports', 'jquery'], function (exports) {
             this.url = url.url;
             this.params = $.extend({}, url.params);
             this.contentType = url.contentType;
+            this._$container = url._$container;
         } else {
             this.url = url;
             this.params = {};
@@ -99,6 +118,9 @@ define(['exports', 'jquery'], function (exports) {
             var url = this.currentUrl();
             return url.split('?')[1] || '';
         },
+        _toggleMask: function _toggleMask(value) {
+            if (this._$container) this._$container.find('.mask').toggle(value);
+        },
         _request: function _request(method, payload) {
             var _this = this;
 
@@ -108,12 +130,28 @@ define(['exports', 'jquery'], function (exports) {
                 return _this.url = updateQueryStringParameter(_this.url, key, value);
             });
 
+            this._toggleMask(true);
+
             return this._processResponse($.ajax({
                 url: this.url,
                 type: method,
                 contentType: this.contentType,
                 data: payload
-            }));
+            })).ok(function (data) {
+                if (!_this._$container) return;
+                if ($.isArray(data.results)) {
+                    _this._$container.find('.empty-placeholder').toggle(!data.results.length);
+                }
+            }).always(function () {
+                _this._toggleMask(false);
+            });
+        },
+        container: function container(el) {
+            var newObj = new API(this);
+            newObj._$container = $(el);
+            tmpl.renderBefore(newObj._$container, 'empty', {});
+            tmpl.renderBefore(newObj._$container, 'mask', {});
+            return newObj;
         },
         _processResponse: function _processResponse(response) {
             $.each(STATUSES, function (name, codes) {

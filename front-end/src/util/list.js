@@ -8,7 +8,7 @@ export const AFTER = tmpl.AFTER
 export function List ({ $box, $loadMore, tmpl, api, direction = AFTER }) {
     this._$box = $($box)
     this._$loadMore = $($loadMore)
-    this._api = api
+    this._api = new API(api)
     this._tmpl = tmpl
     this._direction = direction
     this._eventBus = $({})
@@ -29,7 +29,7 @@ List.prototype = {
     },
 
     _load (api) {
-        new API(api).get().ok(({ next, results }) => {
+        new API(api).container(this._$box).get().ok(({ next, results }) => {
             this._eventBus.trigger('results', [results])
             this._buildItems(results, this._direction)
             this._setNext(next)
@@ -43,7 +43,7 @@ List.prototype = {
 
     _setNext (next) {
         this._next = next
-        if (!next) this._$loadMore.hide()
+        this._$loadMore.toggle(!!next)
     },
 
     _buildItem (item, direction) {

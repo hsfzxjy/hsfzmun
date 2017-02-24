@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-3">
     <div class="col-lg-10 offset-lg-1">
-        <ul class="nav nav-tabs h-scroll">
+        <ul class="nav nav-pills h-scroll box">
             {% for item in categories %}
             <li class="nav-item">
                 <a href="{{item.url}}"
@@ -13,7 +13,7 @@
             </li>
             {% endfor %}
         </ul>
-        <div class="list-group">
+        <div class="list-group box pt-0">
             {% for notice in results %}
             <a href="{{notice.url}}"
                 data-id="{{notice.id}}"
@@ -27,7 +27,12 @@
             </a>
             {% endfor %}
         </div>
-        <ul class="pagination">
+        <ul class="pagination box pt-0">
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)" id="mark-as-read">
+                    <i class="fa fa-check-square-o text-success"></i>
+                </a>
+            </li>
             {% if previous %}
             <li class="page-item">
                 <a href="{{previous}}" class="page-link">{% trans 'Previous' %}</a>
@@ -45,6 +50,9 @@
 
 {% block scripts %}
 <script>
+    define('notices-view-info', {
+        category: '{{current}}'
+    })
     require(['notices/list'])
 </script>
 {% endblock %}
