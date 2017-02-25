@@ -1,4 +1,6 @@
-{% include 'bases/base-with-header.html' %}
+{% extends 'bases/base-with-header.html' %}
+
+{% block title %}{% trans 'Home' %}{% endblock %}
 
 {% block content %}
 <div class="jumbotron bg-inverse text-white">

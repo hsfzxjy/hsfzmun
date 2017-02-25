@@ -482,6 +482,7 @@ const manager = {
 
     activate (session) {
         $cover.toggle(session === null)
+        toggleView(true)
         if (this.currentSession === session) return
         this.currentSession = session
         if (this.currentSession === null) return
@@ -489,7 +490,6 @@ const manager = {
         clearInput()
         tmpl.renderInto('#input-bar div.extra-fields', 'extra-fields', session.extraFields())
         session.activate()
-        toggleView(true)
     }
 }
 

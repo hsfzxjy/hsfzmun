@@ -51,9 +51,25 @@ body, html, .full-height {
     background-color: $sidebar-bg;
     color: invert($sidebar-bg);
 
+    .info-bar {
+        a {
+            line-height: 1;
+            i {
+                color: invert($sidebar-bg);
+            }
+
+
+            @include hover-effects($sidebar-bg);
+        }
+    }
+
     ul.top-nav {
         li a {
             color: inherit;
+
+            i {
+                font-size: 1.5em;
+            }
 
             &.active {
                 background: inherit;
@@ -70,7 +86,7 @@ body, html, .full-height {
 
     .tab-content {
         position: absolute;
-        top: 85px;
+        top: 129px;
         left: 0;
         right: 0;
         bottom: 0;

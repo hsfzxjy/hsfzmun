@@ -8,7 +8,7 @@
 {% block after_scripts %}
 {% if user.is_authenticated %}
 <script>
-    define('ws-config', '/ws/notices/')
+    define('ws-config', '/ws/notices/?session_key={{request.session.session_key}}')
     require(['notices/index'])
 </script>
 {% endif %}

@@ -1,6 +1,8 @@
 {% extends "bases/base.html" %}
 {% load static %}
 
+{% block title %}{% trans 'Discuss' %}{% endblock %}
+
 {% block timeline %}{% endblock %}
 
 {% block body %}
@@ -57,22 +59,28 @@
 <div class="row justify-content-md-center full-height mx-0">
     <div class="col-lg-12 px-0 row mx-0 full-height">
         <div class="col-md-3 full-height px-0" id="sidebar">
+            <div class="clearfix info-bar">
+                <span class="px-3 py-3 float-left" style="line-height:1;">{{user.nickname}}</span>
+                <a href="/" class="float-right px-3 py-3" target="_blank">
+                    <i class="fa fa-home"></i>
+                </a>
+            </div>
             <ul class="nav nav-pills nav-fill top-nav">
                 <li class="nav-item">
                     <a href="#chat-pane" class="nav-link active" data-toggle="tab">
-                        <i class="fa fa-2x fa-comment red-point" data-icon="comment">
+                        <i class="fa fa-comment red-point" data-icon="comment">
                             <span class="global dot"></span>
                         </i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#user-contacts-pane" class="nav-link" data-toggle="tab">
-                        <i class="fa fa-2x fa-address-card-o" data-icon="address-card"></i>
+                        <i class="fa fa-address-card-o" data-icon="address-card"></i>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#group-contacts-pane" class="nav-link" data-toggle="tab">
-                        <i class="fa fa-2x fa-building-o" data-icon="building"></i>
+                        <i class="fa fa-building-o" data-icon="building"></i>
                     </a>
                 </li>
                 <li class="nav-item hidden-xs-up">
@@ -136,7 +144,7 @@
 <link rel="stylesheet" href="/static/file-upload/css/jquery.fileupload.css">
 <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 <script>
-    define('ws-config', '/ws/chat/')
+    define('ws-config', '/ws/chat/?session_key={{request.session.session_key}}')
     require(['chat/index'])
 </script>
 {% endblock %}

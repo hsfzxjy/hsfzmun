@@ -1,5 +1,7 @@
 {% extends "bases/base-with-header.html" %}
 
+{% block title %}{% trans 'Notices' %}{% endblock %}
+
 {% block content %}
 <div class="container mt-3 px-0">
     <div class="col-lg-10 offset-lg-1 px-0">
@@ -13,6 +15,7 @@
             </li>
             {% endfor %}
         </ul>
+        {% if results %}
         <div class="list-group box pt-0">
             {% for notice in results %}
             <a href="{{notice.url}}"
@@ -44,6 +47,9 @@
             </li>
             {% endif %}
         </ul>
+        {% else %}
+        {% include 'components/empty.html' %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

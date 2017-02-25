@@ -535,6 +535,7 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         },
         activate: function activate(session) {
             $cover.toggle(session === null);
+            toggleView(true);
             if (this.currentSession === session) return;
             this.currentSession = session;
             if (this.currentSession === null) return;
@@ -542,7 +543,6 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
             clearInput();
             tmpl.renderInto('#input-bar div.extra-fields', 'extra-fields', session.extraFields());
             session.activate();
-            toggleView(true);
         }
     };
 

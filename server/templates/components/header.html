@@ -39,6 +39,11 @@
                 </a>
             </li>
             {% endif %}
+            <li class="nav-item">
+                <a href="{% url 'about' %}" class="nav-link">
+                    {% trans 'About' %}
+                </a>
+            </li>
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated %}

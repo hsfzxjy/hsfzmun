@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-25 10:25+0800\n"
+"POT-Creation-Date: 2017-02-25 14:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,28 +26,28 @@ msgstr "标签"
 msgid "articles"
 msgstr "文章"
 
-#: articles/management/__init__.py:7 articles/templates/articles/list.html:105
+#: articles/management/__init__.py:7 articles/templates/articles/list.html:107
 msgid "Instant Messages"
 msgstr "即时消息"
 
-#: articles/management/__init__.py:8 articles/templates/articles/list.html:107
-#: templates/core/index.html:24
+#: articles/management/__init__.py:8 articles/templates/articles/list.html:109
+#: templates/core/index.html:26
 msgid "Conference Files"
 msgstr "会场文件"
 
-#: articles/management/__init__.py:9 articles/templates/articles/list.html:108
+#: articles/management/__init__.py:9 articles/templates/articles/list.html:110
 msgid "Agreements and Treaties"
 msgstr "协议 & 条约"
 
-#: articles/management/__init__.py:10 articles/templates/articles/list.html:112
+#: articles/management/__init__.py:10 articles/templates/articles/list.html:114
 msgid "News"
 msgstr "新闻"
 
-#: articles/management/__init__.py:11 articles/templates/articles/list.html:113
+#: articles/management/__init__.py:11 articles/templates/articles/list.html:115
 msgid "Reviews"
 msgstr "时评"
 
-#: articles/management/__init__.py:12 articles/templates/articles/list.html:109
+#: articles/management/__init__.py:12 articles/templates/articles/list.html:111
 msgid "Declaration"
 msgstr "声明"
 
@@ -136,102 +136,111 @@ msgstr "全部"
 #: articles/templates/articles/article-items-template.html:29
 #: articles/templates/articles/article-items.html:28
 msgid "Download"
-msgstr ""
+msgstr "下载"
 
-#: articles/templates/articles/detail.html:10
+#: articles/templates/articles/detail.html:12
 msgid "Reply to"
 msgstr "回复"
 
-#: articles/templates/articles/detail.html:36
+#: articles/templates/articles/detail.html:38
 msgid "Reject"
 msgstr "驳回"
 
-#: articles/templates/articles/detail.html:39
+#: articles/templates/articles/detail.html:41
 msgid "Accept"
 msgstr "接受"
 
-#: articles/templates/articles/detail.html:45
+#: articles/templates/articles/detail.html:47
 msgid "Edit"
 msgstr "编辑"
 
-#: articles/templates/articles/detail.html:46
+#: articles/templates/articles/detail.html:48
 #: templates/admin/submit_line.html:6
 msgid "Delete"
 msgstr "删除"
 
-#: articles/templates/articles/detail.html:64
+#: articles/templates/articles/detail.html:66
 msgid "Publish at"
 msgstr "发布于"
 
-#: articles/templates/articles/detail.html:65
+#: articles/templates/articles/detail.html:67
 msgid "Edit at"
 msgstr "编辑于"
 
-#: articles/templates/articles/detail.html:83
+#: articles/templates/articles/detail.html:85
 msgid "Comment"
 msgstr "评论"
 
-#: articles/templates/articles/detail.html:92
-#: articles/templates/articles/edit.html:24
+#: articles/templates/articles/detail.html:94
+#: articles/templates/articles/edit.html:26
 #: users/templates/users/bulk-creation.html:21
 msgid "Submit"
 msgstr "提交"
 
-#: articles/templates/articles/detail.html:93
+#: articles/templates/articles/detail.html:95
 msgid "Cancel Reply"
 msgstr "取消回复"
 
-#: articles/templates/articles/detail.html:95
+#: articles/templates/articles/detail.html:97
 msgid "Login to comment"
 msgstr "登录后评论"
 
-#: articles/templates/articles/detail.html:102
+#: articles/templates/articles/detail.html:104
 #: users/templates/users/profile/articles.html:7
 msgid "Load More"
 msgstr "加载更多"
 
-#: articles/templates/articles/edit.html:8
+#: articles/templates/articles/edit.html:3 templates/components/header.html:31
+msgid "Write"
+msgstr "撰写"
+
+#: articles/templates/articles/edit.html:10
 msgid "Title"
 msgstr "标题"
 
-#: articles/templates/articles/edit.html:12
+#: articles/templates/articles/edit.html:14
 msgid "Tags"
 msgstr "标签"
 
-#: articles/templates/articles/edit.html:17
+#: articles/templates/articles/edit.html:19
 msgid "Mentions"
 msgstr "@用户"
 
-#: articles/templates/articles/edit.html:28
+#: articles/templates/articles/edit.html:30
 msgid "Attachments"
 msgstr "附件"
 
-#: articles/templates/articles/edit.html:37
+#: articles/templates/articles/edit.html:39
 msgid "No Files"
 msgstr "暂无文件"
 
-#: articles/templates/articles/list.html:62
+#: articles/templates/articles/list.html:3 templates/components/header.html:13
+#: templates/core/index.html:18 users/templates/users/profile/admin.html:14
+msgid "Articles"
+msgstr "文章"
+
+#: articles/templates/articles/list.html:64
 #: articles/templates/articles/search.html:14
-#: notices/templates/notices/list.html:38
+#: notices/templates/notices/list.html:41
 msgid "Previous"
 msgstr "上一页"
 
-#: articles/templates/articles/list.html:67
+#: articles/templates/articles/list.html:69
 #: articles/templates/articles/search.html:19
-#: notices/templates/notices/list.html:43
+#: notices/templates/notices/list.html:46
 msgid "Next"
 msgstr "下一页"
 
-#: articles/templates/articles/list.html:106
+#: articles/templates/articles/list.html:108
 msgid "Academic Files"
 msgstr "学术文件"
 
-#: articles/templates/articles/list.html:111
+#: articles/templates/articles/list.html:113
 msgid "MPC Manuscripts"
 msgstr "MPC 稿件"
 
 #: articles/templates/articles/search-bar.html:5
-#: chat/templates/chat/index.html:82
+#: chat/templates/chat/index.html:90
 msgid "Search"
 msgstr "搜索"
 
@@ -255,11 +264,15 @@ msgstr "讨论组"
 msgid "discussions"
 msgstr "讨论组"
 
-#: chat/templates/chat/index.html:34
+#: chat/templates/chat/index.html:4 templates/components/header.html:26
+msgid "Discuss"
+msgstr "讨论"
+
+#: chat/templates/chat/index.html:36
 msgid "Attachment: "
 msgstr "附件： "
 
-#: chat/templates/chat/index.html:107
+#: chat/templates/chat/index.html:115
 msgid "Load history"
 msgstr "加载历史消息"
 
@@ -271,11 +284,11 @@ msgstr ""
 msgid "The API should receive a `session_name` param."
 msgstr ""
 
-#: config/settings.py:159 language/models.py:20
+#: config/settings.py:172 language/models.py:20
 msgid "Chinese"
 msgstr "中文"
 
-#: config/settings.py:160 language/models.py:19
+#: config/settings.py:173 language/models.py:19
 msgid "English"
 msgstr "英文"
 
@@ -286,6 +299,10 @@ msgstr "全部"
 #: language/models.py:24
 msgid "language code"
 msgstr "语言标识"
+
+#: notices/templates/notices/list.html:3
+msgid "Notices"
+msgstr "通知"
 
 #: templates/admin/base_site.html:3
 msgid "HSFZMUN site admin"
@@ -319,22 +336,9 @@ msgstr ""
 msgid "No content here"
 msgstr "空空如也"
 
-#: templates/components/header.html:13 templates/core/index.html:16
-#: users/templates/users/profile/admin.html:14
-msgid "Articles"
-msgstr "文章"
-
 #: templates/components/header.html:16
 msgid "Languages"
 msgstr "语言"
-
-#: templates/components/header.html:26
-msgid "Discuss"
-msgstr "讨论"
-
-#: templates/components/header.html:31
-msgid "Write"
-msgstr "撰写"
 
 #: templates/components/header.html:38
 msgid "Admin"
@@ -349,9 +353,18 @@ msgid "Log out"
 msgstr "注销"
 
 #: templates/components/header.html:59
-#: users/templates/registration/login.html:23
+#: users/templates/registration/login.html:3
+#: users/templates/registration/login.html:25
 msgid "Log in"
 msgstr "登录"
+
+#: templates/core/about.html:2
+msgid "About"
+msgstr "关于"
+
+#: templates/core/index.html:3
+msgid "Home"
+msgstr ""
 
 #: users/admin.py:18
 msgid "Password"
@@ -361,27 +374,27 @@ msgstr "密码"
 msgid "Password confirmation"
 msgstr "再输入一次新密码"
 
-#: users/admin.py:65 users/admin.py:74
+#: users/admin.py:66 users/admin.py:75
 msgid "Permissions"
 msgstr "权限"
 
-#: users/admin.py:66
+#: users/admin.py:67
 msgid "Profile"
 msgstr "信息"
 
-#: users/admin.py:86
+#: users/admin.py:87
 msgid "Password has reset to {}"
 msgstr "密码已被重置为 {}"
 
-#: users/admin.py:89
+#: users/admin.py:90
 msgid "reset password"
 msgstr "重置密码"
 
-#: users/admin.py:97
+#: users/admin.py:98
 msgid "set verifiers"
 msgstr "设置认证者"
 
-#: users/admin.py:110 users/admin.py:111 users/apps.py:10 users/models.py:123
+#: users/admin.py:111 users/admin.py:112 users/apps.py:10 users/models.py:123
 msgid "users"
 msgstr "用户"
 
@@ -424,7 +437,7 @@ msgstr "昵称 %s 重复了。"
 msgid "Verifiers"
 msgstr "认证者"
 
-#: users/models.py:53 users/templates/registration/login.html:10
+#: users/models.py:53 users/templates/registration/login.html:12
 msgid "user name"
 msgstr "用户名"
 
@@ -456,11 +469,11 @@ msgstr "旧密码不正确。"
 msgid "New passwords mismatched."
 msgstr "两个新密码不一致。"
 
-#: users/templates/registration/login.html:16
+#: users/templates/registration/login.html:18
 msgid "password"
 msgstr "密码"
 
-#: users/templates/registration/login.html:17
+#: users/templates/registration/login.html:19
 msgid "Forget password? Contact administrator to reset your password"
 msgstr "忘记密码？联系主席团请求重置"
 

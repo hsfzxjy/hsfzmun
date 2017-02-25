@@ -44,7 +44,7 @@ gulp.task('sass', () => {
     return gulp.src('./scss/**/*.scss')
         .pipe(sourcemaps.init())
         .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-        .pipe(postcss([autoprefixer()]))
+        .pipe(postcss([autoprefixer({browsers: 'last 100 versions'})]))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('build/css/'))
 })

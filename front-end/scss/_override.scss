@@ -6,6 +6,16 @@ a, .btn, button {
     cursor: pointer;
 }
 
+@mixin flex-polyfill {
+    flex-direction: column;
+}
+
+@include media-breakpoint-down(xs) {
+    .row {
+        @include flex-polyfill;
+    }
+}
+
 .trumbowyg-button-pane {
     display: flex;
     flex-flow: row wrap;

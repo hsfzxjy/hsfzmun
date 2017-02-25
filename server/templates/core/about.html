@@ -1,0 +1,48 @@
+{% extends 'bases/base-with-header.html' %}
+{% block title %}{% trans 'About' %}{% endblock %}
+{% block content %}
+<div class="container mt-3">
+    <article class="box">
+        <h2>关于作者</h2>
+        <section>
+            <div class="github-card" data-github="hsfzxjy" data-width="400" data-height="317" data-theme="medium"></div>
+            <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+        </section>
+        <h2 class="my-2">关于本站</h2>
+        <section>
+            <p>本站点在 Github 上开放源代码：<a href="https://github.com/hsfzxjy/hsfzmun">hsfzxjy/hsfzmun</a></p>
+            <p><b>为了更好的使用体验，请不要使用低版本 Internet Explorer 浏览器</b></p>
+        </section>
+        <h2 class="my-2">鸣谢</h2>
+        <section>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="https://www.aliyun.com/">阿里云</a>
+                </li>
+                <li>
+                    <a href="https://www.djangoproject.com/">Django</a>
+                </li>
+                <li>
+                    <a href="https://channels.readthedocs.io/en/stable/">Django Channels</a>
+                </li>
+                <li>
+                    <a href="http://v4-alpha.getbootstrap.com/">Bootstrap v4</a>
+                </li>
+            </ul>
+        </section>
+    </article>
+</div>
+
+<style>
+    #ghcard-hsfzxjy-1 {
+        max-width: 500px;
+        margin: auto;
+        display: inherit;
+        width: 100%;
+    }
+
+    p, article li {
+        text-indent: 2em;
+    }
+</style>
+{% endblock %}
