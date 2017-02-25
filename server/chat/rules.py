@@ -1,6 +1,6 @@
 from rules import add_perm, always_false, is_authenticated, is_staff
 
-
+add_perm('chat', is_authenticated & is_staff)
 add_perm('chat.add_discussion', is_authenticated & is_staff)
 add_perm('chat.change_discussion', is_authenticated & is_staff)
 add_perm('chat.delete_discussion', is_authenticated & is_staff)
