@@ -42,7 +42,7 @@ define(['timeline-config', 'jquery', 'util/common'], function (_timelineConfig) 
         lastTime = 'not-start';
 
     function formatDate(date) {
-        return date.toISOString().split('.')[0].replace('T', ' ');
+        return date.toLocaleString();
     }
 
     function timerCallback() {
@@ -63,7 +63,7 @@ define(['timeline-config', 'jquery', 'util/common'], function (_timelineConfig) 
         lastTime = fakeTime;
     }
 
-    //timer = setInterval(timerCallback, 100)
+    timer = setInterval(timerCallback, 100);
 
     // Animation
 

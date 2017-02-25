@@ -1,12 +1,13 @@
 .timeline {
     position: fixed;
-    top: 0;
-    left: 0;
+    left: 1em;
+    bottom: 1em;
     z-index: 1000;
     opacity: .7;
     border-radius: 0;
     display: none;
     overflow-y: hidden;
+    margin: 0;
 
     span {
         display: none;

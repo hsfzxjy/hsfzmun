@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 21:33+0800\n"
+"POT-Creation-Date: 2017-02-25 10:25+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,6 +349,7 @@ msgid "Log out"
 msgstr "注销"
 
 #: templates/components/header.html:59
+#: users/templates/registration/login.html:23
 msgid "Log in"
 msgstr "登录"
 
@@ -455,9 +456,13 @@ msgstr "旧密码不正确。"
 msgid "New passwords mismatched."
 msgstr "两个新密码不一致。"
 
-#: users/templates/registration/login.html:15
+#: users/templates/registration/login.html:16
 msgid "password"
 msgstr "密码"
+
+#: users/templates/registration/login.html:17
+msgid "Forget password? Contact administrator to reset your password"
+msgstr "忘记密码？联系主席团请求重置"
 
 #: users/templates/users/profile/admin.html:2
 msgid "User"

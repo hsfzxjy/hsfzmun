@@ -32,7 +32,7 @@ const $timeDisplay = $('.timeline')
 let timer, lastTime = 'not-start'
 
 function formatDate (date) {
-    return date.toISOString().split('.')[0].replace('T', ' ')
+    return date.toLocaleString()
 }
 
 function timerCallback () {
@@ -53,7 +53,7 @@ function timerCallback () {
     lastTime = fakeTime
 }
 
-//timer = setInterval(timerCallback, 100)
+timer = setInterval(timerCallback, 100)
 
 // Animation
 
