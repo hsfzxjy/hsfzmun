@@ -90,7 +90,8 @@ define('sticky-util', ['exports', 'sticky'], function (exports) {
 
 require(['sticky-util'])
 
-define('trumbowyg', ['_trumbowyg', '_trumbowygUpload', '_trumbowygLocale'], function () {
+define('trumbowyg', ['_trumbowyg', '_trumbowygUpload',
+    TRUMBOWYG_I18N_MAP[i18nInfo.langCode] ? '_trumbowygLocale' : undefined], function () {
     return {
         locale: TRUMBOWYG_I18N_MAP[i18nInfo.langCode]
     }

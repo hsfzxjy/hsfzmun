@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 from rest_framework.mixins import RetrieveModelMixin
@@ -111,6 +112,7 @@ class AttachmentViewSet(ReadOnlyModelViewSet):
         return article.attachments.all()
 
 
+@login_required
 def article_detail(request, article_id):
 
     article = get_object_or_404(Article, pk=article_id)
@@ -118,6 +120,7 @@ def article_detail(request, article_id):
     return render(request, 'articles/detail.html', {'article': article})
 
 
+@login_required
 def article_edit(request, article_id):
     article = get_object_or_404(Article, pk=article_id)
 

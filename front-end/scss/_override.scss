@@ -6,6 +6,15 @@ a, .btn, button {
     cursor: pointer;
 }
 
+.trumbowyg-button-pane {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.trumbowyg-modal-box {
+    width: 100%;
+}
+
 .red-point {
     position: relative;
 
