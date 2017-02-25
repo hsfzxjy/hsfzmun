@@ -131,7 +131,7 @@ function toggleView (showView) {
     $chatview.toggleClass('hidden-sm-down', argChat)
 }
 
-$('body').on('click', '.toggle-view', toggleView)
+$('body').on('click', '.toggle-view', () => toggleView())
 
 // Session Class Definition
 

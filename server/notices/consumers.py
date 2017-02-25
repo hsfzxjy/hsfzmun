@@ -5,7 +5,6 @@ import json
 
 
 def send_unread(user, reply_channel=None):
-    print('exe')
     if not user.is_authenticated():
         return
 
@@ -28,6 +27,7 @@ class NoticeConsumer(JsonWebsocketConsumer):
 
     def connect(self, message, **kwargs):
         message.reply_channel.send({'accept': message.user.is_authenticated()})
+        print('User %s connecting to server.' % message.user)
         send_unread(message.user, message.reply_channel)
 
     def connection_groups(self, **kwargs):

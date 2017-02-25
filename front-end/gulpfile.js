@@ -3,6 +3,8 @@ const sourcemaps = require('gulp-sourcemaps')
 const babel = require('gulp-babel')
 const sass = require('gulp-sass')
 const path = require('path')
+const postcss = require('gulp-postcss')
+const autoprefixer = require('autoprefixer')
 
 const deps = [
     ['bootstrap','node_modules/bootstrap/dist'],
@@ -40,7 +42,10 @@ gulp.task('copy-deps', () => {
 
 gulp.task('sass', () => {
     return gulp.src('./scss/**/*.scss')
+        .pipe(sourcemaps.init())
         .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+        .pipe(postcss([autoprefixer()]))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('build/css/'))
 })
 

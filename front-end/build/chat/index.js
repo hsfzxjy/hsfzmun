@@ -168,7 +168,9 @@ define(['util/rest', 'util/pinyin', 'user-info', 'util/tmpl', 'util/websocket', 
         $chatview.toggleClass('hidden-sm-down', argChat);
     }
 
-    $('body').on('click', '.toggle-view', toggleView);
+    $('body').on('click', '.toggle-view', function () {
+        return toggleView();
+    });
 
     // Session Class Definition
 
