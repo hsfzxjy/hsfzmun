@@ -58,7 +58,7 @@ class UserAdmin(DjangoObjectActions, BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('username', 'nickname', 'is_superuser')
+    list_display = ('username', 'nickname', 'is_superuser', 'is_admin')
     list_filter = ('is_superuser',)
     fieldsets = (
         (None, {'fields': ('username', 'nickname',)}),
