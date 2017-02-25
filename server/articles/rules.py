@@ -6,6 +6,7 @@ def is_my_article(user, article):
     return article.author.id == user.id
 
 
+add_perm('articles', is_authenticated & (is_staff))
 add_perm('articles.add_article', is_authenticated)
 add_perm('articles.change_article', is_authenticated &
          (is_staff | is_my_article))
