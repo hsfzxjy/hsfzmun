@@ -14,7 +14,7 @@ def dummy():
 
 tags_to_create = {'Instant Messages', 'Conference Files',
                   'Agreements and Treaties',
-                  'Reviews', 'Declaration'}
+                  'Reviews', 'Declaration', 'News'}
 slugs = {'_'.join(s.split()): s for s in tags_to_create}
 
 
